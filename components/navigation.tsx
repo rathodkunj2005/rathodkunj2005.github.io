@@ -5,7 +5,7 @@ import type React from "react"
 import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Menu, X, Github, Linkedin, Mail } from "lucide-react"
+import { Menu, X, Github, Linkedin, Mail, FileText } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 
@@ -80,6 +80,17 @@ export function Navigation() {
                 </a>
               </Button>
             ))}
+            <Button 
+              variant="default" 
+              size="sm" 
+              asChild
+              className="glass-nav hover:scale-105 transition-all duration-300"
+            >
+              <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">
+                <FileText className="h-4 w-4 mr-2" />
+                Resume
+              </a>
+            </Button>
           </div>
 
           <div className="md:hidden">
@@ -113,6 +124,17 @@ export function Navigation() {
                 {route.label}
               </Link>
             ))}
+            <Button 
+              variant="default" 
+              size="sm" 
+              asChild
+              className="glass-nav hover:scale-105 transition-all duration-300 mx-3 mb-2"
+            >
+              <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">
+                <FileText className="h-4 w-4 mr-2" />
+                Resume
+              </a>
+            </Button>
             <div className="flex space-x-3 px-3 py-2">
               {socialLinks.map((link) => (
                 <Button 
