@@ -1,26 +1,45 @@
 "use client"
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { useRef } from "react"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Building2, GraduationCap, Award, Calendar } from "lucide-react"
-import { useScrollReveal } from "@/hooks/use-scroll-reveal"
+import { Calendar, MapPin } from "lucide-react"
+import { motion, useScroll, useTransform } from "framer-motion"
 
 export function Experience() {
-  const workExperienceRef = useScrollReveal()
-  const educationRef = useScrollReveal()
-  
+  const containerRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end end"]
+  })
+
+  const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"])
+
   const experiences = [
+    {
+      title: "Incoming Software Engineering Intern, Full Stack",
+      company: "Microsoft Azure Data",
+      period: "Summer 2026",
+      location: "Redmond, WA",
+      description: [
+        "Joining the Azure Data team to build scalable cloud solutions.",
+        "Focusing on distributed systems and full-stack development within the Azure ecosystem."
+      ],
+      technologies: ["Azure", "Cloud Computing", "Full Stack", "Distributed Systems"],
+      type: "industry"
+    },
     {
       title: "Software Development Intern – AI Services",
       company: "University of Utah SUDO Program",
       period: "Jan 2025 – Present",
       location: "Salt Lake City, UT",
       description: [
-        "Developed a HIPAA-conscious chat platform with a React frontend and scalable AWS backend (Lambda, S3, Bedrock) to provide hospital staff with secure, streamlined access to medical insights from custom LLMs.",
-        "Engineered major performance gains, reducing inference latency by 40% and data query speed by 60% through AWS Bedrock pipeline optimization, API caching, and a DynamoDB-RDS hybrid database strategy.",
-        "Spearheaded the integration of interactive data visualization tools into the LLM chat interface, enabling real-time analytics on hospital data within conversational flows.",
+        "Developed a HIPAA-conscious chat platform with a React frontend and scalable AWS backend (Lambda, S3, Bedrock) providing secure medical insights.",
+        "Engineered performance gains reducing inference latency by 40% through AWS Bedrock optimization and API caching.",
+        "Integrated interactive data visualization tools into the LLM chat interface for real-time analytics."
       ],
-      technologies: ["React", "AWS Lambda", "AWS S3", "AWS Bedrock", "DynamoDB", "RDS", "HIPAA"],
+      technologies: ["React", "AWS Lambda", "AWS Bedrock", "DynamoDB", "HIPAA"],
+      type: "industry"
     },
     {
       title: "Undergraduate Researcher – AI & Aerospace Materials",
@@ -28,11 +47,13 @@ export function Experience() {
       period: "Aug 2025 – Present",
       location: "Salt Lake City, UT",
       description: [
-        "Advancing AI-driven materials discovery by developing ML pipelines for high-throughput experimentation, computational modeling, and aerospace materials design.",
-        "Integrating large language models (LLMs) and multi-agent AI systems to streamline knowledge sharing, automate literature mining, and enhance decision support across interdisciplinary research teams.",
-        "Collaborating with cross-domain experts in computer science and materials engineering to design AI workflows that accelerate research in rocket engines, hypersonics, and in-space manufacturing.",
+        "Developing ML pipelines for high-throughput materials discovery and computational modeling.",
+        "Integrating LLMs and multi-agent systems to automate literature mining and streamline research knowledge sharing.",
+        "Collaborating with materials engineers to accelerate research in rocket engines and hypersonics.",
+        "Built a custom RAG chatbot (Ref-RAG) using LangChain and Chainlit to extract information from unorganized PDF datasets."
       ],
-      technologies: ["Python", "ML Pipelines", "LLMs", "Multi-Agent Systems", "NASA", "MIT", "Microsoft", "DoD"],
+      technologies: ["Python", "ML Pipelines", "LLMs", "Multi-Agent Systems"],
+      type: "research"
     },
     {
       title: "AI Engineering Intern",
@@ -40,11 +61,12 @@ export function Experience() {
       period: "Nov 2024 – Apr 2025",
       location: "Remote",
       description: [
-        "Processed 10M+ Indian legal documents (statutes, court orders) for ingestion pipelines and built task-specific RAG systems for tasks like Legal-NER, boosting retrieval accuracy by 28% and reducing hallucinations by 35%.",
-        "Evaluated 3 LLM families (InLegalBERT, InLegalLLaMA, GPT-4o-mini) on 4 legal benchmarks including Legal-Bench and NyayaAnumana, analyzing performance on F1 score, latency, and token-level cost metrics.",
-        "Synthesized insights from 15+ research papers on legal AI and co-authored a comparative analysis that directly informed the refinement of the team's LegalBench-RAG workflows and evaluation protocols.",
+        "Built RAG systems for legal tasks (Legal-NER) on 10M+ documents, boosting retrieval accuracy by 28%.",
+        "Evaluated InLegalBERT and GPT-4o-mini on legal benchmarks, analyzing F1 score and latency.",
+        "Co-authored a comparative analysis paper informing workflows and evaluation protocols."
       ],
-      technologies: ["RAG", "Legal-NER", "InLegalBERT", "InLegalLLaMA", "GPT-4o-mini", "LegalBench", "NyayaAnumana"],
+      technologies: ["RAG", "Legal-NER", "LLMs", "LegalBench", "Python"],
+      type: "industry"
     },
   ]
 
@@ -55,107 +77,154 @@ export function Experience() {
       period: "Aug 2023 – May 2027",
       location: "Salt Lake City, UT",
       gpa: "3.7/4.0 (Dean's list)",
-      coursework: ["ML", "CV", "NLP", "Data Structures & Algorithms", "Object-Oriented Programming", "Database Systems"],
+      coursework: ["Machine Learning", "Computer Vision", "NLP", "Distributed Systems", "Algorithms"],
     },
   ]
 
   return (
-    <div className="space-y-16">
-      {/* Work Experience */}
-      <div ref={workExperienceRef} className="scroll-reveal">
-        <div className="flex items-center gap-3 mb-8">
-          <Building2 className="h-8 w-8 text-primary" />
-          <h3 className="text-3xl font-bold">Work Experience</h3>
+    <div className="space-y-20" ref={containerRef}>
+      {/* Experience Section */}
+      <div className="relative ml-3 md:ml-6 space-y-12 pl-8 md:pl-12">
+        {/* Growing Timeline Line */}
+        <div className="absolute left-0 top-2 bottom-0 w-px bg-border/30">
+          <motion.div
+            style={{ height: lineHeight }}
+            className="w-full bg-gradient-to-b from-primary via-primary/50 to-transparent"
+          />
         </div>
-        <div className="space-y-8">
-          {experiences.map((exp, index) => (
-            <Card key={index} className="glass-card interactive-card group">
-              <CardHeader>
-                <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-4">
-                  <div className="flex-1">
-                    <CardTitle className="text-xl mb-2 group-hover:text-primary transition-colors">
+
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="absolute -left-[4px] top-0 h-2.5 w-2.5 rounded-full bg-primary ring-4 ring-background"
+        />
+        <div className="flex items-center gap-3 mb-8 -ml-8 md:-ml-12">
+          <span className="bg-background px-2 text-sm font-mono text-muted-foreground uppercase tracking-widest">
+            Experience_Log.json
+          </span>
+        </div>
+
+        {experiences.map((exp, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ delay: index * 0.1 }}
+            className="group relative"
+          >
+            {/* Pulsing Node */}
+            <motion.div
+              initial={{ scale: 0 }}
+              whileInView={{ scale: 1 }}
+              viewport={{ once: true }}
+              className="absolute -left-[37px] md:-left-[53px] top-6 h-2 w-2 rounded-full border border-border bg-background group-hover:bg-accent group-hover:border-accent transition-colors z-10"
+            >
+              <div className="absolute inset-0 rounded-full bg-accent/20 animate-ping opacity-0 group-hover:opacity-100" />
+            </motion.div>
+
+            <Card className="glass-card border-none bg-background/40 hover:bg-background/60 transition-all duration-300">
+              <CardHeader className="pb-3">
+                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2">
+                  <div>
+                    <CardTitle className="font-serif text-2xl font-medium group-hover:text-primary transition-colors">
                       {exp.title}
                     </CardTitle>
-                    <CardDescription className="text-lg font-medium text-primary mb-1">
+                    <CardDescription className="text-base font-sans text-foreground/80 mt-1">
                       {exp.company}
                     </CardDescription>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                      <div className="flex items-center gap-1">
-                        <Calendar className="h-4 w-4" />
-                        <span>{exp.period}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Building2 className="h-4 w-4" />
-                        <span>{exp.location}</span>
-                      </div>
+                  </div>
+                  <div className="flex flex-col items-start md:items-end text-xs font-mono text-muted-foreground gap-1">
+                    <div className="flex items-center gap-1.5 bg-secondary/30 px-2 py-1 rounded">
+                      <Calendar className="h-3 w-3" />
+                      {exp.period}
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <MapPin className="h-3 w-3" />
+                      {exp.location}
                     </div>
                   </div>
                 </div>
               </CardHeader>
-              <CardContent>
-                <ul className="list-disc pl-6 space-y-3 mb-6">
+              <CardContent className="space-y-4">
+                <ul className="space-y-2 text-muted-foreground/90 font-light leading-relaxed text-sm md:text-base">
                   {exp.description.map((item, i) => (
-                    <li key={i} className="leading-relaxed">{item}</li>
+                    <li key={i} className="flex gap-2">
+                      <span className="text-accent mt-2 h-1 w-1 shrink-0 rounded-full bg-accent" />
+                      {item}
+                    </li>
                   ))}
                 </ul>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2 pt-2">
                   {exp.technologies.map((tech, i) => (
-                    <Badge key={i} variant="secondary" className="glass">
+                    <Badge key={i} variant="secondary" className="bg-secondary/40 hover:bg-secondary/60 text-secondary-foreground text-xs font-mono font-normal">
                       {tech}
                     </Badge>
                   ))}
                 </div>
               </CardContent>
             </Card>
-          ))}
-        </div>
+          </motion.div>
+        ))}
       </div>
 
-      {/* Education */}
-      <div ref={educationRef} className="scroll-reveal">
-        <div className="flex items-center gap-3 mb-8">
-          <GraduationCap className="h-8 w-8 text-primary" />
-          <h3 className="text-3xl font-bold">Education</h3>
+      {/* Education Section */}
+      <div className="relative ml-3 md:ml-6 space-y-12 pl-8 md:pl-12 pt-8">
+        {/* Cont. Line */}
+        <div className="absolute left-0 top-0 bottom-0 w-px bg-border/30"></div>
+
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="absolute -left-[4px] top-8 h-2.5 w-2.5 rounded-full bg-primary ring-4 ring-background z-10"
+        />
+        <div className="flex items-center gap-3 mb-8 -ml-8 md:-ml-12">
+          <span className="bg-background px-2 text-sm font-mono text-muted-foreground uppercase tracking-widest">
+            Education_History
+          </span>
         </div>
-        <div className="space-y-8">
-          {education.map((edu, index) => (
-            <Card key={index} className="glass-card interactive-card group">
-              <CardHeader>
-                <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-4">
-                  <div className="flex-1">
-                    <CardTitle className="text-xl mb-2 group-hover:text-primary transition-colors">
+
+        {education.map((edu, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="group relative"
+          >
+            <motion.div
+              initial={{ scale: 0 }}
+              whileInView={{ scale: 1 }}
+              viewport={{ once: true }}
+              className="absolute -left-[37px] md:-left-[53px] top-6 h-2 w-2 rounded-full border border-border bg-background group-hover:bg-accent group-hover:border-accent transition-colors z-10"
+            />
+
+            <Card className="glass-card border-none bg-background/40 hover:bg-background/60 transition-all duration-300">
+              <CardHeader className="pb-3">
+                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2">
+                  <div>
+                    <CardTitle className="font-serif text-2xl font-medium">
                       {edu.degree}
                     </CardTitle>
-                    <CardDescription className="text-lg font-medium text-primary mb-1">
+                    <CardDescription className="text-base font-sans text-foreground/80 mt-1">
                       {edu.institution}
                     </CardDescription>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
-                      <div className="flex items-center gap-1">
-                        <Calendar className="h-4 w-4" />
-                        <span>{edu.period}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Building2 className="h-4 w-4" />
-                        <span>{edu.location}</span>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Award className="h-4 w-4 text-yellow-500" />
-                      <span className="text-sm font-medium text-yellow-600 dark:text-yellow-400">
-                        GPA: {edu.gpa}
-                      </span>
-                    </div>
+                  </div>
+                  <div className="text-right">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 border border-yellow-500/20">
+                      GPA: {edu.gpa}
+                    </span>
                   </div>
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="mb-4">
-                  <h4 className="font-semibold mb-3 text-sm uppercase tracking-wide text-muted-foreground">
-                    Relevant Coursework
-                  </h4>
+                <div className="space-y-3">
+                  <h4 className="text-xs font-mono uppercase tracking-wider text-muted-foreground">Relevant Coursework</h4>
                   <div className="flex flex-wrap gap-2">
                     {edu.coursework.map((course, i) => (
-                      <Badge key={i} variant="outline" className="glass">
+                      <Badge key={i} variant="outline" className="border-border/50 text-muted-foreground text-xs font-mono font-normal">
                         {course}
                       </Badge>
                     ))}
@@ -163,10 +232,9 @@ export function Experience() {
                 </div>
               </CardContent>
             </Card>
-          ))}
-        </div>
+          </motion.div>
+        ))}
       </div>
     </div>
   )
 }
-

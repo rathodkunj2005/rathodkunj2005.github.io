@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { HeroScene } from "@/components/hero-scene"
+import { HeroContent, ScrollIndicator } from "@/components/hero-content"
 import { Navigation } from "@/components/navigation"
 import { Experience } from "@/components/experience"
 import { Projects } from "@/components/projects"
@@ -13,55 +14,12 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navigation />
-      <main>
+      <main className="pt-24">
         {/* Hero Section */}
-        <section className="relative h-[100vh] w-full flex items-center justify-center">
+        <section className="relative h-[90vh] w-full flex flex-col items-center justify-center overflow-hidden">
           <HeroScene />
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4 z-10">
-            <div className="animate-fade-in">
-              <h1 className="text-5xl md:text-7xl font-bold tracking-tighter mb-6 gradient-text text-shadow-lg">
-                Kunj Rathod
-              </h1>
-              <p className="text-xl md:text-3xl max-w-2xl mx-auto text-muted-foreground mb-8 font-light">
-                Computer Science Student & AI Engineer
-              </p>
-              <p className="text-lg md:text-xl max-w-3xl mx-auto text-muted-foreground mb-12 leading-relaxed">
-                Specializing in AI/ML, Cloud Technologies, and Full-Stack Development
-              </p>
-            </div>
-            
-            <div className="animate-slide-up flex flex-wrap justify-center gap-6 mt-8">
-              <Button asChild size="lg" className="interactive-button glass-nav">
-                <Link href="#experience">View Experience</Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="interactive-button glass-nav">
-                <Link href="#projects">See Projects</Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="interactive-button glass-nav">
-                <Link href="#contact">Get In Touch</Link>
-              </Button>
-            </div>
-            
-            {/* Contact Info */}
-            <div className="animate-fade-in mt-12 flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2 glass-nav px-4 py-2 rounded-full">
-                <Mail className="h-4 w-4" />
-                <span>kunj.rathod@utah.edu</span>
-              </div>
-              <div className="flex items-center gap-2 glass-nav px-4 py-2 rounded-full">
-                <Phone className="h-4 w-4" />
-                <span>+1 (385) 202-8879</span>
-              </div>
-              <div className="flex items-center gap-2 glass-nav px-4 py-2 rounded-full">
-                <MapPin className="h-4 w-4" />
-                <span>Salt Lake City, UT</span>
-              </div>
-            </div>
-          </div>
-          
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-            <ArrowDown className="h-8 w-8 text-muted-foreground" />
-          </div>
+          <HeroContent />
+          <ScrollIndicator />
         </section>
 
         {/* Experience Section */}
@@ -131,7 +89,7 @@ export default function Home() {
               </p>
             </div>
             <Contact />
-            
+
             {/* Social Links */}
             <div className="flex justify-center gap-6 mt-12">
               <Button asChild variant="outline" size="lg" className="interactive-button glass-nav">
