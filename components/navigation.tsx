@@ -5,7 +5,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
-import { Github, Linkedin, Mail, Menu, X } from "lucide-react"
+import { Github, Linkedin, Mail, Menu, X, FileText } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Magnetic } from "@/components/ui/magnetic"
 
@@ -111,6 +111,14 @@ export function Navigation() {
               </a>
             </Magnetic>
             <Magnetic>
+              <Button asChild size="sm" variant="ghost" className="rounded-full px-5 font-medium text-xs h-9 shadow-none transition-transform active:scale-95">
+                <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">
+                  <FileText className="w-3.5 h-3.5 mr-1.5" />
+                  Resume
+                </a>
+              </Button>
+            </Magnetic>
+            <Magnetic>
               <Button size="sm" variant="default" className="rounded-full px-5 font-medium text-xs h-9 ml-1 shadow-none transition-transform active:scale-95">
                 <Mail className="w-3.5 h-3.5 mr-1.5" />
                 Contact
@@ -146,6 +154,16 @@ export function Navigation() {
               {item.name}
             </Link>
           ))}
+          <a
+            href="/resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-3 rounded-xl hover:bg-secondary/50 font-medium text-sm transition-colors flex items-center gap-2"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <FileText className="w-4 h-4" />
+            Resume
+          </a>
         </motion.div>
       )}
     </>
