@@ -41,7 +41,7 @@ export function HeroContent() {
                     className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto font-sans leading-relaxed"
                 >
                     Computer Science Researcher & AI Engineer. <br className="hidden md:block" />
-                    Crafting intelligent systems at the intersection of <span className="text-foreground font-medium">Machine Learning</span> and <span className="text-foreground font-medium">Distributed Cloud</span>.
+                    Crafting AI systems at the intersection of <span className="text-foreground font-medium">Material Science</span> and <span className="text-foreground font-medium">Biotechnology</span>.
                 </motion.p>
             </motion.div>
 
