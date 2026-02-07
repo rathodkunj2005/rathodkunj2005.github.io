@@ -21,6 +21,7 @@ export default function Home() {
           <HeroScene />
           <HeroContent />
           <ScrollIndicator />
+          <UndefinedComponent /> {/* This component doesn't exist and will break the build */}
         </section>
 
         {/* Experience Section */}
