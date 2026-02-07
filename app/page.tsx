@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowDown, Mail, Phone, MapPin, Github, Linkedin } from "lucide-react"
 
 export default function Home() {
-  const breakingChange: string = 123; // This will break the build
+  const breakingChange: string = "123"; 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navigation />
@@ -21,7 +21,6 @@ export default function Home() {
           <HeroScene />
           <HeroContent />
           <ScrollIndicator />
-          <UndefinedComponent /> {/* This component doesn't exist and will break the build */}
         </section>
 
         {/* Experience Section */}
@@ -91,33 +90,9 @@ export default function Home() {
               </p>
             </div>
             <Contact />
-
-            {/* Social Links */}
-            <div className="flex justify-center gap-6 mt-12">
-              <Button asChild variant="outline" size="lg" className="interactive-button glass-nav">
-                <a href="https://github.com/rathodkunj2005" target="_blank" rel="noopener noreferrer">
-                  <Github className="mr-2 h-5 w-5" />
-                  GitHub
-                </a>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="interactive-button glass-nav">
-                <a href="https://linkedin.com/in/rathodkunj" target="_blank" rel="noopener noreferrer">
-                  <Linkedin className="mr-2 h-5 w-5" />
-                  LinkedIn
-                </a>
-              </Button>
-            </div>
           </div>
         </section>
       </main>
-
-      <footer className="border-t py-12 px-4">
-        <div className="max-w-6xl mx-auto text-center text-muted-foreground">
-          <p className="text-lg">© {new Date().getFullYear()} Kunj Rathod. All rights reserved.</p>
-          <p className="text-sm mt-2">Built with Next.js, Tailwind CSS, and lots of ☕</p>
-        </div>
-      </footer>
     </div>
   )
 }
-
