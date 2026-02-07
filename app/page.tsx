@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowDown, Mail, Phone, MapPin, Github, Linkedin } from "lucide-react"
 
 export default function Home() {
+  const breakingChange: string = 123; // This will break the build
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navigation />
