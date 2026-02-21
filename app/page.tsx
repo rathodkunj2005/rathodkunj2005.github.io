@@ -5,10 +5,12 @@ import { Navigation } from "@/components/navigation"
 import { Experience } from "@/components/experience"
 import { Projects } from "@/components/projects"
 import { Skills } from "@/components/skills"
+import { Publications } from "@/components/publications"
 import { FeaturedPosts } from "@/components/featured-posts"
 import { Contact } from "@/components/contact"
+import { Marquee } from "@/components/marquee"
 import { Button } from "@/components/ui/button"
-import { ArrowDown, Mail, Phone, MapPin, Github, Linkedin } from "lucide-react"
+import { Github, Linkedin } from "lucide-react"
 
 export default function Home() {
   return (
@@ -16,19 +18,22 @@ export default function Home() {
       <Navigation />
       <main className="pt-24">
         {/* Hero Section */}
-        <section className="relative h-[90vh] w-full flex flex-col items-center justify-center overflow-hidden">
+        <section className="relative h-[95vh] w-full flex flex-col items-center justify-center overflow-hidden">
           <HeroScene />
           <HeroContent />
           <ScrollIndicator />
         </section>
 
+        {/* Marquee Strip */}
+        <Marquee />
+
         {/* Experience Section */}
         <section id="experience" className="py-24 px-4 gradient-bg">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 gradient-text">Experience & Education</h2>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 gradient-text">Experience &amp; Education</h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Building AI solutions and advancing research in computer science
+                From hospital AI platforms and legal research tools to aerospace materials discovery and embodied agents
               </p>
             </div>
             <Experience />
@@ -41,7 +46,7 @@ export default function Home() {
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold mb-6 gradient-text">Featured Projects</h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                AI-driven applications and innovative solutions
+                AI-driven systems, hackathon winners, and research tools at scale
               </p>
             </div>
             <Projects />
@@ -54,15 +59,28 @@ export default function Home() {
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold mb-6 gradient-text">Technical Skills</h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Technologies and tools I work with
+                Languages, frameworks, databases, and tools I work with daily
               </p>
             </div>
             <Skills />
           </div>
         </section>
 
+        {/* Writing & Publications Section */}
+        <section id="writing" className="py-24 px-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 gradient-text">Writing &amp; Publications</h2>
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                Technical articles, research reports, and open knowledge sharing
+              </p>
+            </div>
+            <Publications />
+          </div>
+        </section>
+
         {/* Blog Section */}
-        <section id="blog" className="py-24 px-4">
+        <section id="blog" className="py-24 px-4 gradient-bg">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold mb-6 gradient-text">Latest Blog Posts</h2>
@@ -80,12 +98,12 @@ export default function Home() {
         </section>
 
         {/* Contact Section */}
-        <section id="contact" className="py-24 px-4 gradient-bg">
+        <section id="contact" className="py-24 px-4">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold mb-6 gradient-text">Get In Touch</h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Let's collaborate on innovative AI solutions
+                Open to new opportunities and collaborations in AI and software engineering
               </p>
             </div>
             <Contact />
@@ -118,4 +136,3 @@ export default function Home() {
     </div>
   )
 }
-

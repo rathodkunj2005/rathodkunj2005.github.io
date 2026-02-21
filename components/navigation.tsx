@@ -26,6 +26,7 @@ export function Navigation() {
     { name: "Experience", href: "#experience" },
     { name: "Projects", href: "#projects" },
     { name: "Skills", href: "#skills" },
+    { name: "Writing", href: "#writing" },
     { name: "Blog", href: "#blog" },
   ]
 
@@ -112,7 +113,7 @@ export function Navigation() {
             </Magnetic>
             <Magnetic>
               <Button asChild size="sm" variant="ghost" className="rounded-full px-5 font-medium text-xs h-9 shadow-none transition-transform active:scale-95">
-                <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">
+                <a href="/cv_kunj_rathod.pdf" target="_blank" rel="noopener noreferrer">
                   <FileText className="w-3.5 h-3.5 mr-1.5" />
                   Resume
                 </a>
@@ -155,14 +156,14 @@ export function Navigation() {
             </Link>
           ))}
           <a
-            href="/resume.pdf"
+            href="/cv_kunj_rathod.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className="px-4 py-3 rounded-xl hover:bg-secondary/50 font-medium text-sm transition-colors flex items-center gap-2"
             onClick={() => setMobileMenuOpen(false)}
           >
             <FileText className="w-4 h-4" />
-            Resume
+            CV
           </a>
         </motion.div>
       )}
