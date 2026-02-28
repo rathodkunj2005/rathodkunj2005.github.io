@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { HeroScene } from "@/components/hero-scene"
 import { HeroContent, ScrollIndicator } from "@/components/hero-content"
-import { Navigation } from "@/components/navigation"
+import { Navigations } from "@/components/navigation"
 import { Experience } from "@/components/experience"
 import { Projects } from "@/components/projects"
 import { Skills } from "@/components/skills"
@@ -15,7 +15,7 @@ import { Github, Linkedin } from "lucide-react"
 export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Navigation />
+      <Navigations />
       <main className="pt-24">
         {/* Hero Section */}
         <section className="relative h-[95vh] w-full flex flex-col items-center justify-center overflow-hidden">
