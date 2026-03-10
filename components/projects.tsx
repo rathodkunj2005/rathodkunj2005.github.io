@@ -172,6 +172,34 @@ export function Projects() {
     },
     {
       id: "FIG-02",
+      title: "FNDR",
+      subtitle: "Privacy-First Local Digital Memory for macOS",
+      bullets: [
+        "Meticulously indexes workspace history via periodic high-resolution screen captures, on-device Apple Vision OCR, and multimodal AI analysis (SmolVLM) — all without data leaving your machine.",
+        "Transforms past activity into a searchable knowledge base: semantic search over history, actionable todo extraction from screen fragments, and automatic offline meeting transcription.",
+        "Evolving toward LanceDB-powered lightning-fast vector search across years of history and deep MCP ecosystem integration, bridging historical context with autonomous local AI agents.",
+      ],
+      technologies: ["Python", "Apple Vision", "SmolVLM", "LanceDB", "MCP", "macOS", "OCR"],
+      github: "https://github.com/rathodkunj2005",
+      demo: null,
+      type: "Local AI System",
+    },
+    {
+      id: "FIG-03",
+      title: "Omni",
+      subtitle: "Everything. Everywhere. All at Once — AI Orchestrator",
+      bullets: [
+        "Unified AI intelligence layer integrating Gmail, Google Calendar, Slack, and FNDR private memory to eliminate context switching — generates Smart Todos, schedules meetings via natural language, and retrieves personal context on demand.",
+        "Deep integrations with GitHub and Apple Services; supports real-time voice interaction and autonomous multi-step workflow orchestration across the entire digital stack.",
+        "Designed as the universal interface that transforms from a passive assistant into a proactive digital companion, anticipating needs with unparalleled precision.",
+      ],
+      technologies: ["React", "TypeScript", "OpenAI", "MCP", "Slack API", "Gmail API", "Google Calendar", "FNDR"],
+      github: "https://github.com/rathodkunj2005",
+      demo: null,
+      type: "AI Orchestrator",
+    },
+    {
+      id: "FIG-04",
       title: "Wingman.ai",
       subtitle: "Multi-Modal AI Personal Assistant (iOS)",
       bullets: [
@@ -184,7 +212,7 @@ export function Projects() {
       type: "Application",
     },
     {
-      id: "FIG-03",
+      id: "FIG-05",
       title: "BioGraphRAG",
       subtitle: "Biomedical Knowledge Graph Retrieval",
       bullets: [
@@ -198,7 +226,7 @@ export function Projects() {
       type: "Research System",
     },
     {
-      id: "FIG-04",
+      id: "FIG-06",
       title: "FlowVía",
       subtitle: "V2X Urban Mobility Optimization System",
       bullets: [
@@ -212,7 +240,7 @@ export function Projects() {
       type: "System Architecture",
     },
     {
-      id: "FIG-05",
+      id: "FIG-07",
       title: "RL Investment Advisor",
       subtitle: "Reinforcement Learning Portfolio Optimizer",
       award: "HackUSU 2025",
@@ -226,7 +254,7 @@ export function Projects() {
       type: "Algorithm",
     },
     {
-      id: "FIG-06",
+      id: "FIG-08",
       title: "Financial Multi-Agent System",
       subtitle: "Collaborative AI Investment Analysis",
       bullets: [
@@ -239,7 +267,7 @@ export function Projects() {
       type: "System Architecture",
     },
     {
-      id: "FIG-07",
+      id: "FIG-09",
       title: "Ref-RAG",
       subtitle: "Research Literature Chatbot",
       bullets: [

@@ -45,7 +45,7 @@ export function Navigation() {
             "pointer-events-auto relative flex items-center p-1.5 rounded-full border bg-background/60 backdrop-blur-xl shadow-lg ring-1 ring-black/5 dark:ring-white/10 transition-all duration-500 ease-out",
             isScrolled ? "scale-90 border-white/20 backdrop-blur-2xl" : "scale-100 border-transparent bg-background/30"
           )}
-          style={{ width: isScrolled ? "auto" : "100%", maxWidth: "56rem" }}
+          style={{ width: isScrolled ? "auto" : "100%", maxWidth: "72rem" }}
           layout
         >
 
@@ -113,9 +113,17 @@ export function Navigation() {
             </Magnetic>
             <Magnetic>
               <Button asChild size="sm" variant="ghost" className="rounded-full px-5 font-medium text-xs h-9 shadow-none transition-transform active:scale-95">
-                <a href="/cv_kunj_rathod.pdf" target="_blank" rel="noopener noreferrer">
+                <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">
                   <FileText className="w-3.5 h-3.5 mr-1.5" />
                   Resume
+                </a>
+              </Button>
+            </Magnetic>
+            <Magnetic>
+              <Button asChild size="sm" variant="ghost" className="rounded-full px-5 font-medium text-xs h-9 shadow-none transition-transform active:scale-95">
+                <a href="/cv_kunj_rathod.pdf" target="_blank" rel="noopener noreferrer">
+                  <FileText className="w-3.5 h-3.5 mr-1.5" />
+                  CV
                 </a>
               </Button>
             </Magnetic>
@@ -156,6 +164,16 @@ export function Navigation() {
             </Link>
           ))}
           <a
+            href="/resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-3 rounded-xl hover:bg-secondary/50 font-medium text-sm transition-colors flex items-center gap-2"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <FileText className="w-4 h-4" />
+            Resume
+          </a>
+          <a
             href="/cv_kunj_rathod.pdf"
             target="_blank"
             rel="noopener noreferrer"
@@ -170,3 +188,5 @@ export function Navigation() {
     </>
   )
 }
+
+export { Navigation as Navigations }
