@@ -56,24 +56,65 @@ export function ChatInterface() {
         throw new Error("Missing credentials. Please configure environment.")
       }
       
-      // -- Step 1: AI Code Generation via API Route --
-      const genResponse = await fetch("/api/cloudcoder/generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Provider": provider,
-          "X-Model-Name": modelName,
-          "Authorization": `Bearer ${providerKey}`
-        },
-        body: JSON.stringify({ prompt: userPrompt })
-      })
+      // -- Step 1: AI Code Generation via direct provider call --
+      let generatedApp: any;
       
-      if (!genResponse.ok) {
-        const errText = await genResponse.text()
-        throw new Error("Failed to generate code: " + errText)
+      const systemPrompt = `You are an expert AWS Serverless Architect. The user will ask for a web application. 
+      You must generate three files that make up a production-ready serverless stack. Only return a JSON object with:
+      - appName: string (Short hyphenated name)
+      - spaCode: string (The index.html frontend code using React, Babel, and Tailwind CDN)
+      - lambdaCode: string (The Node.js Lambda index.js code to handle REST)
+      - samTemplate: string (The AWS SAM YAML template)
+      Ensure your output is strictly valid JSON without markdown wrapping.`;
+
+      if (provider === "openai") {
+        const res = await fetch("https://api.openai.com/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${providerKey}`
+          },
+          body: JSON.stringify({
+            model: modelName,
+            response_format: { type: "json_object" },
+            messages: [
+              { role: "system", content: systemPrompt },
+              { role: "user", content: userPrompt }
+            ]
+          })
+        });
+        if (!res.ok) throw new Error("OpenAI API error: " + await res.text());
+        const data = await res.json();
+        generatedApp = JSON.parse(data.choices[0].message.content);
+      } else {
+        const res = await fetch("https://api.anthropic.com/v1/messages", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": providerKey,
+            "anthropic-version": "2023-06-01",
+            "anthropic-dangerous-direct-browser-access": "true"
+          },
+          body: JSON.stringify({
+            model: modelName,
+            max_tokens: 4000,
+            system: systemPrompt,
+            messages: [{ role: "user", content: userPrompt }]
+          })
+        });
+        if (!res.ok) throw new Error("Anthropic API error: " + await res.text());
+        const data = await res.json();
+        // Extract JSON from Claude's response (which usually wraps in ```json ... ``` despite instructions)
+        let content = data.content[0].text;
+        if (content.includes("```json")) {
+           content = content.split("```json")[1].split("```")[0];
+        } else if (content.includes("```")) {
+           content = content.split("```")[1].split("```")[0];
+        }
+        generatedApp = JSON.parse(content);
       }
-      
-      const { appName, spaCode, lambdaCode, samTemplate } = await genResponse.json()
+
+      const { appName, spaCode, lambdaCode, samTemplate } = generatedApp;
       
       setMessages(prev => {
         const newMsgs = [...prev]
@@ -88,79 +129,124 @@ export function ChatInterface() {
             "Uploading to S3 and deploying CloudFormation stack..."
           ]
         }
-        return newMsgs
-      })
-      
-      // -- Step 2: AWS Deployment via SSE stream --
-      const searchParams = new URLSearchParams()
-      searchParams.set("appName", appName)
-      
-      const eventSource = new EventSource(`/api/cloudcoder/deploy?${searchParams.toString()}&region=${awsRegion}&ak=${awsAccessKey}&sk=${awsSecretKey}`)
-      
-      // To pass body in sse, it's tricky. Let's instead save the generated code in localStorage and have the API route read it, OR we just do a fetch POST first that triggers it in KV and returns an ID, then we SSE on that ID.
-      // To keep it clean and stateless without a DB: we will use a POST request with NDJSON streaming instead of EventSource so we can send the body.
-      
-      // We will pivot Step 2 to use a chunked fetch response
-      eventSource.close() // discard the EventSource approach, let's use fetch stream
-      
-      const deployRes = await fetch("/api/cloudcoder/deploy", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-AWS-Access-Key": awsAccessKey,
-          "X-AWS-Secret-Key": awsSecretKey,
-          "X-AWS-Region": awsRegion || "us-east-1"
-        },
-        body: JSON.stringify({ appName, spaCode, lambdaCode, samTemplate })
-      })
-      
-      if (!deployRes.body) throw new Error("No response body from deploy")
-      
-      const reader = deployRes.body.getReader()
-      const decoder = new TextDecoder()
-      
-      while (true) {
-        const { value, done } = await reader.read()
-        if (done) break
-        
-        const chunkStr = decoder.decode(value, { stream: true })
-        // chunkStr could contain multiple JSON lines
-        const lines = chunkStr.split('\n').filter(line => line.trim())
-        
-        for (const line of lines) {
-          try {
-            const data = JSON.parse(line)
-            if (data.type === "log" || data.type === "event") {
-              setMessages(prev => {
-                const newMsgs = [...prev]
-                const logMsgs = newMsgs[agentMsgIndex].logs || []
-                newMsgs[agentMsgIndex] = {
-                  ...newMsgs[agentMsgIndex],
-                  logs: [...logMsgs, data.message]
-                }
-                return newMsgs
-              })
-            }
-            if (data.type === "complete") {
-              setMessages(prev => {
-                const newMsgs = [...prev]
-                newMsgs[agentMsgIndex] = {
-                  ...newMsgs[agentMsgIndex],
-                  status: "complete",
-                  liveUrl: data.url,
-                  content: "Your app is deployed and live! Let me know if you want to change anything."
-                }
-                return newMsgs
-              })
-            }
-            if (data.type === "error") {
-               throw new Error(data.message)
-            }
-          } catch (e) {
-            console.error("Parse error on chunk:", e)
+        return newMsgs;
+      });
+
+      // -- Step 2: AWS Deployment direct from browser via JS SDK --
+      const { CloudFormationClient, CreateStackCommand, DescribeStackEventsCommand } = await import("@aws-sdk/client-cloudformation");
+      const { S3Client, PutObjectCommand, HeadBucketCommand, CreateBucketCommand } = await import("@aws-sdk/client-s3");
+      const JSZip = (await import("jszip")).default;
+
+      const credentials = { accessKeyId: awsAccessKey, secretAccessKey: awsSecretKey };
+      const s3 = new S3Client({ region: awsRegion, credentials });
+      const cfn = new CloudFormationClient({ region: awsRegion, credentials });
+
+      const stackName = `cloudcoder-${appName}-${Date.now().toString().slice(-6)}`;
+      const bucketName = `cloudcoder-artifacts-${awsAccessKey.toLowerCase()}-${awsRegion}`;
+
+      const addLog = (msg: string) => {
+        setMessages(prev => {
+          const newMsgs = [...prev]
+          const logMsgs = newMsgs[agentMsgIndex].logs || []
+          newMsgs[agentMsgIndex] = {
+            ...newMsgs[agentMsgIndex],
+            logs: [...logMsgs, msg]
           }
+          return newMsgs
+        })
+      };
+
+      addLog(`Checking artifact bucket: ${bucketName}...`);
+      try {
+        await s3.send(new HeadBucketCommand({ Bucket: bucketName }));
+      } catch (e: any) {
+        if (e.name === "NotFound") {
+          addLog("Creating new S3 artifact bucket...");
+          await s3.send(new CreateBucketCommand({ Bucket: bucketName }));
+        } else {
+          throw e;
         }
       }
+
+      addLog("Zipping Lambda function code locally...");
+      const zip = new JSZip();
+      zip.file("index.js", lambdaCode);
+      zip.file("index.html", spaCode);
+      const zipBuffer = await zip.generateAsync({ type: "uint8array" });
+
+      const artifactKey = `${stackName}/lambda.zip`;
+      addLog(`Uploading artifact to s3://${bucketName}/${artifactKey}...`);
+      await s3.send(new PutObjectCommand({
+        Bucket: bucketName,
+        Key: artifactKey,
+        Body: zipBuffer,
+        ContentType: "application/zip"
+      }));
+
+      const preparedTemplate = samTemplate.replace(
+        /CodeUri:\s+.*(\r?\n)/g, 
+        `CodeUri: s3://${bucketName}/${artifactKey}$1`
+      );
+
+      addLog(`Creating CloudFormation stack: ${stackName}...`);
+      await cfn.send(new CreateStackCommand({
+        StackName: stackName,
+        TemplateBody: preparedTemplate,
+        Capabilities: ["CAPABILITY_IAM", "CAPABILITY_NAMED_IAM", "CAPABILITY_AUTO_EXPAND"]
+      }));
+
+      addLog("Stack creation initiated. Monitoring events...");
+
+      let isComplete = false;
+      let seenEventIds = new Set();
+      let liveUrl = "";
+
+      while (!isComplete) {
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        try {
+          const eventsRes = await cfn.send(new DescribeStackEventsCommand({ StackName: stackName }));
+          const events = eventsRes.StackEvents || [];
+          
+          const reversedEvents = [...events].reverse();
+          reversedEvents.forEach(event => {
+            if (!seenEventIds.has(event.EventId)) {
+              seenEventIds.add(event.EventId);
+              addLog(`Event [${event.ResourceType}]: ${event.LogicalResourceId} - ${event.ResourceStatus}`);
+              
+              if (event.ResourceType === "AWS::CloudFormation::Stack" && event.LogicalResourceId === stackName) {
+                if (event.ResourceStatus === "CREATE_COMPLETE") {
+                  isComplete = true;
+                } else if (event.ResourceStatus?.includes("FAILED") || event.ResourceStatus === "ROLLBACK_IN_PROGRESS") {
+                  throw new Error(`Stack creation failed: ${event.ResourceStatusReason}`);
+                }
+              }
+
+              if (event.ResourceStatus === "CREATE_COMPLETE" && event.ResourceType === "AWS::ApiGateway::RestApi") {
+                liveUrl = `https://${event.PhysicalResourceId}.execute-api.${awsRegion}.amazonaws.com/Prod/`;
+              }
+            }
+          });
+        } catch (e: any) {
+             if(e.message && e.message.includes("does not exist")) {
+                 throw new Error("Stack was deleted or not found.")
+             } else if (e.message && e.message.includes("failed")) {
+                 throw e;
+             } else {
+                 console.error("Polling warning:", e);
+             }
+        }
+      }
+
+      setMessages(prev => {
+        const newMsgs = [...prev]
+        newMsgs[agentMsgIndex] = {
+          ...newMsgs[agentMsgIndex],
+          status: "complete",
+          liveUrl: liveUrl || `https://${awsRegion}.console.aws.amazon.com/cloudformation/`,
+          content: "Your app is deployed and live! Let me know if you want to change anything."
+        }
+        return newMsgs
+      });
       
     } catch (e: any) {
       setMessages(prev => {
