@@ -156,6 +156,21 @@ function ProjectCard({ project, index }: { project: any, index: number }) {
 export function Projects() {
   const projects = [
     {
+      id: "FIG-00",
+      title: "CloudCoder",
+      subtitle: "Instant AI to AWS App Deployment",
+      award: "New Initiative",
+      bullets: [
+        "A full-stack, model-agnostic AI orchestrator embedded within my portfolio that allows users to instantly generate and deploy Serverless AWS applications directly to their live AWS account.",
+        "Generates highly-structured React SPAs, Node.js Lambda functions, and SAM CloudFormation templates via Vercel AI SDK (OpenAI/Anthropic).",
+        "Uses AWS SDK for Javascript and JSZip to dynamically package Lambda binaries, create S3 artifacts, and execute CloudFormation templates with real-time Server-Sent Events (SSE) streaming logs direct to the user interface."
+      ],
+      technologies: ["Next.js", "GPT-4o / Claude 3.5", "AWS SDK v3", "CloudFormation", "JSZip"],
+      github: "https://github.com/rathodkunj2005",
+      demo: "/cloudCoder",
+      type: "Application",
+    },
+    {
       id: "FIG-01",
       title: "Minute0",
       subtitle: "AI-Powered Deployment Monitor",
