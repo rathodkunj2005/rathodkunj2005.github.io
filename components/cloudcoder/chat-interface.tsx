@@ -86,7 +86,7 @@ export function ChatInterface() {
         if (!res.ok) throw new Error("OpenAI API error: " + await res.text());
         const data = await res.json();
         generatedApp = JSON.parse(data.choices[0].message.content);
-      } else {
+      } else if (provider === "anthropic") {
         const res = await fetch("https://api.anthropic.com/v1/messages", {
           method: "POST",
           headers: {
@@ -106,6 +106,34 @@ export function ChatInterface() {
         const data = await res.json();
         // Extract JSON from Claude's response (which usually wraps in ```json ... ``` despite instructions)
         let content = data.content[0].text;
+        if (content.includes("```json")) {
+           content = content.split("```json")[1].split("```")[0];
+        } else if (content.includes("```")) {
+           content = content.split("```")[1].split("```")[0];
+        }
+        generatedApp = JSON.parse(content);
+      } else if (provider === "google") {
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${providerKey}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            systemInstruction: {
+              parts: [{ text: systemPrompt }]
+            },
+            contents: [{
+              role: "user",
+              parts: [{ text: userPrompt }]
+            }],
+            generationConfig: {
+              responseMimeType: "application/json"
+            }
+          })
+        });
+        if (!res.ok) throw new Error("Google Gemini API error: " + await res.text());
+        const data = await res.json();
+        let content = data.candidates[0].content.parts[0].text;
         if (content.includes("```json")) {
            content = content.split("```json")[1].split("```")[0];
         } else if (content.includes("```")) {

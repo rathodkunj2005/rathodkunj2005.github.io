@@ -12,7 +12,7 @@ export function SettingsModal() {
   const [open, setOpen] = useState(false)
   
   const [provider, setProvider] = useState("openai")
-  const [modelName, setModelName] = useState("gpt-4o")
+  const [modelName, setModelName] = useState("gpt-5.4-2026-03-05")
   const [providerKey, setProviderKey] = useState("")
   const [awsAccessKey, setAwsAccessKey] = useState("")
   const [awsSecretKey, setAwsSecretKey] = useState("")
@@ -67,7 +67,9 @@ export function SettingsModal() {
             <Label>AI Provider</Label>
              <Select value={provider} onValueChange={(val) => {
                setProvider(val)
-               setModelName(val === "openai" ? "gpt-4o" : "claude-3-5-sonnet-latest")
+               if (val === "openai") setModelName("gpt-5.4-2026-03-05")
+               else if (val === "anthropic") setModelName("claude-4.6-sonnet")
+               else if (val === "google") setModelName("gemini-3.1-pro")
              }}>
               <SelectTrigger>
                 <SelectValue placeholder="Select a provider" />
@@ -75,6 +77,7 @@ export function SettingsModal() {
               <SelectContent>
                 <SelectItem value="openai">OpenAI</SelectItem>
                 <SelectItem value="anthropic">Anthropic</SelectItem>
+                <SelectItem value="google">Google</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -87,23 +90,28 @@ export function SettingsModal() {
               <SelectContent>
                 {provider === "openai" ? (
                   <>
-                    <SelectItem value="gpt-4o">gpt-4o</SelectItem>
-                    <SelectItem value="gpt-4o-mini">gpt-4o-mini</SelectItem>
-                    <SelectItem value="o1-preview">o1-preview</SelectItem>
-                    <SelectItem value="o1-mini">o1-mini</SelectItem>
+                    <SelectItem value="gpt-5.4-2026-03-05">gpt-5.4-2026-03-05</SelectItem>
+                    <SelectItem value="gpt-5.3-codex">gpt-5.3-codex</SelectItem>
+                    <SelectItem value="gpt-5.2-codex">gpt-5.2-codex</SelectItem>
+                    <SelectItem value="gpt-5.4-pro-2026-03-05">gpt-5.4-pro-2026-03-05</SelectItem>
+                    <SelectItem value="gpt-5-mini-2025-08-07">gpt-5-mini-2025-08-07</SelectItem>
+                  </>
+                ) : provider === "anthropic" ? (
+                  <>
+                    <SelectItem value="claude-4.6-opus">claude-4.6-opus</SelectItem>
+                    <SelectItem value="claude-4.6-sonnet">claude-4.6-sonnet</SelectItem>
                   </>
                 ) : (
                   <>
-                    <SelectItem value="claude-3-5-sonnet-latest">claude-3-5-sonnet-latest</SelectItem>
-                    <SelectItem value="claude-3-opus-latest">claude-3-opus-latest</SelectItem>
-                    <SelectItem value="claude-3-haiku-20240307">claude-3-haiku-20240307</SelectItem>
+                    <SelectItem value="gemini-3.1-pro">gemini-3.1-pro</SelectItem>
+                    <SelectItem value="gemini-3.1-flash">gemini-3.1-flash</SelectItem>
                   </>
                 )}
               </SelectContent>
             </Select>
           </div>
           <div className="grid gap-2">
-            <Label>{provider === "openai" ? "OpenAI" : "Anthropic"} API Key</Label>
+            <Label>{provider === "openai" ? "OpenAI" : provider === "anthropic" ? "Anthropic" : "Google Gemini"} API Key</Label>
             <Input 
               type="password" 
               value={providerKey} 
