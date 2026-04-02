@@ -39,7 +39,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} ${playfair.variable}`} suppressHydrationWarning>
-      <body className="font-sans antialiased bg-background text-foreground selection:bg-accent/20 selection:text-accent-foreground">{children}</body>
+      <body className="font-sans antialiased bg-background text-foreground selection:bg-accent/20 selection:text-accent-foreground" suppressHydrationWarning>{children}</body>
     </html>
   )
 }

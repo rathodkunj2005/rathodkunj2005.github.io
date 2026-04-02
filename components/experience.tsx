@@ -174,8 +174,8 @@ export function Experience() {
           className="absolute -left-[4px] top-0 h-2.5 w-2.5 rounded-full bg-primary ring-4 ring-background"
         />
         <div className="flex items-center gap-3 mb-8 -ml-8 md:-ml-12">
-          <span className="bg-background px-2 text-sm font-mono text-muted-foreground uppercase tracking-widest">
-            Experience_Log.json
+          <span className="bg-background/80 px-2 text-sm font-mono text-muted-foreground uppercase tracking-widest backdrop-blur-sm border border-border/50 rounded-md">
+            layer_0: experience_activations
           </span>
         </div>
 
@@ -188,17 +188,22 @@ export function Experience() {
             transition={{ delay: index * 0.07, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="group relative"
           >
-            {/* Pulsing Node */}
+            {/* Mechanistic Node */}
             <motion.div
               initial={{ scale: 0 }}
               whileInView={{ scale: 1 }}
               viewport={{ once: true }}
-              className="absolute -left-[37px] md:-left-[53px] top-6 h-2 w-2 rounded-full border border-border bg-background group-hover:bg-accent group-hover:border-accent transition-colors z-10"
+              className="absolute -left-[40px] md:-left-[56px] top-6 flex items-center justify-center z-10"
             >
-              <div className="absolute inset-0 rounded-full bg-accent/20 animate-ping opacity-0 group-hover:opacity-100" />
+              <div className="absolute right-4 text-[9px] font-mono text-primary/50 hidden md:block opacity-0 group-hover:opacity-100 transition-opacity">
+                attn_{index}
+              </div>
+              <div className="h-2 w-2 rounded-sm border border-primary/50 bg-background group-hover:bg-primary group-hover:border-primary group-hover:shadow-[0_0_10px_rgba(var(--primary),0.5)] transition-all">
+                <div className="absolute inset-0 rounded-sm bg-primary/20 animate-ping opacity-0 group-hover:opacity-100" />
+              </div>
             </motion.div>
 
-            <Card className="glass-card border-none bg-background/40 hover:bg-background/60 transition-all duration-300">
+            <Card className="glass-card border-white/5 bg-background/20 backdrop-blur-md hover:bg-background/40 hover:border-primary/20 transition-all duration-300">
               <CardHeader className="pb-3">
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2">
                   <div className="flex-1">
@@ -265,8 +270,8 @@ export function Experience() {
           className="absolute -left-[4px] top-8 h-2.5 w-2.5 rounded-full bg-primary ring-4 ring-background z-10"
         />
         <div className="flex items-center gap-3 mb-8 -ml-8 md:-ml-12">
-          <span className="bg-background px-2 text-sm font-mono text-muted-foreground uppercase tracking-widest">
-            Awards_&_Honors
+          <span className="bg-background/80 px-2 text-sm font-mono text-muted-foreground uppercase tracking-widest backdrop-blur-sm border border-border/50 rounded-md">
+            layer_1: system_rewards
           </span>
         </div>
 
@@ -283,10 +288,15 @@ export function Experience() {
               initial={{ scale: 0 }}
               whileInView={{ scale: 1 }}
               viewport={{ once: true }}
-              className="absolute -left-[37px] md:-left-[53px] top-6 h-2 w-2 rounded-full border border-border bg-background group-hover:bg-accent group-hover:border-accent transition-colors z-10"
-            />
+              className="absolute -left-[40px] md:-left-[56px] top-6 flex items-center justify-center z-10"
+            >
+              <div className="absolute right-4 text-[9px] font-mono text-yellow-500/50 hidden md:block opacity-0 group-hover:opacity-100 transition-opacity">
+                reward_{index}
+              </div>
+              <div className="h-2 w-2 rounded-sm border border-yellow-500/50 bg-background group-hover:bg-yellow-500 group-hover:border-yellow-500 group-hover:shadow-[0_0_10px_rgba(234,179,8,0.5)] transition-all" />
+            </motion.div>
 
-            <Card className="glass-card border-none bg-background/40 hover:bg-background/60 transition-all duration-300">
+            <Card className="glass-card border-white/5 bg-background/20 backdrop-blur-md hover:bg-background/40 hover:border-yellow-500/20 transition-all duration-300">
               <CardHeader className="pb-3">
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2">
                   <div>
@@ -326,8 +336,8 @@ export function Experience() {
           className="absolute -left-[4px] top-8 h-2.5 w-2.5 rounded-full bg-primary ring-4 ring-background z-10"
         />
         <div className="flex items-center gap-3 mb-8 -ml-8 md:-ml-12">
-          <span className="bg-background px-2 text-sm font-mono text-muted-foreground uppercase tracking-widest">
-            Education_History
+          <span className="bg-background/80 px-2 text-sm font-mono text-muted-foreground uppercase tracking-widest backdrop-blur-sm border border-border/50 rounded-md">
+            layer_2: pre_training_data
           </span>
         </div>
 
@@ -344,10 +354,15 @@ export function Experience() {
               initial={{ scale: 0 }}
               whileInView={{ scale: 1 }}
               viewport={{ once: true }}
-              className="absolute -left-[37px] md:-left-[53px] top-6 h-2 w-2 rounded-full border border-border bg-background group-hover:bg-accent group-hover:border-accent transition-colors z-10"
-            />
+              className="absolute -left-[40px] md:-left-[56px] top-6 flex items-center justify-center z-10"
+            >
+              <div className="absolute right-4 text-[9px] font-mono text-primary/50 hidden md:block opacity-0 group-hover:opacity-100 transition-opacity">
+                pretrain_{index}
+              </div>
+              <div className="h-2 w-2 rounded-sm border border-primary/50 bg-background group-hover:bg-primary group-hover:border-primary group-hover:shadow-[0_0_10px_rgba(var(--primary),0.5)] transition-all" />
+            </motion.div>
 
-            <Card className="glass-card border-none bg-background/40 hover:bg-background/60 transition-all duration-300">
+            <Card className="glass-card border-white/5 bg-background/20 backdrop-blur-md hover:bg-background/40 hover:border-primary/20 transition-all duration-300">
               <CardHeader className="pb-3">
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2">
                   <div>

@@ -1,6 +1,6 @@
 import Link from "next/link"
-import { HeroScene } from "@/components/hero-scene"
-import { HeroContent, ScrollIndicator } from "@/components/hero-content"
+import { CreativeHero } from "@/components/creative-hero"
+import { ScrollIndicator } from "@/components/hero-content"
 import { Navigations } from "@/components/navigation"
 import { Experience } from "@/components/experience"
 import { Projects } from "@/components/projects"
@@ -11,16 +11,17 @@ import { Contact } from "@/components/contact"
 import { Marquee } from "@/components/marquee"
 import { Button } from "@/components/ui/button"
 import { Github, Linkedin } from "lucide-react"
+import { GlobalTokenStream } from "@/components/global-token-stream"
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background/95 text-foreground relative">
+      <GlobalTokenStream />
       <Navigations />
-      <main className="pt-24">
+      <main className="pt-24 relative z-10">
         {/* Hero Section */}
-        <section className="relative h-[95vh] w-full flex flex-col items-center justify-center overflow-hidden">
-          <HeroScene />
-          <HeroContent />
+        <section className="relative w-full flex flex-col items-center justify-center overflow-hidden">
+          <CreativeHero />
           <ScrollIndicator />
         </section>
 
