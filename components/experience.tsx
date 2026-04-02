@@ -126,6 +126,16 @@ export function Experience() {
     },
   ]
 
+  const awards = [
+    {
+      title: "Kahlert Impact Prize Recipient",
+      institution: "Kahlert School of Computing, University of Utah",
+      period: "Mar 2026",
+      amount: "$1,000",
+      description: "Undergraduate scholarship awarded for societal impact through AI research and production systems in healthcare, legal-tech, and embodied AI. Funded by a $15M endowment from The Kahlert Foundation; recognizes students with a compelling track record of translating computing research into real-world societal benefit.",
+    }
+  ]
+
   const education = [
     {
       degree: "Bachelor of Science, Computer Science",
@@ -146,9 +156,9 @@ export function Experience() {
   ]
 
   return (
-    <div className="space-y-20" ref={containerRef}>
+    <div className="space-y-12" ref={containerRef}>
       {/* Experience Section */}
-      <div className="relative ml-3 md:ml-6 space-y-10 pl-8 md:pl-12">
+      <div className="relative ml-3 md:ml-6 space-y-8 pl-8 md:pl-12">
         {/* Growing Timeline Line */}
         <div className="absolute left-0 top-2 bottom-0 w-px bg-border/30">
           <motion.div
@@ -244,8 +254,69 @@ export function Experience() {
         ))}
       </div>
 
+      {/* Awards Section */}
+      <div className="relative ml-3 md:ml-6 space-y-8 pl-8 md:pl-12 pt-8">
+        <div className="absolute left-0 top-0 bottom-0 w-px bg-border/30" />
+
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="absolute -left-[4px] top-8 h-2.5 w-2.5 rounded-full bg-primary ring-4 ring-background z-10"
+        />
+        <div className="flex items-center gap-3 mb-8 -ml-8 md:-ml-12">
+          <span className="bg-background px-2 text-sm font-mono text-muted-foreground uppercase tracking-widest">
+            Awards_&_Honors
+          </span>
+        </div>
+
+        {awards.map((award, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: index * 0.1 }}
+            className="group relative"
+          >
+            <motion.div
+              initial={{ scale: 0 }}
+              whileInView={{ scale: 1 }}
+              viewport={{ once: true }}
+              className="absolute -left-[37px] md:-left-[53px] top-6 h-2 w-2 rounded-full border border-border bg-background group-hover:bg-accent group-hover:border-accent transition-colors z-10"
+            />
+
+            <Card className="glass-card border-none bg-background/40 hover:bg-background/60 transition-all duration-300">
+              <CardHeader className="pb-3">
+                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2">
+                  <div>
+                    <CardTitle className="font-serif text-xl font-medium group-hover:text-primary transition-colors leading-snug">
+                      {award.title}
+                    </CardTitle>
+                    <CardDescription className="text-sm font-sans text-foreground/80 mt-0.5">
+                      {award.institution}
+                    </CardDescription>
+                  </div>
+                  <div className="flex flex-col items-start md:items-end gap-1 shrink-0">
+                    <span className="text-xs font-mono text-muted-foreground bg-secondary/30 px-2 py-1 rounded">{award.period}</span>
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 border border-yellow-500/20">
+                      Amount: {award.amount}
+                    </span>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground/90 font-light leading-relaxed">
+                  {award.description}
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
+        ))}
+      </div>
+
       {/* Education Section */}
-      <div className="relative ml-3 md:ml-6 space-y-10 pl-8 md:pl-12 pt-8">
+      <div className="relative ml-3 md:ml-6 space-y-8 pl-8 md:pl-12 pt-8">
         <div className="absolute left-0 top-0 bottom-0 w-px bg-border/30" />
 
         <motion.div

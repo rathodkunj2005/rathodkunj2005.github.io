@@ -28,9 +28,9 @@ export default function Home() {
         <Marquee />
 
         {/* Experience Section */}
-        <section id="experience" className="py-24 px-4 gradient-bg">
+        <section id="experience" className="py-16 px-4 gradient-bg">
           <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
+            <div className="text-center mb-10">
               <h2 className="text-4xl md:text-5xl font-bold mb-6 gradient-text">Experience &amp; Education</h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
                 From hospital AI platforms and legal research tools to aerospace materials discovery and embodied agents
@@ -41,9 +41,9 @@ export default function Home() {
         </section>
 
         {/* Projects Section */}
-        <section id="projects" className="py-24 px-4">
+        <section id="projects" className="py-16 px-4">
           <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
+            <div className="text-center mb-10">
               <h2 className="text-4xl md:text-5xl font-bold mb-6 gradient-text">Featured Projects</h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
                 AI-driven systems, hackathon winners, and research tools at scale
@@ -54,9 +54,9 @@ export default function Home() {
         </section>
 
         {/* Skills Section */}
-        <section id="skills" className="py-24 px-4 gradient-bg">
+        <section id="skills" className="py-16 px-4 gradient-bg">
           <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
+            <div className="text-center mb-10">
               <h2 className="text-4xl md:text-5xl font-bold mb-6 gradient-text">Technical Skills</h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
                 Languages, frameworks, databases, and tools I work with daily
@@ -67,9 +67,9 @@ export default function Home() {
         </section>
 
         {/* Writing & Publications Section */}
-        <section id="writing" className="py-24 px-4">
+        <section id="writing" className="py-16 px-4">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-16">
+            <div className="text-center mb-10">
               <h2 className="text-4xl md:text-5xl font-bold mb-6 gradient-text">Writing &amp; Publications</h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
                 Technical articles, research reports, and open knowledge sharing
@@ -80,9 +80,9 @@ export default function Home() {
         </section>
 
         {/* Blog Section */}
-        <section id="blog" className="py-24 px-4 gradient-bg">
+        <section id="blog" className="py-16 px-4 gradient-bg">
           <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
+            <div className="text-center mb-10">
               <h2 className="text-4xl md:text-5xl font-bold mb-6 gradient-text">Latest Blog Posts</h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
                 Thoughts and insights on AI, cloud technologies, and software development
@@ -98,9 +98,9 @@ export default function Home() {
         </section>
 
         {/* Contact Section */}
-        <section id="contact" className="py-24 px-4">
+        <section id="contact" className="py-16 px-4">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-16">
+            <div className="text-center mb-10">
               <h2 className="text-4xl md:text-5xl font-bold mb-6 gradient-text">Get In Touch</h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
                 Open to new opportunities and collaborations in AI and software engineering

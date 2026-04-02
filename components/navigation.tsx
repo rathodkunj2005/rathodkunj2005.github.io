@@ -121,7 +121,7 @@ export function Navigation() {
             </Magnetic>
             <Magnetic>
               <Button asChild size="sm" variant="ghost" className="rounded-full px-5 font-medium text-xs h-9 shadow-none transition-transform active:scale-95">
-                <a href="/cv_kunj_rathod.pdf" target="_blank" rel="noopener noreferrer">
+                <a href="/CV_Kunj_Rathod_April26.pdf" target="_blank" rel="noopener noreferrer">
                   <FileText className="w-3.5 h-3.5 mr-1.5" />
                   CV
                 </a>
@@ -174,7 +174,7 @@ export function Navigation() {
             Resume
           </a>
           <a
-            href="/cv_kunj_rathod.pdf"
+            href="/CV_Kunj_Rathod_April26.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className="px-4 py-3 rounded-xl hover:bg-secondary/50 font-medium text-sm transition-colors flex items-center gap-2"

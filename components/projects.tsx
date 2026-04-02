@@ -157,6 +157,19 @@ export function Projects() {
   const projects = [
     {
       id: "FIG-00",
+      title: "HirePilot",
+      subtitle: "Autonomous AI Recruiting Agency",
+      bullets: [
+        "Built a fully autonomous recruiting backend with specialized AI agents (Enrichment, Scheduling, Interview, Evaluation) to manage the end-to-end hiring lifecycle, from GitHub sourcing to live candidate screening.",
+        "Engineered complex integrations with Twilio for real-time voice AI interviews, Google Calendar for automated slot scheduling, and Slack/Resend for manager approvals and multichannel outreach.",
+      ],
+      technologies: ["TypeScript", "Node.js", "Express", "PostgreSQL", "Anthropic API"],
+      github: "https://github.com/rathodkunj2005",
+      demo: null,
+      type: "AI Platform",
+    },
+    {
+      id: "FIG-01",
       title: "CloudCoder",
       subtitle: "Instant AI to AWS App Deployment",
       award: "New Initiative",
@@ -171,7 +184,7 @@ export function Projects() {
       type: "Application",
     },
     {
-      id: "FIG-01",
+      id: "FIG-02",
       title: "Minute0",
       subtitle: "AI-Powered Deployment Monitor",
       award: "Hackathon Winner",
@@ -186,21 +199,24 @@ export function Projects() {
       type: "Application",
     },
     {
-      id: "FIG-02",
+      id: "FIG-03",
       title: "FNDR",
-      subtitle: "Privacy-First Local Digital Memory for macOS",
+      subtitle: "Privacy-First Local AI Assistant for macOS",
       bullets: [
-        "Meticulously indexes workspace history via periodic high-resolution screen captures, on-device Apple Vision OCR, and multimodal AI analysis (SmolVLM) — all without data leaving your machine.",
-        "Transforms past activity into a searchable knowledge base: semantic search over history, actionable todo extraction from screen fragments, and automatic offline meeting transcription.",
-        "Evolving toward LanceDB-powered lightning-fast vector search across years of history and deep MCP ecosystem integration, bridging historical context with autonomous local AI agents.",
+        "Engineered a high-performance macOS desktop application using Rust and Tauri, delivering a zero-trust, local-only memory assistant with full data sovereignty — no cloud, no telemetry.",
+        "Optimized on-device inference for LLMs (Llama 3.2) and VLMs (SmolVLM) with Metal-accelerated backends, achieving low-latency RAG on M-series Apple Silicon.",
+        "Architected a real-time screen extraction pipeline using Apple Vision Framework for high-speed OCR and CLIP-based visual embeddings to reconstruct temporal context from screen snapshots.",
+        "Designed a Graphiti-style Temporal Search Engine modeling semantic relationships across user activities, web sessions, and meeting transcripts, enabling proactive entity extraction and multi-hop reasoning.",
+        "Implemented automated meeting intelligence with local Whisper-based transcription (Parakeet) and segmented audio processing integrated into the global memory index.",
+        "Developed a Model Context Protocol (MCP) server for secure, local interoperability between the memory store and external AI agents or IDEs.",
       ],
-      technologies: ["Python", "Apple Vision", "SmolVLM", "LanceDB", "MCP", "macOS", "OCR"],
+      technologies: ["Rust", "Tauri", "Metal", "ONNX", "Llama 3.2", "Whisper", "Apple Vision"],
       github: "https://github.com/rathodkunj2005",
       demo: null,
       type: "Local AI System",
     },
     {
-      id: "FIG-03",
+      id: "FIG-04",
       title: "Omni",
       subtitle: "Everything. Everywhere. All at Once — AI Orchestrator",
       bullets: [
@@ -214,7 +230,7 @@ export function Projects() {
       type: "AI Orchestrator",
     },
     {
-      id: "FIG-04",
+      id: "FIG-05",
       title: "Wingman.ai",
       subtitle: "Multi-Modal AI Personal Assistant (iOS)",
       bullets: [
@@ -227,7 +243,7 @@ export function Projects() {
       type: "Application",
     },
     {
-      id: "FIG-05",
+      id: "FIG-06",
       title: "BioGraphRAG",
       subtitle: "Biomedical Knowledge Graph Retrieval",
       bullets: [
@@ -241,7 +257,7 @@ export function Projects() {
       type: "Research System",
     },
     {
-      id: "FIG-06",
+      id: "FIG-07",
       title: "FlowVía",
       subtitle: "V2X Urban Mobility Optimization System",
       bullets: [
@@ -255,7 +271,7 @@ export function Projects() {
       type: "System Architecture",
     },
     {
-      id: "FIG-07",
+      id: "FIG-08",
       title: "RL Investment Advisor",
       subtitle: "Reinforcement Learning Portfolio Optimizer",
       award: "HackUSU 2025",
@@ -269,7 +285,7 @@ export function Projects() {
       type: "Algorithm",
     },
     {
-      id: "FIG-08",
+      id: "FIG-09",
       title: "Financial Multi-Agent System",
       subtitle: "Collaborative AI Investment Analysis",
       bullets: [
@@ -282,7 +298,7 @@ export function Projects() {
       type: "System Architecture",
     },
     {
-      id: "FIG-09",
+      id: "FIG-10",
       title: "Ref-RAG",
       subtitle: "Research Literature Chatbot",
       bullets: [
@@ -297,7 +313,7 @@ export function Projects() {
   ]
 
   return (
-    <div className="grid gap-x-8 gap-y-12 md:grid-cols-2 perspective-container">
+    <div className="grid gap-x-8 gap-y-8 md:grid-cols-2 perspective-container">
       {projects.map((project, index) => (
         <ProjectCard key={index} project={project} index={index} />
       ))}

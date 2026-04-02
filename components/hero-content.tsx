@@ -104,7 +104,7 @@ export function HeroContent() {
                 </motion.div>
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                     <Button asChild variant="outline" size="lg" className="rounded-full px-8 h-12 text-sm font-medium backdrop-blur-sm bg-background/50 border-primary/20 hover:bg-background/80">
-                        <a href="/cv_kunj_rathod.pdf" target="_blank" rel="noopener noreferrer">
+                        <a href="/CV_Kunj_Rathod_April26.pdf" target="_blank" rel="noopener noreferrer">
                             <Download className="mr-2 h-4 w-4" />
                             CV
                         </a>
