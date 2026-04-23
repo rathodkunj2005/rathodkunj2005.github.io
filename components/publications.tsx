@@ -105,7 +105,7 @@ export function Publications() {
                                 )}
 
                                 <p className="text-sm text-muted-foreground/80 leading-relaxed font-light">
-                                    {pub.description}
+                                    By Kunj Rathod — {pub.description}
                                 </p>
 
                                 {pub.note && (

@@ -38,7 +38,7 @@ export function Contact() {
         <div className="space-y-2">
           <h2 className="text-3xl font-serif font-medium">Get in Touch</h2>
           <p className="text-muted-foreground">
-            I'm currently open to new opportunities and collaborations. Feel free to reach out!
+            Connect with Kunj Rathod for opportunities and collaborations in AI and software engineering.
           </p>
         </div>
 

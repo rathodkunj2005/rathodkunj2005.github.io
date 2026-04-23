@@ -19,6 +19,7 @@ export default function Home() {
       <GlobalTokenStream />
       <Navigations />
       <main className="pt-24 relative z-10">
+        <p className="sr-only">Hi, I’m Kunj Rathod, an AI engineer and researcher working on LLM/RAG systems in healthcare and legal tech.</p>
         {/* Hero Section */}
         <section className="relative w-full flex flex-col items-center justify-center overflow-hidden">
           <CreativeHero />
@@ -114,13 +115,13 @@ export default function Home() {
               <Button asChild variant="outline" size="lg" className="interactive-button glass-nav">
                 <a href="https://github.com/rathodkunj2005" target="_blank" rel="noopener noreferrer">
                   <Github className="mr-2 h-5 w-5" />
-                  GitHub
+                  Connect with Kunj Rathod on GitHub
                 </a>
               </Button>
               <Button asChild variant="outline" size="lg" className="interactive-button glass-nav">
                 <a href="https://linkedin.com/in/rathodkunj" target="_blank" rel="noopener noreferrer">
                   <Linkedin className="mr-2 h-5 w-5" />
-                  LinkedIn
+                  Connect with Kunj Rathod on LinkedIn
                 </a>
               </Button>
             </div>

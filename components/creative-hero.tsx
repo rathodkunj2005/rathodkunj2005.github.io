@@ -293,6 +293,7 @@ export function CreativeHero() {
            transition={{ delay: 0.1 }}
            className="text-5xl md:text-7xl lg:text-8xl font-serif font-medium tracking-tight text-foreground mb-12 text-left"
            style={{ textShadow: '0 2px 20px rgba(0,0,0,0.1)' }}
+           title="Kunj Rathod"
         >
            Kunj Rathod
         </motion.h1>
@@ -302,6 +303,7 @@ export function CreativeHero() {
           ref={containerRef}
           className="relative w-full h-[180px] md:h-[150px] mb-12 pointer-events-none"
         >
+          <p className="sr-only">{textToWrap}</p>
           {lines.length === 0 ? (
             <p className="text-xl text-muted-foreground font-sans max-w-2xl opacity-50">
               {textToWrap}
@@ -343,7 +345,7 @@ export function CreativeHero() {
             <Button asChild variant="outline" size="lg" className="rounded-full px-8 h-12 text-sm font-medium backdrop-blur-sm bg-background/50 border-primary/20 hover:bg-background/80">
                 <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">
                     <Download className="mr-2 h-4 w-4" />
-                    Resume
+                    Download Kunj Rathod's Resume
                 </a>
             </Button>
           </motion.div>
