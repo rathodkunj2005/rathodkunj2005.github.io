@@ -58,6 +58,19 @@ export function Experience() {
       active: true,
     },
     {
+      title: "Research Project — Long-term Active Embodied QA",
+      company: "Advanced AI, University of Utah",
+      period: "Jan 2026 – May 2026",
+      location: "Salt Lake City, UT",
+      description: [
+        "Developed Video Mind Palace (VMP), an efficient agent for Long-term Active Embodied Question Answering (LA-EQA) that replaces scene-graphs with direct video-level VLM queries.",
+        "Demonstrated a 31–57% reduction in online inference time per query with minimal accuracy trade-offs compared to state-of-the-art Robotic Mind Palace (RMP).",
+        "Conducted a comprehensive analysis of the LA-EQA benchmark, identifying key limitations in interactivity and proposing future directions using SceneSmith-generated environments.",
+      ],
+      technologies: ["Qwen3-VL", "Vision-Language Models", "MuJoCo", "SceneSmith", "Robotics"],
+      type: "research",
+    },
+    {
       title: "Undergraduate Researcher — LLMs & Computational Simulations",
       company: "STARS Lab, University of Utah (Collaboration: NASA, Microsoft, U.S. DoD)",
       period: "Aug 2025 – Feb 2026",

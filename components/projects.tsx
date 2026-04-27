@@ -156,6 +156,21 @@ function ProjectCard({ project, index }: { project: any, index: number }) {
 export function Projects() {
   const projects = [
     {
+      id: "FIG-11",
+      title: "Video Mind Palace (VMP)",
+      subtitle: "Efficient Long-term Active Embodied QA",
+      bullets: [
+        "Proposed Video Mind Palace (VMP), an efficient agent for Long-term Active Embodied Question Answering (LA-EQA) that replaces expensive scene-graph-based world models with direct video-level VLM queries.",
+        "Achieved a 31–57% reduction in online inference time per query while maintaining competitive accuracy within 13-17% of state-of-the-art Robotic Mind Palace (RMP).",
+        "Eliminated mandatory offline GPT-4o captioning preprocessing, significantly reducing end-to-end system latency and operational costs.",
+        "Conducted deep benchmark analysis to identify structural limitations in environment interactivity and episode length, outlining future directions using SceneSmith-generated interactive environments.",
+      ],
+      technologies: ["Qwen3-VL", "MuJoCo", "SceneSmith", "Python", "VLM", "Robotics"],
+      github: "https://github.com/rathodkunj2005",
+      demo: null,
+      type: "Research Project",
+    },
+    {
       id: "FIG-00",
       title: "HirePilot",
       subtitle: "Autonomous AI Recruiting Agency",

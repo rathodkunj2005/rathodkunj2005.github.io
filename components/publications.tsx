@@ -23,6 +23,15 @@ interface Publication {
 export function Publications() {
     const publications: Publication[] = [
         {
+            title: "Exploring Long-term Active Embodied Question Answering in Simulated Indoor Environments",
+            venue: "Advanced AI · University of Utah",
+            date: "Spring 2026",
+            type: "report",
+            description:
+                "Investigated the LA-EQA benchmark and proposed Video Mind Palace (VMP), an efficient agent replacing structured scene-graphs with direct VLM queries. VMP achieved 31–57% reduction in inference time with minimal accuracy drop, while identifying structural limitations in benchmark interactivity and episode length.",
+            coauthors: "Co-authored with Nikesh Subedi",
+        },
+        {
             title: "BioGraphRAG — Biomedical Knowledge Graph Retrieval Augmented Generation",
             venue: "Kunj's Substack",
             date: "Oct 2024",
