@@ -1,23 +1,27 @@
 import type { Metadata } from 'next'
-import { Inter, JetBrains_Mono, Playfair_Display } from 'next/font/google'
+import { Fraunces, Newsreader, IBM_Plex_Mono } from 'next/font/google'
 import './globals.css'
 
-const inter = Inter({
+const fraunces = Fraunces({
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-fraunces',
   display: 'swap',
+  axes: ['opsz', 'SOFT', 'WONK'],
+  style: ['normal', 'italic'],
 })
 
-const jetbrainsMono = JetBrains_Mono({
+const newsreader = Newsreader({
   subsets: ['latin'],
-  variable: '--font-jetbrains-mono',
+  variable: '--font-newsreader',
   display: 'swap',
+  style: ['normal', 'italic'],
 })
 
-const playfair = Playfair_Display({
+const plexMono = IBM_Plex_Mono({
   subsets: ['latin'],
-  variable: '--font-playfair',
+  variable: '--font-plex-mono',
   display: 'swap',
+  weight: ['400', '500', '600'],
 })
 
 export const metadata: Metadata = {
@@ -57,14 +61,14 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} ${playfair.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${fraunces.variable} ${newsreader.variable} ${plexMono.variable}`} suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
         />
       </head>
-      <body className="font-sans antialiased bg-background text-foreground selection:bg-accent/20 selection:text-accent-foreground" suppressHydrationWarning>{children}</body>
+      <body className="font-sans antialiased bg-background text-foreground" suppressHydrationWarning>{children}</body>
     </html>
   )
 }

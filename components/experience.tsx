@@ -1,418 +1,218 @@
 "use client"
 
-import { useRef } from "react"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Calendar, MapPin, GraduationCap, Briefcase, FlaskConical } from "lucide-react"
-import { motion, useScroll, useTransform } from "framer-motion"
+import { motion } from "framer-motion"
 
-const typeIcons: Record<string, any> = {
-  industry: Briefcase,
-  research: FlaskConical,
-  campus: GraduationCap,
-}
+const ease = [0.22, 1, 0.36, 1] as const
 
-const typeBadgeStyles: Record<string, string> = {
-  industry: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20",
-  research: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20",
-  campus: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20",
+const experiences = [
+  {
+    title: "Software Engineer Intern — Azure Data",
+    company: "Microsoft",
+    period: "Jan 2026 —",
+    location: "Redmond, WA",
+    description: [
+      "Building scalable cloud solutions for distributed data systems on the Azure Data team.",
+      "Focusing on full-stack software development and distributed systems within the Azure ecosystem.",
+    ],
+    technologies: ["Azure", "Distributed Systems", "Full Stack", "Cloud"],
+    active: true,
+  },
+  {
+    title: "Software Development Intern, AI Services (SUDO Program)",
+    company: "University of Utah Health",
+    period: "Jan 2025 —",
+    location: "Salt Lake City, UT",
+    description: [
+      "Built and deployed a HIPAA-compliant AI chat platform for 90+ hospital executives using React/TypeScript, Flask middleware, and AWS Bedrock microservices with event-driven Lambda orchestration.",
+      "Shipped 6 full-stack features across 4 sprints; integrated AWS Bedrock Agents, Knowledge Bases, and Guardrails for production clinical workflows.",
+      "Reduced inference latency by 40% and data query speed by 60% via Bedrock pipeline optimization, API caching, and a DynamoDB–RDS hybrid database strategy.",
+      "Implemented token-streaming LLM responses (p95 <200ms TTFT) with resilient fallback handling and distributed session persistence for 1,000+ conversations.",
+      "Integrated interactive data visualization tools into the LLM chat interface enabling real-time analytics on hospital data.",
+    ],
+    technologies: ["React", "TypeScript", "AWS Bedrock", "Lambda", "DynamoDB", "Flask", "HIPAA"],
+    active: true,
+  },
+  {
+    title: "Research Project — Long-term Active Embodied QA",
+    company: "Advanced AI, University of Utah",
+    period: "Jan – May 2026",
+    location: "Salt Lake City, UT",
+    description: [
+      "Developed Video Mind Palace (VMP), an efficient agent for Long-term Active Embodied Question Answering (LA-EQA) that replaces scene-graphs with direct video-level VLM queries.",
+      "Demonstrated a 31–57% reduction in online inference time per query with minimal accuracy trade-offs compared to state-of-the-art Robotic Mind Palace (RMP).",
+      "Conducted a comprehensive analysis of the LA-EQA benchmark, identifying key limitations in interactivity and proposing future directions using SceneSmith-generated environments.",
+    ],
+    technologies: ["Qwen3-VL", "Vision-Language Models", "MuJoCo", "SceneSmith", "Robotics"],
+  },
+  {
+    title: "Undergraduate Researcher — LLMs & Computational Simulations",
+    company: "STARS Lab, University of Utah · with NASA, Microsoft, U.S. DoD",
+    period: "Aug 2025 – Feb 2026",
+    location: "Salt Lake City, UT",
+    description: [
+      "Built a multi-agent, graph-augmented pipeline to extract and normalize material-property data from 1,000+ materials-science papers into a physics-aware graph for automated Ashby plot generation.",
+      "Developed a constraint-based 'design region' engine (temperature, creep, pressure limits) and benchmarking suite to identify feasible materials for extreme aerospace environments.",
+      "Built Ref-RAG, a custom RAG chatbot using LangChain and Chainlit to extract structured information from large unorganized PDF datasets for materials researchers.",
+    ],
+    technologies: ["Python", "LLMs", "Multi-Agent", "LangChain", "Graph RAG"],
+  },
+  {
+    title: "AI Engineering Intern",
+    company: "CourtEasy.ai / Nugen",
+    period: "Nov 2024 – Apr 2025",
+    location: "Remote",
+    description: [
+      "Scaled hybrid legal-document retrieval to 10M+ indexed Indian legal documents (statutes, court orders), supporting 5,000+ daily queries.",
+      "Improved retrieval accuracy by 28% and reduced hallucinations by 35% via hybrid RAG (dense vectors + BM25 + reranking) and context-grounding optimizations for Legal-NER tasks.",
+      "Built production ETL ingesting 500k+ documents/week and benchmarked 8 LLM families on 4 legal benchmarks including LegalBench and NyayaAnumana; analysis guided model routing, reducing projected inference spend by $50k+/year.",
+    ],
+    technologies: ["RAG", "BM25", "Legal-NER", "LegalBench", "Python", "LLMs"],
+  },
+  {
+    title: "AI Research Intern — BioGraphRAG",
+    company: "Garje Marathi Global (GMG Summer of Code)",
+    period: "May – Aug 2024",
+    location: "Salt Lake City, UT",
+    description: [
+      "Led development of BioGraphRAG: a Graph Retrieval-Augmented Generation platform combining biomedical knowledge graphs with LLMs for explainable biomedical Q&A.",
+      "Engineered distributed GraphRAG system managing 1M+ biomedical entities (proteins, genes, diseases) integrating UniProt, AlphaFold, and RXNav with NebulaGraph.",
+      "Improved factual accuracy by 40%; optimized graph traversal 3× through strategic caching and high-degree node pruning, achieving sub-500ms query latency at p95.",
+      "Presented at an international AI panel attended by experts from India and the US — received commendation for technical leadership.",
+    ],
+    technologies: ["Python", "NebulaGraph", "LlamaIndex", "GraphRAG", "Docker", "FastAPI"],
+  },
+  {
+    title: "Campus Strategist",
+    company: "Perplexity AI",
+    period: "Jan – Apr 2025",
+    location: "Salt Lake City, UT",
+    description: [
+      "Spearheaded campus-wide outreach driving adoption of Perplexity's AI search among students, faculty, and clubs; onboarded 150+ Perplexity Pro users.",
+    ],
+    technologies: ["AI Advocacy", "Community", "Growth"],
+  },
+  {
+    title: "Community Advisor",
+    company: "University of Utah Housing & Residential Education",
+    period: "Aug – Dec 2024",
+    location: "Salt Lake City, UT",
+    description: [
+      "Provided conflict mediation, crisis response, and student support services for a 200+ resident community.",
+    ],
+    technologies: ["Leadership", "Crisis Management"],
+  },
+]
+
+function Entry({ exp, index }: { exp: (typeof experiences)[number]; index: number }) {
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.6, ease }}
+      className="group md:grid md:grid-cols-[150px_1fr] md:gap-8 py-8 border-t border-border first:border-t-0"
+    >
+      {/* Margin column */}
+      <div className="mb-3 md:mb-0 md:text-right">
+        <p className="font-mono text-xs text-muted-foreground tabular">{exp.period}</p>
+        <p className="font-mono text-[10px] text-muted-foreground/70 mt-1">{exp.location}</p>
+        {exp.active && (
+          <p className="font-mono text-[10px] tracking-[0.14em] uppercase text-accent mt-2">
+            ● active
+          </p>
+        )}
+      </div>
+
+      {/* Body */}
+      <div>
+        <h3 className="font-serif text-xl md:text-[1.35rem] leading-snug group-hover:text-accent transition-colors duration-300">
+          {exp.title}
+        </h3>
+        <p className="font-sans italic text-muted-foreground mt-1">{exp.company}</p>
+        <ul className="mt-4 space-y-2 max-w-2xl">
+          {exp.description.map((item, i) => (
+            <li key={i} className="font-sans text-[0.95rem] leading-relaxed text-foreground/80 pl-5 relative">
+              <span className="absolute left-0 text-accent/70 font-mono text-xs top-1">—</span>
+              {item}
+            </li>
+          ))}
+        </ul>
+        <p className="font-mono text-[11px] text-muted-foreground mt-4 leading-relaxed">
+          {exp.technologies.map((t, i) => (
+            <span key={t}>
+              <span className="text-accent/60">[</span>
+              {t}
+              <span className="text-accent/60">]</span>
+              {i < exp.technologies.length - 1 && " "}
+            </span>
+          ))}
+        </p>
+      </div>
+    </motion.article>
+  )
 }
 
 export function Experience() {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end end"]
-  })
-
-  const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"])
-
-  const experiences = [
-    {
-      title: "Software Engineer Intern — Azure Data",
-      company: "Microsoft",
-      period: "Jan 2026 – Present",
-      location: "Redmond, WA",
-      description: [
-        "Building scalable cloud solutions for distributed data systems on the Azure Data team.",
-        "Focusing on full-stack software development and distributed systems within the Azure ecosystem.",
-      ],
-      technologies: ["Azure", "Distributed Systems", "Full Stack", "Cloud"],
-      type: "industry",
-      active: true,
-    },
-    {
-      title: "Software Development Intern, AI Services (SUDO Program)",
-      company: "University of Utah Health",
-      period: "Jan 2025 – Present",
-      location: "Salt Lake City, UT",
-      description: [
-        "Built and deployed a HIPAA-compliant AI chat platform for 90+ hospital executives using React/TypeScript, Flask middleware, and AWS Bedrock microservices with event-driven Lambda orchestration.",
-        "Shipped 6 full-stack features across 4 sprints; integrated AWS Bedrock Agents, Knowledge Bases, and Guardrails for production clinical workflows.",
-        "Reduced inference latency by 40% and data query speed by 60% via Bedrock pipeline optimization, API caching, and a DynamoDB–RDS hybrid database strategy.",
-        "Implemented token-streaming LLM responses (p95 <200ms TTFT) with resilient fallback handling and distributed session persistence for 1,000+ conversations.",
-        "Integrated interactive data visualization tools into the LLM chat interface enabling real-time analytics on hospital data.",
-      ],
-      technologies: ["React", "TypeScript", "AWS Bedrock", "Lambda", "DynamoDB", "Flask", "HIPAA"],
-      type: "industry",
-      active: true,
-    },
-    {
-      title: "Research Project — Long-term Active Embodied QA",
-      company: "Advanced AI, University of Utah",
-      period: "Jan 2026 – May 2026",
-      location: "Salt Lake City, UT",
-      description: [
-        "Developed Video Mind Palace (VMP), an efficient agent for Long-term Active Embodied Question Answering (LA-EQA) that replaces scene-graphs with direct video-level VLM queries.",
-        "Demonstrated a 31–57% reduction in online inference time per query with minimal accuracy trade-offs compared to state-of-the-art Robotic Mind Palace (RMP).",
-        "Conducted a comprehensive analysis of the LA-EQA benchmark, identifying key limitations in interactivity and proposing future directions using SceneSmith-generated environments.",
-      ],
-      technologies: ["Qwen3-VL", "Vision-Language Models", "MuJoCo", "SceneSmith", "Robotics"],
-      type: "research",
-    },
-    {
-      title: "Undergraduate Researcher — LLMs & Computational Simulations",
-      company: "STARS Lab, University of Utah (Collaboration: NASA, Microsoft, U.S. DoD)",
-      period: "Aug 2025 – Feb 2026",
-      location: "Salt Lake City, UT",
-      description: [
-        "Built a multi-agent, graph-augmented pipeline to extract and normalize material-property data from 1,000+ materials-science papers into a physics-aware graph for automated Ashby plot generation.",
-        "Developed a constraint-based 'design region' engine (temperature, creep, pressure limits) and benchmarking suite to identify feasible materials for extreme aerospace environments.",
-        "Explored LLMs and multi-agent AI to streamline knowledge sharing across interdisciplinary stakeholders including engineers, scientists, and DoD partners.",
-        "Built Ref-RAG, a custom RAG chatbot using LangChain and Chainlit to extract structured information from large unorganized PDF datasets for materials researchers.",
-      ],
-      technologies: ["Python", "LLMs", "Multi-Agent", "LangChain", "Graph RAG", "NASA", "DoD"],
-      type: "research",
-    },
-    {
-      title: "AI Engineering Intern",
-      company: "CourtEasy.ai / Nugen",
-      period: "Nov 2024 – Apr 2025",
-      location: "Remote",
-      description: [
-        "Scaled hybrid legal-document retrieval to 10M+ indexed Indian legal documents (statutes, court orders), supporting 5,000+ daily queries.",
-        "Improved retrieval accuracy by 28% and reduced hallucinations by 35% via hybrid RAG (dense vectors + BM25 + reranking) and context-grounding optimizations for Legal-NER tasks.",
-        "Built production ETL ingesting 500k+ documents/week and benchmarked 8 LLM families on 4 legal benchmarks including LegalBench and NyayaAnumana.",
-        "Analysis guided model routing decisions, reducing projected inference spend by $50k+/year.",
-        "Co-authored a comparative analysis paper synthesizing insights from 15+ research papers on legal AI.",
-      ],
-      technologies: ["RAG", "BM25", "Legal-NER", "LegalBench", "Python", "LLMs"],
-      type: "industry",
-    },
-    {
-      title: "AI Research Intern — BioGraphRAG",
-      company: "Garje Marathi Global (GMG Summer of Code)",
-      period: "May 2024 – Aug 2024",
-      location: "Salt Lake City, UT",
-      description: [
-        "Led development of BioGraphRAG: a Graph Retrieval-Augmented Generation platform combining biomedical knowledge graphs with LLMs for explainable biomedical Q&A.",
-        "Engineered distributed GraphRAG system managing 1M+ biomedical entities (proteins, genes, diseases) integrating UniProt, AlphaFold, and RXNav with NebulaGraph.",
-        "Improved factual accuracy by 40%; optimized graph traversal 3× through strategic caching and high-degree node pruning, achieving sub-500ms query latency at p95.",
-        "Designed automated ETL pipelines processing 2M+ entity updates monthly with schema validation.",
-        "Presented at an international AI panel attended by experts from India and the US — received commendation for technical leadership.",
-      ],
-      technologies: ["Python", "NebulaGraph", "LlamaIndex", "GraphRAG", "Docker", "FastAPI"],
-      type: "research",
-    },
-    {
-      title: "Campus Strategist",
-      company: "Perplexity AI",
-      period: "Jan 2025 – Apr 2025",
-      location: "Salt Lake City, UT",
-      description: [
-        "Spearheaded campus-wide outreach programs to drive adoption of Perplexity's AI-powered search platform among students, faculty, and university clubs.",
-        "Onboarded 150+ Perplexity Pro users, facilitating seamless onboarding and sustained long-term engagement.",
-      ],
-      technologies: ["AI Advocacy", "Community Building", "Growth"],
-      type: "campus",
-    },
-    {
-      title: "Community Advisor",
-      company: "University of Utah Housing & Residential Education",
-      period: "Aug 2024 – Dec 2024",
-      location: "Salt Lake City, UT",
-      description: [
-        "Ensured the safety and well-being of residential housing communities, providing conflict mediation, crisis response, and student support services for a 200+ resident community.",
-      ],
-      technologies: ["Leadership", "Crisis Management", "Community"],
-      type: "campus",
-    },
-  ]
-
-  const awards = [
-    {
-      title: "Kahlert Impact Prize Recipient",
-      institution: "Kahlert School of Computing, University of Utah",
-      period: "Mar 2026",
-      amount: "$1,000",
-      description: "Undergraduate scholarship awarded for societal impact through AI research and production systems in healthcare, legal-tech, and embodied AI. Funded by a $15M endowment from The Kahlert Foundation; recognizes students with a compelling track record of translating computing research into real-world societal benefit.",
-    }
-  ]
-
-  const education = [
-    {
-      degree: "Bachelor of Science, Computer Science",
-      institution: "University of Utah",
-      period: "Aug 2023 – Dec 2026",
-      location: "Salt Lake City, UT",
-      gpa: "3.7/4.0 (Dean's List)",
-      coursework: ["Machine Learning", "Computer Vision", "NLP", "Distributed Systems", "Algorithms & Data Structures"],
-    },
-    {
-      degree: "High School Diploma",
-      institution: "Krishna Public School",
-      period: "2017 – 2023",
-      location: "Raipur, India",
-      gpa: null,
-      coursework: [],
-    },
-  ]
-
   return (
-    <div className="space-y-12" ref={containerRef}>
-      {/* Experience Section */}
-      <div className="relative ml-3 md:ml-6 space-y-8 pl-8 md:pl-12">
-        {/* Growing Timeline Line */}
-        <div className="absolute left-0 top-2 bottom-0 w-px bg-border/30">
-          <motion.div
-            style={{ height: lineHeight }}
-            className="w-full bg-gradient-to-b from-primary via-primary/50 to-transparent"
-          />
-        </div>
+    <div>
+      {experiences.map((exp, index) => (
+        <Entry key={index} exp={exp} index={index} />
+      ))}
 
+      {/* 1.1 Honors */}
+      <div className="mt-4 border-t border-border pt-8">
+        <p className="font-mono text-xs tracking-[0.16em] uppercase text-muted-foreground mb-5">
+          <span className="text-accent">1.1</span> Honors
+        </p>
         <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="absolute -left-[4px] top-0 h-2.5 w-2.5 rounded-full bg-primary ring-4 ring-background"
-        />
-        <div className="flex items-center gap-3 mb-8 -ml-8 md:-ml-12">
-          <span className="bg-background/80 px-2 text-sm font-mono text-muted-foreground uppercase tracking-widest backdrop-blur-sm border border-border/50 rounded-md">
-            layer_0: experience_activations
-          </span>
-        </div>
-
-        {experiences.map((exp, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ delay: index * 0.07, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="group relative"
-          >
-            {/* Mechanistic Node */}
-            <motion.div
-              initial={{ scale: 0 }}
-              whileInView={{ scale: 1 }}
-              viewport={{ once: true }}
-              className="absolute -left-[40px] md:-left-[56px] top-6 flex items-center justify-center z-10"
-            >
-              <div className="absolute right-4 text-[9px] font-mono text-primary/50 hidden md:block opacity-0 group-hover:opacity-100 transition-opacity">
-                attn_{index}
-              </div>
-              <div className="h-2 w-2 rounded-sm border border-primary/50 bg-background group-hover:bg-primary group-hover:border-primary group-hover:shadow-[0_0_10px_rgba(var(--primary),0.5)] transition-all">
-                <div className="absolute inset-0 rounded-sm bg-primary/20 animate-ping opacity-0 group-hover:opacity-100" />
-              </div>
-            </motion.div>
-
-            <Card className="glass-card border-white/5 bg-background/20 backdrop-blur-md hover:bg-background/40 hover:border-primary/20 transition-all duration-300">
-              <CardHeader className="pb-3">
-                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 flex-wrap mb-1">
-                      <CardTitle className="font-serif text-xl font-medium group-hover:text-primary transition-colors leading-snug">
-                        {exp.title}
-                      </CardTitle>
-                      {exp.active && (
-                        <span className="inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-wider bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20 rounded-full px-2 py-0.5">
-                          <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse inline-block" />
-                          Active
-                        </span>
-                      )}
-                    </div>
-                    <CardDescription className="text-sm font-sans text-foreground/70 mt-0.5">
-                      {exp.company}
-                    </CardDescription>
-                  </div>
-                  <div className="flex flex-col items-start md:items-end text-xs font-mono text-muted-foreground gap-1 shrink-0">
-                    <div className="flex items-center gap-1.5 bg-secondary/30 px-2 py-1 rounded">
-                      <Calendar className="h-3 w-3" />
-                      {exp.period}
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <MapPin className="h-3 w-3" />
-                      {exp.location}
-                    </div>
-                    <span className={`text-[10px] font-mono rounded-full px-2 py-0.5 capitalize ${typeBadgeStyles[exp.type]}`}>
-                      {exp.type}
-                    </span>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <ul className="space-y-2 text-muted-foreground/90 font-light leading-relaxed text-sm">
-                  {exp.description.map((item, i) => (
-                    <li key={i} className="flex gap-2">
-                      <span className="text-accent mt-2 h-1 w-1 shrink-0 rounded-full bg-accent" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-                <div className="flex flex-wrap gap-2 pt-2">
-                  {exp.technologies.map((tech, i) => (
-                    <Badge key={i} variant="secondary" className="bg-secondary/40 hover:bg-secondary/60 text-secondary-foreground text-xs font-mono font-normal">
-                      {tech}
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        ))}
+          transition={{ duration: 0.6, ease }}
+          className="md:grid md:grid-cols-[150px_1fr] md:gap-8"
+        >
+          <p className="font-mono text-xs text-muted-foreground md:text-right mb-2 md:mb-0">Mar 2026</p>
+          <div className="max-w-2xl">
+            <h3 className="font-serif text-lg leading-snug">
+              Kahlert Impact Prize <span className="font-mono text-xs text-accent align-middle ml-1">$1,000</span>
+            </h3>
+            <p className="font-sans italic text-muted-foreground text-sm mt-0.5">
+              Kahlert School of Computing, University of Utah
+            </p>
+            <p className="font-sans text-[0.95rem] leading-relaxed text-foreground/80 mt-3">
+              Awarded for societal impact through AI research and production systems in healthcare,
+              legal-tech, and embodied AI. Funded by a $15M endowment from The Kahlert Foundation;
+              recognizes students translating computing research into real-world benefit.
+            </p>
+          </div>
+        </motion.div>
       </div>
 
-      {/* Awards Section */}
-      <div className="relative ml-3 md:ml-6 space-y-8 pl-8 md:pl-12 pt-8">
-        <div className="absolute left-0 top-0 bottom-0 w-px bg-border/30" />
-
+      {/* 1.2 Education */}
+      <div className="mt-10 border-t border-border pt-8">
+        <p className="font-mono text-xs tracking-[0.16em] uppercase text-muted-foreground mb-5">
+          <span className="text-accent">1.2</span> Education
+        </p>
         <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="absolute -left-[4px] top-8 h-2.5 w-2.5 rounded-full bg-primary ring-4 ring-background z-10"
-        />
-        <div className="flex items-center gap-3 mb-8 -ml-8 md:-ml-12">
-          <span className="bg-background/80 px-2 text-sm font-mono text-muted-foreground uppercase tracking-widest backdrop-blur-sm border border-border/50 rounded-md">
-            layer_1: system_rewards
-          </span>
-        </div>
-
-        {awards.map((award, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.1 }}
-            className="group relative"
-          >
-            <motion.div
-              initial={{ scale: 0 }}
-              whileInView={{ scale: 1 }}
-              viewport={{ once: true }}
-              className="absolute -left-[40px] md:-left-[56px] top-6 flex items-center justify-center z-10"
-            >
-              <div className="absolute right-4 text-[9px] font-mono text-yellow-500/50 hidden md:block opacity-0 group-hover:opacity-100 transition-opacity">
-                reward_{index}
-              </div>
-              <div className="h-2 w-2 rounded-sm border border-yellow-500/50 bg-background group-hover:bg-yellow-500 group-hover:border-yellow-500 group-hover:shadow-[0_0_10px_rgba(234,179,8,0.5)] transition-all" />
-            </motion.div>
-
-            <Card className="glass-card border-white/5 bg-background/20 backdrop-blur-md hover:bg-background/40 hover:border-yellow-500/20 transition-all duration-300">
-              <CardHeader className="pb-3">
-                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2">
-                  <div>
-                    <CardTitle className="font-serif text-xl font-medium group-hover:text-primary transition-colors leading-snug">
-                      {award.title}
-                    </CardTitle>
-                    <CardDescription className="text-sm font-sans text-foreground/80 mt-0.5">
-                      {award.institution}
-                    </CardDescription>
-                  </div>
-                  <div className="flex flex-col items-start md:items-end gap-1 shrink-0">
-                    <span className="text-xs font-mono text-muted-foreground bg-secondary/30 px-2 py-1 rounded">{award.period}</span>
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 border border-yellow-500/20">
-                      Amount: {award.amount}
-                    </span>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground/90 font-light leading-relaxed">
-                  {award.description}
-                </p>
-              </CardContent>
-            </Card>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* Education Section */}
-      <div className="relative ml-3 md:ml-6 space-y-8 pl-8 md:pl-12 pt-8">
-        <div className="absolute left-0 top-0 bottom-0 w-px bg-border/30" />
-
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          className="absolute -left-[4px] top-8 h-2.5 w-2.5 rounded-full bg-primary ring-4 ring-background z-10"
-        />
-        <div className="flex items-center gap-3 mb-8 -ml-8 md:-ml-12">
-          <span className="bg-background/80 px-2 text-sm font-mono text-muted-foreground uppercase tracking-widest backdrop-blur-sm border border-border/50 rounded-md">
-            layer_2: pre_training_data
-          </span>
-        </div>
-
-        {education.map((edu, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.1 }}
-            className="group relative"
-          >
-            <motion.div
-              initial={{ scale: 0 }}
-              whileInView={{ scale: 1 }}
-              viewport={{ once: true }}
-              className="absolute -left-[40px] md:-left-[56px] top-6 flex items-center justify-center z-10"
-            >
-              <div className="absolute right-4 text-[9px] font-mono text-primary/50 hidden md:block opacity-0 group-hover:opacity-100 transition-opacity">
-                pretrain_{index}
-              </div>
-              <div className="h-2 w-2 rounded-sm border border-primary/50 bg-background group-hover:bg-primary group-hover:border-primary group-hover:shadow-[0_0_10px_rgba(var(--primary),0.5)] transition-all" />
-            </motion.div>
-
-            <Card className="glass-card border-white/5 bg-background/20 backdrop-blur-md hover:bg-background/40 hover:border-primary/20 transition-all duration-300">
-              <CardHeader className="pb-3">
-                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2">
-                  <div>
-                    <CardTitle className="font-serif text-xl font-medium">
-                      {edu.degree}
-                    </CardTitle>
-                    <CardDescription className="text-sm font-sans text-foreground/80 mt-0.5">
-                      {edu.institution} · {edu.location}
-                    </CardDescription>
-                  </div>
-                  <div className="flex flex-col items-start md:items-end gap-1 shrink-0">
-                    <span className="text-xs font-mono text-muted-foreground bg-secondary/30 px-2 py-1 rounded">{edu.period}</span>
-                    {edu.gpa && (
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 border border-yellow-500/20">
-                        GPA: {edu.gpa}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </CardHeader>
-              {edu.coursework.length > 0 && (
-                <CardContent>
-                  <div className="space-y-3">
-                    <h4 className="text-xs font-mono uppercase tracking-wider text-muted-foreground">Relevant Coursework</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {edu.coursework.map((course, i) => (
-                        <Badge key={i} variant="outline" className="border-border/50 text-muted-foreground text-xs font-mono font-normal">
-                          {course}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                </CardContent>
-              )}
-            </Card>
-          </motion.div>
-        ))}
+          transition={{ duration: 0.6, ease }}
+          className="md:grid md:grid-cols-[150px_1fr] md:gap-8"
+        >
+          <p className="font-mono text-xs text-muted-foreground md:text-right mb-2 md:mb-0 tabular">
+            Aug 2023 – Dec 2026
+          </p>
+          <div className="max-w-2xl">
+            <h3 className="font-serif text-lg leading-snug">B.S. Computer Science</h3>
+            <p className="font-sans italic text-muted-foreground text-sm mt-0.5">
+              University of Utah · GPA 3.7/4.0, Dean&rsquo;s List
+            </p>
+            <p className="font-mono text-[11px] text-muted-foreground mt-3 leading-relaxed">
+              Machine Learning · Computer Vision · NLP · Distributed Systems · Algorithms &amp; Data Structures
+            </p>
+          </div>
+        </motion.div>
       </div>
     </div>
   )

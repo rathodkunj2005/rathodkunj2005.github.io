@@ -1,336 +1,200 @@
 "use client"
 
-import { useRef, useState } from "react"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Github, ExternalLink, ArrowUpRight, Trophy } from "lucide-react"
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
+import { motion } from "framer-motion"
 
-function ProjectCard({ project, index }: { project: any, index: number }) {
-  const ref = useRef<HTMLDivElement>(null)
+const ease = [0.22, 1, 0.36, 1] as const
 
-  const x = useMotionValue(0)
-  const y = useMotionValue(0)
+interface Project {
+  title: string
+  subtitle: string
+  award?: string
+  bullets: string[]
+  technologies: string[]
+  github: string
+  demo?: string | null
+  type: string
+}
 
-  const mouseX = useSpring(x, { stiffness: 500, damping: 100 })
-  const mouseY = useSpring(y, { stiffness: 500, damping: 100 })
+const projects: Project[] = [
+  {
+    title: "Video Mind Palace",
+    subtitle: "Efficient long-term active embodied QA",
+    bullets: [
+      "Agent for LA-EQA that replaces expensive scene-graph world models with direct video-level VLM queries.",
+      "31–57% reduction in online inference time per query, within 13–17% of state-of-the-art RMP accuracy.",
+      "Eliminates mandatory offline GPT-4o captioning preprocessing, cutting end-to-end latency and cost.",
+    ],
+    technologies: ["Qwen3-VL", "MuJoCo", "SceneSmith", "Python", "Robotics"],
+    github: "https://github.com/rathodkunj2005",
+    type: "Research",
+  },
+  {
+    title: "FNDR",
+    subtitle: "Privacy-first local AI memory for macOS",
+    bullets: [
+      "Zero-trust, local-only memory assistant in Rust/Tauri — no cloud, no telemetry, full data sovereignty.",
+      "Metal-accelerated on-device inference (Llama 3.2, SmolVLM) for low-latency RAG on Apple Silicon.",
+      "Real-time screen extraction via Apple Vision OCR + CLIP embeddings; Graphiti-style temporal search across activities, web sessions, and meeting transcripts.",
+      "Local Whisper transcription and an MCP server for secure interop with external agents and IDEs.",
+    ],
+    technologies: ["Rust", "Tauri", "Metal", "Llama 3.2", "Whisper", "MCP"],
+    github: "https://github.com/rathodkunj2005",
+    type: "Local AI System",
+  },
+  {
+    title: "HirePilot",
+    subtitle: "Autonomous AI recruiting agency",
+    bullets: [
+      "Fully autonomous recruiting backend with specialized agents — Enrichment, Scheduling, Interview, Evaluation — managing the hiring lifecycle from GitHub sourcing to live screening.",
+      "Twilio real-time voice AI interviews, Google Calendar slot scheduling, Slack/Resend approval and outreach flows.",
+    ],
+    technologies: ["TypeScript", "Node.js", "PostgreSQL", "Anthropic API", "Twilio"],
+    github: "https://github.com/rathodkunj2005",
+    type: "AI Platform",
+  },
+  {
+    title: "CloudCoder",
+    subtitle: "Prompt → deployed AWS application",
+    bullets: [
+      "Model-agnostic orchestrator embedded in this site: generates and deploys serverless AWS apps directly to a live AWS account.",
+      "Emits structured React SPAs, Node.js Lambdas, and SAM CloudFormation templates via the Vercel AI SDK.",
+      "Packages Lambda binaries with JSZip, stages S3 artifacts, and executes CloudFormation with SSE log streaming to the UI.",
+    ],
+    technologies: ["Next.js", "Claude / GPT-4o", "AWS SDK v3", "CloudFormation"],
+    github: "https://github.com/rathodkunj2005",
+    demo: "/cloudCoder",
+    type: "Application",
+  },
+  {
+    title: "Minute0",
+    subtitle: "AI-powered deployment monitor",
+    award: "Hackathon Winner",
+    bullets: [
+      "Tracks Vercel deployments, classifies build/runtime failures, and triggers Slack alerts with approval workflows.",
+      "AI root-cause analysis over logs with FastAPI + ChromaDB vector search, emitting structured fix suggestions for coding agents.",
+    ],
+    technologies: ["React", "FastAPI", "ChromaDB", "Cerebras", "Slack API"],
+    github: "https://github.com/rathodkunj2005",
+    demo: "https://minute0.vercel.app",
+    type: "Application",
+  },
+  {
+    title: "Omni",
+    subtitle: "Everything, everywhere, all at once",
+    bullets: [
+      "Unified intelligence layer over Gmail, Google Calendar, Slack, and FNDR private memory — Smart Todos, natural-language scheduling, on-demand personal context.",
+      "Real-time voice interaction and autonomous multi-step workflow orchestration across the digital stack.",
+    ],
+    technologies: ["React", "TypeScript", "MCP", "Gmail API", "Slack API"],
+    github: "https://github.com/rathodkunj2005",
+    type: "AI Orchestrator",
+  },
+  {
+    title: "BioGraphRAG",
+    subtitle: "Biomedical knowledge-graph retrieval",
+    bullets: [
+      "Distributed GraphRAG unifying UniProt, AlphaFold, RXNav, and BioKG in NebulaGraph; ETL processes 2M+ entity updates monthly.",
+      "+40% factual accuracy; 3× faster graph traversal via caching and high-degree node pruning (sub-500ms p95).",
+    ],
+    technologies: ["Python", "NebulaGraph", "LlamaIndex", "FastAPI", "Docker"],
+    github: "https://github.com/rathodkunj2005",
+    type: "Research System",
+  },
+  {
+    title: "Wingman.ai",
+    subtitle: "Multi-modal personal assistant for iOS",
+    bullets: [
+      "Voice, chat, and image input over GPT-4o and Whisper with RAG-enhanced memory.",
+      "Offline-first architecture with Firebase sync, real-time streaming, persistent history.",
+    ],
+    technologies: ["SwiftUI", "GPT-4o", "Whisper", "Firebase"],
+    github: "https://github.com/rathodkunj2005",
+    type: "Application",
+  },
+  {
+    title: "FlowVía",
+    subtitle: "V2X urban mobility optimization",
+    bullets: [
+      "V2V/V2I/V2N platform for real-time adaptive traffic management, from OBD-II hardware to cloud ML backend.",
+      "LSTM traffic-flow prediction on live SPaT signal data; AES-256 comms with rotating vehicle identifiers.",
+    ],
+    technologies: ["Python", "TensorFlow", "LSTM", "DSRC", "C-V2X"],
+    github: "https://github.com/rathodkunj2005",
+    type: "System",
+  },
+  {
+    title: "RL Investment Advisor",
+    subtitle: "Reinforcement-learning portfolio optimizer",
+    award: "HackUSU 2025",
+    bullets: [
+      "DistillBERT sentiment analysis on financial news combined with DQN and PPO for portfolio optimization; measurable outperformance on backtests.",
+    ],
+    technologies: ["Python", "DistillBERT", "DQN", "PPO"],
+    github: "https://github.com/rathodkunj2005",
+    type: "Algorithm",
+  },
+]
 
-  const rotateX = useTransform(mouseY, [-0.5, 0.5], ["10deg", "-10deg"])
-  const rotateY = useTransform(mouseX, [-0.5, 0.5], ["-10deg", "10deg"])
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!ref.current) return
-    const rect = ref.current.getBoundingClientRect()
-    const xPct = (e.clientX - rect.left) / rect.width - 0.5
-    const yPct = (e.clientY - rect.top) / rect.height - 0.5
-    x.set(xPct)
-    y.set(yPct)
-  }
-
-  const handleMouseLeave = () => { x.set(0); y.set(0) }
-
+function Figure({ project, index }: { project: Project; index: number }) {
   return (
-    <motion.div
-      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-      ref={ref}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      initial={{ opacity: 0, y: 50 }}
+    <motion.figure
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
-      transition={{ delay: index * 0.08, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-      className="h-full perspective-1000"
+      transition={{ duration: 0.6, ease, delay: (index % 2) * 0.08 }}
+      className="group flex flex-col p-6 md:p-8 -mt-px -ml-px border-t border-l border-border"
     >
-      <div className="group h-full relative preserve-3d">
-        {/* Figure Label */}
-        <div className="mb-2 flex items-center gap-2 text-xs font-mono text-muted-foreground/70 overflow-hidden">
-          <motion.div
-            initial={{ x: -20, opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.2 + index * 0.1 }}
-            className="font-bold text-accent flex"
-          >
-            {project.id.split('').map((char: string, i: number) => (
-              <motion.span
-                key={i}
-                whileHover={{ y: [0, -2, 2, 0], x: [0, 1, -1, 0] }}
-                transition={{ duration: 0.2 }}
-                className="inline-block cursor-default"
-              >
-                {char}
-              </motion.span>
-            ))}
-          </motion.div>
-          <div className="relative flex-1 h-px bg-border/30">
-            <motion.div
-              initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, ease: "circOut", delay: 0.4 }}
-              style={{ originX: 0 }}
-              className="absolute inset-0 bg-accent/50"
-            />
-          </div>
-          {project.award && (
-            <motion.span
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              className="flex items-center gap-1 text-[10px] font-mono uppercase tracking-wider bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 rounded-full px-2 py-0.5"
-            >
-              <Trophy className="h-2.5 w-2.5" />
-              {project.award}
-            </motion.span>
-          )}
-          <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">{project.type}</span>
-        </div>
-
-        <Card
-          className="h-full flex flex-col bg-background/50 backdrop-blur-sm border-border/60 transition-colors duration-500 shadow-sm group-hover:shadow-xl group-hover:shadow-accent/5 translate-z-0"
-          style={{ transform: "translateZ(20px)" }}
-        >
-          <CardHeader className="space-y-4">
-            <div className="space-y-1">
-              <div className="flex items-start justify-between">
-                <CardTitle className="font-serif text-2xl font-medium leading-tight group-hover:text-primary transition-colors">
-                  {project.title}
-                </CardTitle>
-                <ArrowUpRight className="h-5 w-5 text-muted-foreground/30 group-hover:text-accent transition-colors opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 duration-300" />
-              </div>
-              <CardDescription className="text-base font-medium text-foreground/70">
-                {project.subtitle}
-              </CardDescription>
-            </div>
-          </CardHeader>
-
-          <CardContent className="flex-grow space-y-6">
-            <ul className="space-y-1.5 text-muted-foreground text-sm leading-relaxed font-light">
-              {project.bullets.map((b: string, i: number) => (
-                <li key={i} className="flex gap-2">
-                  <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent/70" />
-                  {b}
-                </li>
-              ))}
-            </ul>
-
-            <div className="space-y-3">
-              <div className="h-px w-full bg-gradient-to-r from-border/50 to-transparent" />
-              <div className="flex flex-wrap gap-2 text-xs font-mono text-muted-foreground">
-                {project.technologies.map((tech: string, i: number) => (
-                  <span key={i} className="px-1.5 py-0.5 bg-secondary/30 rounded text-[10px] tracking-tight">
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </CardContent>
-
-          <CardFooter className="pt-2 pb-6 flex gap-4">
-            <a
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs font-mono font-medium text-muted-foreground hover:text-primary flex items-center gap-1.5 transition-colors border-b border-transparent hover:border-primary"
-            >
-              <Github className="h-3 w-3" />
-              SOURCE_CODE
-            </a>
-            {project.demo && project.demo !== "#" && (
-              <a
-                href={project.demo}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs font-mono font-medium text-muted-foreground hover:text-accent flex items-center gap-1.5 transition-colors border-b border-transparent hover:border-accent"
-              >
-                <ExternalLink className="h-3 w-3" />
-                LIVE_DEMO
-              </a>
-            )}
-          </CardFooter>
-        </Card>
+      <div className="flex items-baseline justify-between gap-4">
+        <figcaption className="font-mono text-xs text-accent tracking-wide tabular">
+          Fig. {String(index + 1).padStart(2, "0")}
+        </figcaption>
+        <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+          {project.award ? <span className="text-accent">★ {project.award}</span> : project.type}
+        </span>
       </div>
-    </motion.div>
+
+      <h3 className="font-serif text-2xl leading-tight mt-4 group-hover:text-accent transition-colors duration-300">
+        {project.title}
+      </h3>
+      <p className="font-sans italic text-muted-foreground mt-1">{project.subtitle}</p>
+
+      <ul className="mt-4 space-y-2 flex-grow">
+        {project.bullets.map((b, i) => (
+          <li key={i} className="font-sans text-sm leading-relaxed text-foreground/75 pl-4 relative">
+            <span className="absolute left-0 text-accent/70 font-mono text-[10px] top-1">—</span>
+            {b}
+          </li>
+        ))}
+      </ul>
+
+      <p className="font-mono text-[10px] text-muted-foreground mt-5 leading-relaxed">
+        {project.technologies.join(" · ")}
+      </p>
+
+      <div className="flex gap-5 mt-4 pt-4 border-t border-border/60 font-mono text-xs">
+        <a href={project.github} target="_blank" rel="noopener noreferrer" className="ref-link">
+          source ↗
+        </a>
+        {project.demo && (
+          <a
+            href={project.demo}
+            target={project.demo.startsWith("http") ? "_blank" : undefined}
+            rel={project.demo.startsWith("http") ? "noopener noreferrer" : undefined}
+            className="ref-link"
+          >
+            demo ↗
+          </a>
+        )}
+      </div>
+    </motion.figure>
   )
 }
 
 export function Projects() {
-  const projects = [
-    {
-      id: "FIG-11",
-      title: "Video Mind Palace (VMP)",
-      subtitle: "Efficient Long-term Active Embodied QA",
-      bullets: [
-        "Proposed Video Mind Palace (VMP), an efficient agent for Long-term Active Embodied Question Answering (LA-EQA) that replaces expensive scene-graph-based world models with direct video-level VLM queries.",
-        "Achieved a 31–57% reduction in online inference time per query while maintaining competitive accuracy within 13-17% of state-of-the-art Robotic Mind Palace (RMP).",
-        "Eliminated mandatory offline GPT-4o captioning preprocessing, significantly reducing end-to-end system latency and operational costs.",
-        "Conducted deep benchmark analysis to identify structural limitations in environment interactivity and episode length, outlining future directions using SceneSmith-generated interactive environments.",
-      ],
-      technologies: ["Qwen3-VL", "MuJoCo", "SceneSmith", "Python", "VLM", "Robotics"],
-      github: "https://github.com/rathodkunj2005",
-      demo: null,
-      type: "Research Project",
-    },
-    {
-      id: "FIG-00",
-      title: "HirePilot",
-      subtitle: "Autonomous AI Recruiting Agency",
-      bullets: [
-        "Built a fully autonomous recruiting backend with specialized AI agents (Enrichment, Scheduling, Interview, Evaluation) to manage the end-to-end hiring lifecycle, from GitHub sourcing to live candidate screening.",
-        "Engineered complex integrations with Twilio for real-time voice AI interviews, Google Calendar for automated slot scheduling, and Slack/Resend for manager approvals and multichannel outreach.",
-      ],
-      technologies: ["TypeScript", "Node.js", "Express", "PostgreSQL", "Anthropic API"],
-      github: "https://github.com/rathodkunj2005",
-      demo: null,
-      type: "AI Platform",
-    },
-    {
-      id: "FIG-01",
-      title: "CloudCoder",
-      subtitle: "Instant AI to AWS App Deployment",
-      award: "New Initiative",
-      bullets: [
-        "A full-stack, model-agnostic AI orchestrator embedded within my portfolio that allows users to instantly generate and deploy Serverless AWS applications directly to their live AWS account.",
-        "Generates highly-structured React SPAs, Node.js Lambda functions, and SAM CloudFormation templates via Vercel AI SDK (OpenAI/Anthropic).",
-        "Uses AWS SDK for Javascript and JSZip to dynamically package Lambda binaries, create S3 artifacts, and execute CloudFormation templates with real-time Server-Sent Events (SSE) streaming logs direct to the user interface."
-      ],
-      technologies: ["Next.js", "GPT-4o / Claude 3.5", "AWS SDK v3", "CloudFormation", "JSZip"],
-      github: "https://github.com/rathodkunj2005",
-      demo: "/cloudCoder",
-      type: "Application",
-    },
-    {
-      id: "FIG-02",
-      title: "Minute0",
-      subtitle: "AI-Powered Deployment Monitor",
-      award: "Hackathon Winner",
-      bullets: [
-        "Full-stack deployment monitoring and incident response system tracking Vercel deployments, classifying build/runtime failures, and triggering Slack alerts with approval workflows.",
-        "AI-assisted root-cause analysis with FastAPI and ChromaDB vector search over logs, generating structured fix suggestions for downstream coding agents.",
-        "Real-time React/TypeScript dashboard for live metrics, incident status, and agent health; deployed on Vercel with CI/CD pipeline.",
-      ],
-      technologies: ["React", "TypeScript", "FastAPI", "ChromaDB", "Cerebras", "Slack API", "Vercel"],
-      github: "https://github.com/rathodkunj2005",
-      demo: "https://minute0.vercel.app",
-      type: "Application",
-    },
-    {
-      id: "FIG-03",
-      title: "FNDR",
-      subtitle: "Privacy-First Local AI Assistant for macOS",
-      bullets: [
-        "Engineered a high-performance macOS desktop application using Rust and Tauri, delivering a zero-trust, local-only memory assistant with full data sovereignty — no cloud, no telemetry.",
-        "Optimized on-device inference for LLMs (Llama 3.2) and VLMs (SmolVLM) with Metal-accelerated backends, achieving low-latency RAG on M-series Apple Silicon.",
-        "Architected a real-time screen extraction pipeline using Apple Vision Framework for high-speed OCR and CLIP-based visual embeddings to reconstruct temporal context from screen snapshots.",
-        "Designed a Graphiti-style Temporal Search Engine modeling semantic relationships across user activities, web sessions, and meeting transcripts, enabling proactive entity extraction and multi-hop reasoning.",
-        "Implemented automated meeting intelligence with local Whisper-based transcription (Parakeet) and segmented audio processing integrated into the global memory index.",
-        "Developed a Model Context Protocol (MCP) server for secure, local interoperability between the memory store and external AI agents or IDEs.",
-      ],
-      technologies: ["Rust", "Tauri", "Metal", "ONNX", "Llama 3.2", "Whisper", "Apple Vision"],
-      github: "https://github.com/rathodkunj2005",
-      demo: null,
-      type: "Local AI System",
-    },
-    {
-      id: "FIG-04",
-      title: "Omni",
-      subtitle: "Everything. Everywhere. All at Once — AI Orchestrator",
-      bullets: [
-        "Unified AI intelligence layer integrating Gmail, Google Calendar, Slack, and FNDR private memory to eliminate context switching — generates Smart Todos, schedules meetings via natural language, and retrieves personal context on demand.",
-        "Deep integrations with GitHub and Apple Services; supports real-time voice interaction and autonomous multi-step workflow orchestration across the entire digital stack.",
-        "Designed as the universal interface that transforms from a passive assistant into a proactive digital companion, anticipating needs with unparalleled precision.",
-      ],
-      technologies: ["React", "TypeScript", "OpenAI", "MCP", "Slack API", "Gmail API", "Google Calendar", "FNDR"],
-      github: "https://github.com/rathodkunj2005",
-      demo: null,
-      type: "AI Orchestrator",
-    },
-    {
-      id: "FIG-05",
-      title: "Wingman.ai",
-      subtitle: "Multi-Modal AI Personal Assistant (iOS)",
-      bullets: [
-        "iOS personal assistant with voice, chat, and image input integrating GPT-4o and Whisper APIs for context-aware responses with RAG-enhanced memory.",
-        "Offline-first architecture with Firebase sync supporting real-time message streaming and persistent conversation history.",
-      ],
-      technologies: ["SwiftUI", "GPT-4o", "Whisper", "Firebase", "RAG", "MVVM"],
-      github: "https://github.com/rathodkunj2005",
-      demo: null,
-      type: "Application",
-    },
-    {
-      id: "FIG-06",
-      title: "BioGraphRAG",
-      subtitle: "Biomedical Knowledge Graph Retrieval",
-      bullets: [
-        "Production-grade distributed GraphRAG system for healthcare professionals requiring trustworthy biomedical information retrieval.",
-        "Integrated UniProt, AlphaFold, RXNav, and BioKG into a unified NebulaGraph store with automated ETL processing 2M+ entity updates monthly.",
-        "Improved factual accuracy by 40%; optimized graph traversal 3× through caching and high-degree node pruning (sub-500ms at p95).",
-      ],
-      technologies: ["Python", "NebulaGraph", "LlamaIndex", "Docker", "FastAPI", "AWS", "GraphRAG"],
-      github: "https://github.com/rathodkunj2005",
-      demo: null,
-      type: "Research System",
-    },
-    {
-      id: "FIG-07",
-      title: "FlowVía",
-      subtitle: "V2X Urban Mobility Optimization System",
-      bullets: [
-        "Vehicle-to-Everything (V2X) traffic optimization platform combining V2V, V2I, and V2N communication for real-time adaptive traffic management.",
-        "LSTM-based traffic flow prediction models with live SPaT signal data; full system stack from OBD-II hardware to cloud ML backend.",
-        "AES-256 encrypted communication with rotating vehicle identifiers and edge-first architecture for privacy and ultra-low latency.",
-      ],
-      technologies: ["Python", "TensorFlow", "LSTM", "V2X", "DSRC", "C-V2X", "OBD-II"],
-      github: "https://github.com/rathodkunj2005",
-      demo: null,
-      type: "System Architecture",
-    },
-    {
-      id: "FIG-08",
-      title: "RL Investment Advisor",
-      subtitle: "Reinforcement Learning Portfolio Optimizer",
-      award: "HackUSU 2025",
-      bullets: [
-        "Investment recommendation system combining DistillBERT-based sentiment analysis on financial news with DQN and PPO for portfolio optimization.",
-        "Demonstrated measurable outperformance on backtested portfolio allocation tasks.",
-      ],
-      technologies: ["Python", "DistillBERT", "DQN", "PPO", "Flask", "Reinforcement Learning"],
-      github: "https://github.com/rathodkunj2005",
-      demo: null,
-      type: "Algorithm",
-    },
-    {
-      id: "FIG-09",
-      title: "Financial Multi-Agent System",
-      subtitle: "Collaborative AI Investment Analysis",
-      bullets: [
-        "Collaborative AI system with specialized agents (Analyst, Trader, Risk Advisor) using CrewAI and LangChain for real-time financial analysis.",
-        "Designed inter-agent communication protocols enabling parallel analysis and consensus-driven output generation.",
-      ],
-      technologies: ["CrewAI", "LangChain", "Python", "Flask", "Multi-Agent"],
-      github: "https://github.com/rathodkunj2005",
-      demo: null,
-      type: "System Architecture",
-    },
-    {
-      id: "FIG-10",
-      title: "Ref-RAG",
-      subtitle: "Research Literature Chatbot",
-      bullets: [
-        "Custom RAG chatbot for the STARS Lab to extract structured information from large, unorganized PDF corpora of materials-science research papers.",
-        "Enabled researchers to query domain-specific knowledge across 1,000+ documents through a conversational interface.",
-      ],
-      technologies: ["Python", "LangChain", "Chainlit", "FastAPI", "RAG"],
-      github: "https://github.com/rathodkunj2005",
-      demo: null,
-      type: "Research Tool",
-    },
-  ]
-
   return (
-    <div className="grid gap-x-8 gap-y-8 md:grid-cols-2 perspective-container">
+    <div className="grid md:grid-cols-2 border-b border-r border-border">
       {projects.map((project, index) => (
-        <ProjectCard key={index} project={project} index={index} />
+        <Figure key={project.title} project={project} index={index} />
       ))}
     </div>
   )

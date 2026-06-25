@@ -2,190 +2,109 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { motion } from "framer-motion"
-import { cn } from "@/lib/utils"
-import { Github, Linkedin, Mail, Menu, X, FileText } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Magnetic } from "@/components/ui/magnetic"
+import { motion, useScroll, useSpring } from "framer-motion"
+import { Menu, X } from "lucide-react"
+
+const navItems = [
+  { num: "01", name: "Experience", href: "#experience" },
+  { num: "02", name: "Selected Work", href: "#projects" },
+  { num: "03", name: "Writing", href: "#writing" },
+  { num: "A", name: "Skills", href: "#skills" },
+  { num: "✉", name: "Contact", href: "#contact" },
+]
 
 export function Navigation() {
-  const pathname = usePathname()
-  const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const { scrollYProgress } = useScroll()
+  const progress = useSpring(scrollYProgress, { stiffness: 140, damping: 30 })
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-    }
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
-
-  const navItems = [
-    { name: "Experience", href: "#experience" },
-    { name: "Projects", href: "#projects" },
-    { name: "Skills", href: "#skills" },
-    { name: "Writing", href: "#writing" },
-    { name: "Blog", href: "#blog" },
-  ]
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : ""
+    return () => { document.body.style.overflow = "" }
+  }, [mobileMenuOpen])
 
   return (
-    <>
-      <motion.header
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className={cn(
-          "fixed top-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none",
-        )}
-      >
-        <motion.div
-          className={cn(
-            "pointer-events-auto relative flex items-center p-1.5 rounded-full border bg-background/60 backdrop-blur-xl shadow-lg ring-1 ring-black/5 dark:ring-white/10 transition-all duration-500 ease-out",
-            isScrolled ? "scale-90 border-white/20 backdrop-blur-2xl" : "scale-100 border-transparent bg-background/30"
-          )}
-          style={{ width: isScrolled ? "auto" : "100%", maxWidth: "72rem" }}
-          layout
-        >
+    <header className="fixed top-0 inset-x-0 z-40 bg-background/95 backdrop-blur-[2px]">
+      <div className="max-w-5xl mx-auto px-5 md:px-8">
+        <div className="flex items-center justify-between h-14">
+          <Link href="/" className="flex items-baseline gap-2 group">
+            <span className="inline-block h-2.5 w-2.5 bg-accent translate-y-px group-hover:rotate-45 transition-transform duration-300" />
+            <span className="font-serif text-lg tracking-tight">
+              K.&thinsp;Rathod
+            </span>
+            <span className="hidden sm:inline font-mono text-[10px] text-muted-foreground tracking-[0.18em] uppercase translate-y-[-1px]">
+              · Collected Works, 2024–26
+            </span>
+          </Link>
 
-          {/* Logo / Name */}
-          <div className="flex-shrink-0 pl-2">
-            <Magnetic>
-              <Link href="/" className="block px-4 py-2 font-serif font-bold text-lg tracking-tight hover:opacity-80 transition-opacity">
-                K.R.
+          {/* Desktop nav */}
+          <nav className="hidden md:flex items-center gap-5">
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className="group font-mono text-[11px] tracking-wide text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <span className="text-accent/70 group-hover:text-accent">{item.num}</span>
+                <span className="ml-1.5">{item.name}</span>
               </Link>
-            </Magnetic>
-          </div>
-
-          <div className="flex-1" />
-
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-1 bg-secondary/30 rounded-full px-1.5 py-1 mx-2">
-            {navItems.map((item) => {
-              const isActive = pathname === item.href
-              return (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className={cn(
-                    "relative px-4 py-1.5 text-sm font-medium transition-colors duration-200 z-10",
-                    isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
-                  )}
-                >
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeTab"
-                      className="absolute inset-0 bg-background rounded-full shadow-sm"
-                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                    />
-                  )}
-                  <span className="relative z-10">{item.name}</span>
-                </Link>
-              )
-            })}
+            ))}
+            <a
+              href="/CV_Kunj_Rathod_April26.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono text-[11px] tracking-wide px-3 py-1.5 border border-foreground/80 text-foreground hover:bg-foreground hover:text-background transition-colors"
+            >
+              CV ↗
+            </a>
           </nav>
 
-          <div className="flex-1" />
-
-          {/* Actions */}
-          <div className="hidden md:flex items-center gap-2 pr-1">
-            <div className="h-6 w-px bg-border/50 mx-1" />
-            <Magnetic>
-              <a
-                href="https://github.com/rathodkunj2005"
-                target="_blank"
-                rel="noreferrer"
-                className="block p-2 text-muted-foreground hover:text-foreground hover:bg-secondary/50 rounded-full transition-colors"
-              >
-                <Github className="h-4 w-4" />
-              </a>
-            </Magnetic>
-            <Magnetic>
-              <a
-                href="https://linkedin.com/in/rathodkunj"
-                target="_blank"
-                rel="noreferrer"
-                className="block p-2 text-muted-foreground hover:text-foreground hover:bg-secondary/50 rounded-full transition-colors"
-              >
-                <Linkedin className="h-4 w-4" />
-              </a>
-            </Magnetic>
-            <Magnetic>
-              <Button asChild size="sm" variant="ghost" className="rounded-full px-5 font-medium text-xs h-9 shadow-none transition-transform active:scale-95">
-                <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">
-                  <FileText className="w-3.5 h-3.5 mr-1.5" />
-                  Resume
-                </a>
-              </Button>
-            </Magnetic>
-            <Magnetic>
-              <Button asChild size="sm" variant="ghost" className="rounded-full px-5 font-medium text-xs h-9 shadow-none transition-transform active:scale-95">
-                <a href="/CV_Kunj_Rathod_April26.pdf" target="_blank" rel="noopener noreferrer">
-                  <FileText className="w-3.5 h-3.5 mr-1.5" />
-                  CV
-                </a>
-              </Button>
-            </Magnetic>
-            <Magnetic>
-              <Button size="sm" variant="default" className="rounded-full px-5 font-medium text-xs h-9 ml-1 shadow-none transition-transform active:scale-95">
-                <Mail className="w-3.5 h-3.5 mr-1.5" />
-                Contact
-              </Button>
-            </Magnetic>
-          </div>
-
-          {/* Mobile Toggle */}
+          {/* Mobile toggle */}
           <button
-            className="md:hidden p-2 text-muted-foreground ml-auto"
+            className="md:hidden p-2 -mr-2 text-foreground"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
           >
             {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
-        </motion.div>
-      </motion.header>
+        </div>
+      </div>
 
-      {/* Mobile Menu Overlay */}
-      {mobileMenuOpen && (
+      {/* Hairline + reading progress */}
+      <div className="relative h-px bg-border">
         <motion.div
-          initial={{ opacity: 0, y: -20, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: -20, scale: 0.95 }}
-          className="fixed inset-x-4 top-24 z-40 md:hidden bg-background/90 backdrop-blur-2xl rounded-2xl border border-white/20 shadow-xl p-4 flex flex-col gap-2"
+          style={{ scaleX: progress, transformOrigin: "0% 50%" }}
+          className="absolute inset-0 bg-accent"
+        />
+      </div>
+
+      {/* Mobile menu */}
+      {mobileMenuOpen && (
+        <motion.nav
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="md:hidden bg-background border-b border-border"
         >
-          {navItems.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className="px-4 py-3 rounded-xl hover:bg-secondary/50 font-medium text-sm transition-colors"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              {item.name}
-            </Link>
-          ))}
-          <a
-            href="/resume.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-4 py-3 rounded-xl hover:bg-secondary/50 font-medium text-sm transition-colors flex items-center gap-2"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <FileText className="w-4 h-4" />
-            Resume
-          </a>
-          <a
-            href="/CV_Kunj_Rathod_April26.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-4 py-3 rounded-xl hover:bg-secondary/50 font-medium text-sm transition-colors flex items-center gap-2"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <FileText className="w-4 h-4" />
-            CV
-          </a>
-        </motion.div>
+          <div className="px-5 py-4 flex flex-col">
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-baseline gap-3 py-3 border-b border-border/50 last:border-0 font-mono text-sm"
+              >
+                <span className="text-accent text-xs w-5">{item.num}</span>
+                {item.name}
+              </Link>
+            ))}
+            <div className="flex gap-4 pt-4">
+              <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="ref-link font-mono text-sm">Resume ↗</a>
+              <a href="/CV_Kunj_Rathod_April26.pdf" target="_blank" rel="noopener noreferrer" className="ref-link font-mono text-sm">CV ↗</a>
+            </div>
+          </div>
+        </motion.nav>
       )}
-    </>
+    </header>
   )
 }
 
