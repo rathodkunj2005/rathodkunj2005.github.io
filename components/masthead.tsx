@@ -1,6 +1,18 @@
 "use client"
 
 import { motion } from "framer-motion"
+import dynamic from "next/dynamic"
+
+const InkField = dynamic(() => import("@/components/three/ink-field").then((m) => m.InkField), {
+  ssr: false,
+})
+const FigureLattice = dynamic(
+  () => import("@/components/three/figure-lattice").then((m) => m.FigureLattice),
+  {
+    ssr: false,
+    loading: () => <div className="h-[300px] md:h-[360px] w-full border border-border bg-card/40" />,
+  },
+)
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -26,7 +38,9 @@ const links = [
 
 export function Masthead() {
   return (
-    <section className="max-w-5xl mx-auto px-5 md:px-8 pt-12 md:pt-16">
+    <section className="relative">
+      <InkField className="absolute inset-0 pointer-events-none [mask-image:linear-gradient(to_bottom,black_0%,black_72%,transparent_100%)]" />
+      <div className="relative max-w-5xl mx-auto px-5 md:px-8 pt-12 md:pt-16">
       <motion.div
         initial="hidden"
         animate="visible"
@@ -85,6 +99,21 @@ export function Masthead() {
           </div>
         </motion.div>
 
+        {/* Fig. 0 — interactive memory lattice */}
+        <motion.figure variants={fadeUp} className="mt-12 md:grid md:grid-cols-[120px_1fr] md:gap-8">
+          <span className="smallcaps font-serif text-sm text-muted-foreground block mb-3 md:mb-0 md:text-right">
+            Figure 0
+          </span>
+          <div className="max-w-2xl">
+            <FigureLattice />
+            <figcaption className="font-mono text-[11px] text-muted-foreground mt-3 leading-relaxed">
+              <span className="text-accent">Fig. 0</span> — Long-horizon memory lattice. Nodes
+              encode episodes; oxblood signals shown in transit along k-nearest edges.{" "}
+              <em>Interactive plate — drag to rotate.</em>
+            </figcaption>
+          </div>
+        </motion.figure>
+
         {/* Links */}
         <motion.div variants={fadeUp} className="mt-10 md:grid md:grid-cols-[120px_1fr] md:gap-8">
           <span className="smallcaps font-serif text-sm text-muted-foreground block mb-3 md:mb-0 md:text-right">
@@ -120,6 +149,7 @@ export function Masthead() {
           ))}
         </motion.div>
       </motion.div>
+      </div>
     </section>
   )
 }

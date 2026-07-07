@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { motion, useMotionValue, useSpring } from "framer-motion"
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -136,13 +136,29 @@ const projects: Project[] = [
 ]
 
 function Figure({ project, index }: { project: Project; index: number }) {
+  const rotateX = useMotionValue(0)
+  const rotateY = useMotionValue(0)
+  const springX = useSpring(rotateX, { stiffness: 220, damping: 22 })
+  const springY = useSpring(rotateY, { stiffness: 220, damping: 22 })
+
   return (
     <motion.figure
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.6, ease, delay: (index % 2) * 0.08 }}
-      className="group flex flex-col p-6 md:p-8 -mt-px -ml-px border-t border-l border-border"
+      style={{ rotateX: springX, rotateY: springY, transformPerspective: 1100 }}
+      onPointerMove={(e) => {
+        if (e.pointerType !== "mouse") return
+        const rect = e.currentTarget.getBoundingClientRect()
+        rotateY.set(((e.clientX - rect.left) / rect.width - 0.5) * 4)
+        rotateX.set(-((e.clientY - rect.top) / rect.height - 0.5) * 4)
+      }}
+      onPointerLeave={() => {
+        rotateX.set(0)
+        rotateY.set(0)
+      }}
+      className="group flex flex-col p-6 md:p-8 -mt-px -ml-px border-t border-l border-border hover:bg-card/60 hover:shadow-[0_18px_40px_-24px_hsl(var(--foreground)/0.35)] transition-[background-color,box-shadow] duration-300 will-change-transform"
     >
       <div className="flex items-baseline justify-between gap-4">
         <figcaption className="font-mono text-xs text-accent tracking-wide tabular">
