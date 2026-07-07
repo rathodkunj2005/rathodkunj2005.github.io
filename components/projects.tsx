@@ -284,7 +284,7 @@ function Figure({ project, index }: { project: Project; index: number }) {
 
 export function Projects() {
   return (
-    <div className="grid md:grid-cols-2 border-b border-r border-border">
+    <div className="grid grid-cols-1 md:grid-cols-2 border-b border-r border-border">
       <FlagshipFigure project={projects[0]} />
       {projects.slice(1).map((project, index) => (
         <Figure key={project.title} project={project} index={index + 1} />
