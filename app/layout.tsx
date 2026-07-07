@@ -26,8 +26,8 @@ const plexMono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   title: 'Kunj Rathod – AI Engineer & Researcher',
-  description: 'Full-Stack Software Engineering Intern at Microsoft Azure Data. Specializing in AI/ML, RAG systems, and cloud technologies.',
-  keywords: ['AI', 'Machine Learning', 'Computer Science', 'Microsoft Azure', 'React', 'Python', 'Software Development'],
+  description: 'Software Engineer Intern on Microsoft Fabric (Azure Data). Specializing in AI/ML, RAG systems, embodied agents, and distributed data platforms.',
+  keywords: ['AI', 'Machine Learning', 'Computer Science', 'Microsoft Fabric', 'Azure', 'React', 'Python', 'Software Development'],
   authors: [{ name: 'Kunj Rathod' }],
   openGraph: {
     title: 'Kunj Rathod – AI Engineer & Researcher',

@@ -1,6 +1,13 @@
 "use client"
 
 import { motion, useMotionValue, useSpring } from "framer-motion"
+import dynamic from "next/dynamic"
+import { NotebookCell } from "@/components/notebook-cell"
+
+const VlaArm = dynamic(() => import("@/components/three/vla-arm").then((m) => m.VlaArm), {
+  ssr: false,
+  loading: () => <div className="h-[280px] w-full border border-border bg-card/40" />,
+})
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -135,6 +142,75 @@ const projects: Project[] = [
   },
 ]
 
+/** Flagship research figure — full-width, with a live VLA rollout plate. */
+function FlagshipFigure({ project }: { project: Project }) {
+  return (
+    <motion.figure
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.6, ease }}
+      className="md:col-span-2 p-6 md:p-8 -mt-px -ml-px border-t border-l border-border bg-card/30"
+    >
+      <div className="flex items-baseline justify-between gap-4">
+        <figcaption className="font-mono text-xs text-accent tracking-wide tabular">
+          Fig. 01 — interactive
+        </figcaption>
+        <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+          {project.type}
+        </span>
+      </div>
+
+      <div className="md:grid md:grid-cols-2 md:gap-8 mt-4">
+        <div className="flex flex-col">
+          <h3 className="font-serif text-2xl md:text-3xl leading-tight">{project.title}</h3>
+          <p className="font-sans italic text-muted-foreground mt-1">{project.subtitle}</p>
+
+          <ul className="mt-4 space-y-2 flex-grow">
+            {project.bullets.map((b, i) => (
+              <li
+                key={i}
+                className="font-sans text-[0.95rem] leading-relaxed text-foreground/85 pl-4 relative"
+              >
+                <span className="absolute left-0 text-accent/70 font-mono text-[10px] top-1">—</span>
+                {b}
+              </li>
+            ))}
+          </ul>
+
+          <p className="font-mono text-[11px] text-muted-foreground mt-5 leading-relaxed">
+            {project.technologies.join(" · ")}
+          </p>
+          <div className="flex gap-5 mt-4 pt-4 border-t border-border/60 font-mono text-xs">
+            <a href={project.github} target="_blank" rel="noopener noreferrer" className="ref-link">
+              source ↗
+            </a>
+          </div>
+        </div>
+
+        <div className="mt-6 md:mt-0 flex flex-col">
+          <NotebookCell
+            className="flex-1 flex flex-col [&>div:last-child]:flex-1"
+            source={
+              <>
+                env = SceneSmith(<span className="opacity-80">&quot;apartment-0042&quot;</span>)
+                {"\n"}<span className="text-muted-foreground">rollout</span> = palace.
+                <span className="text-accent">act</span>(env, policy=π)
+              </>
+            }
+          >
+            <VlaArm />
+          </NotebookCell>
+          <p className="font-mono text-[10.5px] text-muted-foreground mt-2 leading-relaxed">
+            Live plate — CCD inverse kinematics at 60 Hz. The arm tracks its target
+            autonomously; drag on the floor plane to take over the policy.
+          </p>
+        </div>
+      </div>
+    </motion.figure>
+  )
+}
+
 function Figure({ project, index }: { project: Project; index: number }) {
   const rotateX = useMotionValue(0)
   const rotateY = useMotionValue(0)
@@ -176,7 +252,7 @@ function Figure({ project, index }: { project: Project; index: number }) {
 
       <ul className="mt-4 space-y-2 flex-grow">
         {project.bullets.map((b, i) => (
-          <li key={i} className="font-sans text-sm leading-relaxed text-foreground/75 pl-4 relative">
+          <li key={i} className="font-sans text-[0.95rem] leading-relaxed text-foreground/85 pl-4 relative">
             <span className="absolute left-0 text-accent/70 font-mono text-[10px] top-1">—</span>
             {b}
           </li>
@@ -209,8 +285,9 @@ function Figure({ project, index }: { project: Project; index: number }) {
 export function Projects() {
   return (
     <div className="grid md:grid-cols-2 border-b border-r border-border">
-      {projects.map((project, index) => (
-        <Figure key={project.title} project={project} index={index} />
+      <FlagshipFigure project={projects[0]} />
+      {projects.slice(1).map((project, index) => (
+        <Figure key={project.title} project={project} index={index + 1} />
       ))}
     </div>
   )

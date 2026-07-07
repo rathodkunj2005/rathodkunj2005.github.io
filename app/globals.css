@@ -21,7 +21,7 @@
     --secondary-foreground: 30 14% 10%;
 
     --muted: 40 20% 87%;
-    --muted-foreground: 30 7% 36%;     /* faded ink */
+    --muted-foreground: 30 8% 32%;     /* faded ink */
 
     --accent: 11 72% 33%;              /* oxblood / hyperref red */
     --accent-foreground: 41 38% 96%;
@@ -60,7 +60,7 @@
     --secondary-foreground: 41 30% 88%;
 
     --muted: 30 6% 16%;
-    --muted-foreground: 40 10% 60%;
+    --muted-foreground: 40 12% 65%;
 
     --accent: 11 70% 52%;
     --accent-foreground: 30 8% 8%;
@@ -167,5 +167,23 @@ body::before {
   }
   .caret-blink {
     animation: blink-caret 1.1s step-end infinite;
+  }
+
+  /* Folio — centered page number between sections, as in a bound preprint */
+  .folio {
+    @apply flex items-center gap-4 font-mono text-[10px] tracking-[0.2em] text-muted-foreground select-none;
+  }
+  .folio::before,
+  .folio::after {
+    content: "";
+    @apply flex-1 border-t border-border;
+  }
+
+  /* Notebook cell source block */
+  .nb-source {
+    background: hsl(var(--foreground) / 0.035);
+  }
+  .dark .nb-source {
+    background: hsl(var(--foreground) / 0.06);
   }
 }

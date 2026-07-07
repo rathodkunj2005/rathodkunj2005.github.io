@@ -155,3 +155,9 @@ temp/
 *.tsbuildinfo
 next-env.d.ts
 .env*.local
+
+# Playwright and screenshots
+.playwright-mcp/
+verify-*.png
+v*-*.png
+

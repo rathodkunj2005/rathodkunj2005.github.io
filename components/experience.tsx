@@ -6,15 +6,15 @@ const ease = [0.22, 1, 0.36, 1] as const
 
 const experiences = [
   {
-    title: "Software Engineer Intern — Azure Data",
+    title: "Software Engineer Intern — Microsoft Fabric (Azure Data)",
     company: "Microsoft",
     period: "Jan 2026 —",
     location: "Redmond, WA",
     description: [
-      "Building scalable cloud solutions for distributed data systems on the Azure Data team.",
-      "Focusing on full-stack software development and distributed systems within the Azure ecosystem.",
+      "Building distributed data systems for Microsoft Fabric — Microsoft's unified, Spark-native lakehouse analytics platform (the Databricks class of system): OneLake storage, data engineering, warehousing, and real-time intelligence under one compute fabric.",
+      "Full-stack work across the Fabric platform within the Azure Data organization.",
     ],
-    technologies: ["Azure", "Distributed Systems", "Full Stack", "Cloud"],
+    technologies: ["Microsoft Fabric", "OneLake", "Spark", "Distributed Systems", "Azure"],
     active: true,
   },
   {

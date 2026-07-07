@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { motion, useScroll, useSpring } from "framer-motion"
+import { motion, useScroll, useSpring, useMotionValueEvent } from "framer-motion"
 import { Menu, X } from "lucide-react"
+
+const TOTAL_PAGES = 6
 
 const navItems = [
   { num: "01", name: "Experience", href: "#experience" },
@@ -15,8 +17,22 @@ const navItems = [
 
 export function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [page, setPage] = useState(1)
+  const [kernelBusy, setKernelBusy] = useState(false)
   const { scrollYProgress } = useScroll()
   const progress = useSpring(scrollYProgress, { stiffness: 140, damping: 30 })
+
+  useMotionValueEvent(scrollYProgress, "change", (v) => {
+    setPage(Math.min(TOTAL_PAGES, Math.max(1, Math.ceil(v * TOTAL_PAGES))))
+  })
+
+  useEffect(() => {
+    const onKernel = (e: Event) => {
+      setKernelBusy((e as CustomEvent).detail === "busy")
+    }
+    window.addEventListener("nb:kernel", onKernel)
+    return () => window.removeEventListener("nb:kernel", onKernel)
+  }, [])
 
   useEffect(() => {
     document.body.style.overflow = mobileMenuOpen ? "hidden" : ""
@@ -49,6 +65,18 @@ export function Navigation() {
                 <span className="ml-1.5">{item.name}</span>
               </Link>
             ))}
+            <span
+              className="font-mono text-[10px] tracking-[0.12em] uppercase text-muted-foreground tabular"
+              title="Jupyter kernel status"
+            >
+              <span className={kernelBusy ? "text-accent caret-blink" : "text-accent/60"}>
+                {kernelBusy ? "●" : "○"}
+              </span>{" "}
+              kernel {kernelBusy ? "busy" : "idle"}
+            </span>
+            <span className="font-mono text-[10px] tracking-[0.12em] uppercase text-muted-foreground tabular">
+              p. {page}/{TOTAL_PAGES}
+            </span>
             <a
               href="/CV_Kunj_Rathod_April26.pdf"
               target="_blank"

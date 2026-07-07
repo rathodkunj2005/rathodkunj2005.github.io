@@ -54,7 +54,7 @@ const fragmentShader = /* glsl */ `
     if (r > 0.5) discard;
     float alpha = smoothstep(0.5, 0.32, r);
     vec3 color = vShade > 0.93 ? uAccent : uInk;
-    float depth = 0.16 + fract(vSeed * 7.31) * 0.4;
+    float depth = 0.10 + fract(vSeed * 7.31) * 0.26;
     gl_FragColor = vec4(color, alpha * depth * (vShade > 0.93 ? 1.7 : 1.0));
   }
 `
@@ -65,7 +65,7 @@ function Field({ reduced }: { reduced: boolean }) {
   const { camera, gl } = useThree()
 
   const count = useMemo(
-    () => (typeof window !== "undefined" && window.innerWidth < 768 ? 1200 : 2600),
+    () => (typeof window !== "undefined" && window.innerWidth < 768 ? 700 : 1400),
     [],
   )
 

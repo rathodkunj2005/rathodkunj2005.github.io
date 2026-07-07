@@ -238,7 +238,7 @@ function LatticeScene({
 }
 
 /** Fig. 0 — drag-to-rotate memory lattice, framed like a plate in a paper. */
-export function FigureLattice() {
+export function FigureLattice({ className = "h-[300px] md:h-[360px]" }: { className?: string }) {
   const reduced = usePrefersReducedMotion()
   const { ref, inView } = useNearViewport<HTMLDivElement>()
   const control = useRef<DragState>({ rotY: 0.6, rotX: -0.15, velY: 0, velX: 0, dragging: false })
@@ -247,7 +247,7 @@ export function FigureLattice() {
   return (
     <div
       ref={ref}
-      className="group relative h-[300px] md:h-[360px] w-full border border-border bg-card/40 cursor-grab active:cursor-grabbing select-none [touch-action:pan-y]"
+      className={`group relative w-full border border-border bg-card/40 cursor-grab active:cursor-grabbing select-none [touch-action:pan-y] ${className}`}
       onPointerDown={(e) => {
         control.current.dragging = true
         control.current.velY = 0
