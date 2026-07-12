@@ -17,8 +17,8 @@ export const KUNJ_CORPUS: CorpusChunk[] = [
     text: "B.S. Computer Science, University of Utah, Salt Lake City (Aug 2023 – Dec 2026). GPA 3.7/4.0, Dean's List. Relevant coursework: Machine Learning, Computer Vision, Natural Language Processing, Distributed Systems, Algorithms & Data Structures, Interpretability of LLMs, Multimodal LLM Agents. High school: Krishna Public School, Raipur, India (2017–2023).",
   },
   {
-    source: "CV — Microsoft",
-    text: "Software Engineer Intern, Microsoft — Azure Data / Microsoft Fabric team, Redmond, WA (2026). Builds scalable cloud solutions for distributed data systems on the Fabric lakehouse platform (OneLake, Spark, warehousing, real-time intelligence); full-stack software development and distributed systems within the Azure ecosystem.",
+    source: "Resume — Microsoft",
+    text: "Software Engineer Intern, Microsoft — Microsoft Fabric (Azure Data), Redmond, WA (2026). Building the SKU Change History feature end-to-end (query builder, service layer, REST API) for the Fabric Manage Capacities admin portal, integrating internal telemetry pipelines to give capacity admins auditable SKU-change timelines across large enterprise tenants. Also migrating capacity overage workflows into native Fabric platform UX with action-driven side panes, defining data contracts with UX and backend teams across 3 time zones. Fabric is Microsoft's unified lakehouse analytics platform: OneLake, Spark, warehousing, real-time intelligence.",
   },
   {
     source: "CV — University of Utah Health",
@@ -30,7 +30,7 @@ export const KUNJ_CORPUS: CorpusChunk[] = [
   },
   {
     source: "CV — CourtEasy.ai",
-    text: "AI Engineering Intern, CourtEasy.ai / Nugen, remote (Nov 2024 – Apr 2025). Scaled hybrid legal-document retrieval to 10M+ indexed Indian legal documents (statutes, court orders) supporting 5,000+ daily queries. Improved retrieval accuracy 28% and reduced hallucinations 35% with hybrid RAG (dense vectors + BM25 + reranking) and context grounding for Legal-NER. Built production ETL ingesting 500k+ documents/week. Benchmarked 8 LLM families (InLegalBERT, InLegalLLaMA, GPT-4o-mini) on LegalBench and NyayaAnumana; model-routing analysis cut projected inference spend by $50k+/year. Co-authored a comparative legal-AI analysis synthesizing 15+ papers.",
+    text: "AI Engineering Intern, CourtEasy.ai / Nugen, remote (Nov 2024 – Apr 2025). Scaled hybrid legal-document retrieval to 10M+ indexed Indian legal documents (statutes, court orders) supporting 5,000+ daily queries. Improved retrieval accuracy 28% and reduced hallucinations 35% with hybrid RAG (dense vectors + BM25 + reranking) and context grounding for Legal-NER. Built production ETL ingesting 500k+ documents/week. Benchmarked 8 LLM families (InLegalBERT, InLegalLLaMA, GPT-4o-mini) on LegalBench, NyayaAnumana, IL-TUR, and LegalBench-RAG; model-routing analysis cut projected inference spend by $50k+/year while preserving answer quality. Co-authored a comparative legal-AI analysis synthesizing 15+ papers.",
   },
   {
     source: "CV — BioGraphRAG internship",
@@ -46,7 +46,15 @@ export const KUNJ_CORPUS: CorpusChunk[] = [
   },
   {
     source: "CV — Research: interpretability",
-    text: "Current research (2026–): predicting generalization from circuits — LLM interpretability, University of Utah. Investigates circuit-level generalization in LLMs using sparse feature circuits (building on Wu et al.). Builds automated LLM pipelines to extract circuits from default tasks and predict generalization to non-default tasks, using attribution graphs and Pathways Discovery for circuit-level analysis.",
+    text: "Current research (2026–): predicting generalization from circuits — LLM interpretability, University of Utah. Investigates whether sparse feature circuits learned on default tasks generalize to counterfactual/non-default task variants (building on Wu et al.), using attribution graphs and Pathways Discovery. Open-sourced a graph-skeletonization tool that prunes attribution graphs and exports visualization-compatible artifacts without dropping source metadata.",
+  },
+  {
+    source: "Resume — MEMROT v2",
+    text: "MEMROT v2 (May 2026 – present): independent research on mechanistic evaluation of long-context memory failure in LLMs. Built a reproducible model-evaluation pipeline with gold-position randomization, counterfactual retrieval variants, SAE layer scans, mean-ablation, and intervention tests using PyTorch, Gemma-2-2B, and Gemma Scope sparse autoencoders on LongMemEval-S. Ran an 840-pass sweep over 140 controlled retrieval questions on distributed CHPC/SLURM compute.",
+  },
+  {
+    source: "Resume — Continuum",
+    text: "Continuum (Jun 2026): local-first multimodal memory engine — a privacy-first desktop memory layer in Rust, Tauri 2, React, and TypeScript that captures foreground context on-device, stores vector + lexical retrieval fields in LanceDB (with OCR and embeddings), and exposes agent-ready recall through an MCP server.",
   },
   {
     source: "CV — Project: FNDR",
