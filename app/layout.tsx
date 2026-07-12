@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Fraunces, Newsreader, IBM_Plex_Mono } from 'next/font/google'
 import './globals.css'
 import { HostGuard } from '@/components/host-guard'
+import { ThemeProvider } from '@/components/theme-provider'
 
 const fraunces = Fraunces({
   subsets: ['latin'],
@@ -71,8 +72,10 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased bg-background text-foreground" suppressHydrationWarning>
-        <HostGuard />
-        {children}
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <HostGuard />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   )
