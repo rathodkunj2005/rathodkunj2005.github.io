@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Fraunces, Newsreader, IBM_Plex_Mono } from 'next/font/google'
 import './globals.css'
+import { HostGuard } from '@/components/host-guard'
 
 const fraunces = Fraunces({
   subsets: ['latin'],
@@ -63,12 +64,16 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${fraunces.variable} ${newsreader.variable} ${plexMono.variable}`} suppressHydrationWarning>
       <head>
+        <link rel="canonical" href="https://portfolio-updated-seven-beryl.vercel.app/" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
         />
       </head>
-      <body className="font-sans antialiased bg-background text-foreground" suppressHydrationWarning>{children}</body>
+      <body className="font-sans antialiased bg-background text-foreground" suppressHydrationWarning>
+        <HostGuard />
+        {children}
+      </body>
     </html>
   )
 }

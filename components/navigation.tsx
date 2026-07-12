@@ -8,6 +8,7 @@ import { Menu, X } from "lucide-react"
 const TOTAL_PAGES = 6
 
 const navItems = [
+  { num: "❋", name: "Ask", href: "/" },
   { num: "01", name: "Experience", href: "#experience" },
   { num: "02", name: "Selected Work", href: "#projects" },
   { num: "03", name: "Writing", href: "#writing" },
