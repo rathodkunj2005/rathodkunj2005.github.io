@@ -9,6 +9,7 @@ import { Contact } from "@/components/contact"
 import { MeshPlate } from "@/components/three/mesh-plate"
 import { NotebookCell } from "@/components/notebook-cell"
 import { AttentionFigure } from "@/components/attention-figure"
+import { ThinkingMap } from "@/components/thinking-map"
 import Link from "next/link"
 
 /** Folio — page number typeset between sections, as in a bound preprint. */
@@ -148,13 +149,30 @@ export default function Home() {
           <SectionHeading mark="✉" title="Correspondence" />
           <Contact />
         </section>
+
+        <Folio n={6} />
+
+        {/* End paper — open questions */}
+        <section id="questions" className="max-w-5xl mx-auto px-5 md:px-8 mt-20 md:mt-24 scroll-mt-20">
+          <div className="mb-10 md:mb-12">
+            <div className="rule-double pt-4" />
+            <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+              <span className="section-mark">Ω</span>
+              <h2 className="font-serif text-3xl md:text-4xl tracking-tight sr-only">Open questions</h2>
+              <span className="font-sans italic text-sm text-muted-foreground">
+                end paper — the questions behind the preceding pages
+              </span>
+            </div>
+          </div>
+          <ThinkingMap />
+        </section>
       </main>
 
       {/* Colophon */}
       <footer className="max-w-5xl mx-auto px-5 md:px-8 mt-20 pb-12">
         <div className="rule-double pt-4" />
         <div className="flex flex-col md:flex-row md:items-baseline md:justify-between gap-2 font-mono text-[10px] tracking-[0.12em] uppercase text-muted-foreground">
-          <span>© {new Date().getFullYear()} Kunj Rathod · 6 pp. · interactive edition</span>
+          <span>© {new Date().getFullYear()} Kunj Rathod · 7 pp. · interactive edition</span>
           <span>Received 2023 · Revised continuously · Never accepted as final</span>
           <span>Typeset in Fraunces, Newsreader &amp; IBM Plex Mono</span>
         </div>

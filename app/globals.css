@@ -179,6 +179,20 @@ body::before {
     @apply flex-1 border-t border-border;
   }
 
+  /* End-paper tiles — slow vertical drift */
+  @keyframes tile-drift {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+  .tile-drift {
+    animation: tile-drift 9s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tile-drift {
+      animation: none;
+    }
+  }
+
   /* Notebook cell source block */
   .nb-source {
     background: hsl(var(--foreground) / 0.035);
