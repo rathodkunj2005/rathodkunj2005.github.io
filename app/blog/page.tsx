@@ -2,44 +2,9 @@ import Link from "next/link"
 import { Navigation } from "@/components/navigation"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowRight } from "lucide-react"
-
-// In a real app, this would come from a database or CMS
-const blogPosts = [
-  {
-    id: 1,
-    title: "Building Effective RAG Systems for Medical Data",
-    excerpt:
-      "Lessons learned from developing BioGraphRAG and optimizing retrieval for complex medical knowledge graphs.",
-    date: "March 1, 2025",
-    readTime: "8 min read",
-    slug: "building-effective-rag-systems",
-    category: "AI & Data",
-  },
-  {
-    id: 2,
-    title: "Multi-Agent AI Systems: Architecture and Implementation",
-    excerpt:
-      "How to design collaborative AI systems with specialized agents for complex tasks like financial analysis.",
-    date: "February 20, 2025",
-    readTime: "10 min read",
-    slug: "multi-agent-ai-systems",
-    category: "AI & Data",
-  },
-  {
-    id: 3,
-    title: "Reinforcement Learning for Financial Applications",
-    excerpt: "Exploring DQN and PPO algorithms for portfolio optimization and investment risk assessment.",
-    date: "February 5, 2025",
-    readTime: "7 min read",
-    slug: "reinforcement-learning-finance",
-    category: "AI & Finance",
-  },
-]
+import { blogPosts } from "@/lib/blog-posts"
 
 export default function BlogPage() {
-  // Ensure blogPosts is an array
-  const posts = Array.isArray(blogPosts) ? blogPosts : []
-
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navigation />
@@ -53,8 +18,8 @@ export default function BlogPage() {
           </header>
 
           <div className="grid gap-8 md:grid-cols-2">
-            {posts.map((post) => (
-              <Card key={post.id} className="flex flex-col h-full">
+            {blogPosts.map((post) => (
+              <Card key={post.slug} className="flex flex-col h-full">
                 <CardHeader>
                   <div className="text-sm font-medium text-primary mb-2">{post.category}</div>
                   <CardTitle className="line-clamp-2">
@@ -63,7 +28,7 @@ export default function BlogPage() {
                     </Link>
                   </CardTitle>
                   <CardDescription>
-                    {post.date} · {post.readTime}
+                    {post.date} · {post.readTime} · {post.source}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="flex-grow">
@@ -91,4 +56,3 @@ export default function BlogPage() {
     </div>
   )
 }
-

@@ -44,18 +44,18 @@ export function Navigation() {
     <header className="fixed top-0 inset-x-0 z-40 bg-background/95 backdrop-blur-[2px]">
       <div className="max-w-5xl mx-auto px-5 md:px-8">
         <div className="flex items-center justify-between h-14">
-          <Link href="/" className="flex items-baseline gap-2 group">
+          <Link href="/" className="flex items-baseline gap-2 group shrink-0 whitespace-nowrap">
             <span className="inline-block h-2.5 w-2.5 bg-accent translate-y-px group-hover:rotate-45 transition-transform duration-300" />
             <span className="font-serif text-lg tracking-tight">
               K.&thinsp;Rathod
             </span>
-            <span className="hidden sm:inline font-mono text-[10px] text-muted-foreground tracking-[0.18em] uppercase translate-y-[-1px]">
+            <span className="hidden xl:inline font-mono text-[10px] text-muted-foreground tracking-[0.18em] uppercase translate-y-[-1px]">
               · Collected Works, 2024–26
             </span>
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-5">
+          <nav className="hidden lg:flex items-center gap-4 xl:gap-5 whitespace-nowrap">
             {navItems.map((item) => (
               <Link
                 key={item.name}
@@ -67,7 +67,7 @@ export function Navigation() {
               </Link>
             ))}
             <span
-              className="font-mono text-[10px] tracking-[0.12em] uppercase text-muted-foreground tabular"
+              className="hidden xl:inline font-mono text-[10px] tracking-[0.12em] uppercase text-muted-foreground tabular"
               title="Jupyter kernel status"
             >
               <span className={kernelBusy ? "text-accent caret-blink" : "text-accent/60"}>
@@ -75,7 +75,7 @@ export function Navigation() {
               </span>{" "}
               kernel {kernelBusy ? "busy" : "idle"}
             </span>
-            <span className="font-mono text-[10px] tracking-[0.12em] uppercase text-muted-foreground tabular">
+            <span className="hidden xl:inline font-mono text-[10px] tracking-[0.12em] uppercase text-muted-foreground tabular">
               p. {page}/{TOTAL_PAGES}
             </span>
             <a
@@ -90,7 +90,7 @@ export function Navigation() {
 
           {/* Mobile toggle */}
           <button
-            className="md:hidden p-2 -mr-2 text-foreground"
+            className="lg:hidden p-2 -mr-2 text-foreground"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -112,7 +112,7 @@ export function Navigation() {
         <motion.nav
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
-          className="md:hidden bg-background border-b border-border"
+          className="lg:hidden bg-background border-b border-border"
         >
           <div className="px-5 py-4 flex flex-col">
             {navItems.map((item) => (
