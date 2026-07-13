@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
-import { ArrowUp, Square, FileText } from "lucide-react"
+import { ArrowUp, Square, FileText, RotateCcw } from "lucide-react"
 import type { MLCEngineInterface } from "@mlc-ai/web-llm"
 import {
   buildKunjSystemPrompt,
@@ -19,6 +19,19 @@ const ease = [0.22, 1, 0.36, 1] as const
 type Role = "user" | "assistant"
 type Message = { role: Role; content: string }
 type EngineState = "idle" | "booting" | "ready" | "generating" | "unsupported" | "error"
+
+/** After a crash, check whether this tab can still get a WebGPU adapter — if not,
+ * only a page reload will bring the model back (iOS Safari revokes it under memory pressure). */
+async function gpuAdapterMissing(): Promise<boolean> {
+  try {
+    const gpu = (navigator as Navigator & { gpu?: { requestAdapter(): Promise<unknown | null> } })
+      .gpu
+    if (!gpu) return true
+    return (await gpu.requestAdapter()) === null
+  } catch {
+    return true
+  }
+}
 
 function greeting() {
   const h = new Date().getHours()
@@ -75,8 +88,11 @@ export function AskChat() {
   const [engineState, setEngineState] = useState<EngineState>("idle")
   const [boot, setBoot] = useState({ text: "", progress: 0 })
   const [errorMsg, setErrorMsg] = useState("")
+  const [failedText, setFailedText] = useState("")
+  const [gpuGone, setGpuGone] = useState(false)
 
   const engineRef = useRef<MLCEngineInterface | null>(null)
+  const enginePromiseRef = useRef<Promise<MLCEngineInterface> | null>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
   const started = messages.length > 0
@@ -100,18 +116,89 @@ export function AskChat() {
 
   const ensureEngine = useCallback(async (): Promise<MLCEngineInterface> => {
     if (engineRef.current) return engineRef.current
+    // Memoize the in-flight boot so concurrent sends can't spawn two workers.
+    if (enginePromiseRef.current) return enginePromiseRef.current
     setEngineState("booting")
-    const { CreateWebWorkerMLCEngine } = await import("@mlc-ai/web-llm")
-    const engine = await CreateWebWorkerMLCEngine(
-      new Worker(new URL("../../lib/webllm-worker.ts", import.meta.url), { type: "module" }),
-      ASK_MODEL_ID,
-      {
-        initProgressCallback: (r) => setBoot({ text: r.text, progress: r.progress }),
-      },
-    )
-    engineRef.current = engine
-    return engine
+    enginePromiseRef.current = (async () => {
+      const { CreateWebWorkerMLCEngine } = await import("@mlc-ai/web-llm")
+      const engine = await CreateWebWorkerMLCEngine(
+        new Worker(new URL("../../lib/webllm-worker.ts", import.meta.url), { type: "module" }),
+        ASK_MODEL_ID,
+        {
+          initProgressCallback: (r) => setBoot({ text: r.text, progress: r.progress }),
+        },
+      )
+      engineRef.current = engine
+      return engine
+    })()
+    try {
+      return await enginePromiseRef.current
+    } catch (err) {
+      enginePromiseRef.current = null
+      throw err
+    }
   }, [])
+
+  const streamReply = useCallback(
+    async (engine: MLCEngineInterface, history: Message[], text: string) => {
+      const chunks = await engine.chat.completions.create({
+        // System prompt is rebuilt per question with retrieved resume/CV chunks;
+        // history is capped so the 4k context never overflows.
+        messages: [{ role: "system", content: buildKunjSystemPrompt(text) }, ...history.slice(-8)],
+        stream: true,
+        temperature: 0.3,
+        top_p: 0.9,
+        max_tokens: 512,
+      })
+
+      let reply = ""
+      for await (const chunk of chunks) {
+        reply += chunk.choices[0]?.delta?.content ?? ""
+        setMessages([...history, { role: "assistant", content: reply }])
+      }
+    },
+    [],
+  )
+
+  const run = useCallback(
+    async (text: string, history: Message[]) => {
+      try {
+        let engine = await ensureEngine()
+        setEngineState("generating")
+        setMessages([...history, { role: "assistant", content: "" }])
+
+        try {
+          await streamReply(engine, history, text)
+        } catch (err) {
+          const modelUnloaded =
+            err instanceof Error && /model not loaded|ModelNotLoadedError/i.test(err.message)
+          if (!modelUnloaded) throw err
+          // The worker lost the model (GPU device loss, tab backgrounding, memory
+          // pressure). Weights are still in the browser cache, so reload is fast.
+          setEngineState("booting")
+          try {
+            await engine.reload(ASK_MODEL_ID)
+          } catch {
+            engineRef.current = null
+            enginePromiseRef.current = null
+            engine = await ensureEngine()
+          }
+          setEngineState("generating")
+          await streamReply(engine, history, text)
+        }
+        setEngineState("ready")
+      } catch (err) {
+        console.error(err)
+        // Keep the unanswered question in the transcript, drop the dead reply bubble.
+        setMessages(history)
+        setFailedText(text)
+        setErrorMsg(err instanceof Error ? err.message : String(err))
+        setGpuGone(await gpuAdapterMissing())
+        setEngineState("error")
+      }
+    },
+    [ensureEngine, streamReply],
+  )
 
   const send = useCallback(
     async (raw?: string) => {
@@ -120,38 +207,20 @@ export function AskChat() {
       if (engineState === "unsupported") return
 
       setInput("")
+      setErrorMsg("")
       const history: Message[] = [...messages, { role: "user", content: text }]
       setMessages(history)
-
-      try {
-        const engine = await ensureEngine()
-        setEngineState("generating")
-        setMessages([...history, { role: "assistant", content: "" }])
-
-        const chunks = await engine.chat.completions.create({
-          // System prompt is rebuilt per question with retrieved resume/CV chunks;
-          // history is capped so the 4k context never overflows.
-          messages: [{ role: "system", content: buildKunjSystemPrompt(text) }, ...history.slice(-8)],
-          stream: true,
-          temperature: 0.3,
-          top_p: 0.9,
-          max_tokens: 512,
-        })
-
-        let reply = ""
-        for await (const chunk of chunks) {
-          reply += chunk.choices[0]?.delta?.content ?? ""
-          setMessages([...history, { role: "assistant", content: reply }])
-        }
-        setEngineState("ready")
-      } catch (err) {
-        console.error(err)
-        setErrorMsg(err instanceof Error ? err.message : String(err))
-        setEngineState("error")
-      }
+      await run(text, history)
     },
-    [input, messages, engineState, ensureEngine],
+    [input, messages, engineState, run],
   )
+
+  const retry = useCallback(() => {
+    if (!failedText || engineState !== "error") return
+    setErrorMsg("")
+    // The transcript already ends with the unanswered question — re-run it in place.
+    void run(failedText, messages)
+  }, [failedText, engineState, messages, run])
 
   const stop = useCallback(() => {
     engineRef.current?.interruptGenerate()
@@ -382,13 +451,50 @@ export function AskChat() {
               </AnimatePresence>
 
               {engineState === "error" && (
-                <div className="rounded-xl border border-destructive/50 px-4 py-3 font-mono text-[11px] text-destructive">
-                  The model crashed: {errorMsg || "unknown error"}. Reload to try again, or email{" "}
-                  <a href="mailto:rathodkunj2005@gmail.com" className="underline">
-                    rathodkunj2005@gmail.com
-                  </a>
-                  .
-                </div>
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, ease }}
+                  className="md:ml-11"
+                >
+                  <div className="rounded-xl border border-destructive/40 bg-card/60 px-4 py-3.5">
+                    <p className="font-mono text-[11px] tracking-[0.14em] uppercase text-destructive mb-2">
+                      ○ the model went quiet
+                    </p>
+                    <p className="font-sans text-[13.5px] leading-relaxed text-foreground/85 text-pretty">
+                      {gpuGone
+                        ? "This tab lost its GPU — browsers take it back under memory pressure, especially on phones. Reloading the page hands it back; the weights stay cached, so it wakes fast."
+                        : "It lost its footing mid-answer. Your question is safe, and the weights are still cached — waking it again takes seconds."}
+                    </p>
+                    <div className="mt-3.5 flex flex-wrap items-center gap-2">
+                      {gpuGone ? (
+                        <button
+                          onClick={() => window.location.reload()}
+                          className="inline-flex items-center gap-1.5 rounded-full bg-accent px-4 py-1.5 font-sans text-[13px] text-accent-foreground hover:opacity-85 transition-opacity"
+                        >
+                          <RotateCcw className="h-3.5 w-3.5" />
+                          Reload the page
+                        </button>
+                      ) : (
+                        <button
+                          onClick={retry}
+                          className="inline-flex items-center gap-1.5 rounded-full bg-accent px-4 py-1.5 font-sans text-[13px] text-accent-foreground hover:opacity-85 transition-opacity"
+                        >
+                          <RotateCcw className="h-3.5 w-3.5" />
+                          Wake it &amp; retry
+                        </button>
+                      )}
+                      {portfolioButton}
+                    </div>
+                    <p className="mt-3 font-mono text-[10px] leading-relaxed text-muted-foreground/60">
+                      {(errorMsg || "unknown error").slice(0, 140)}
+                      {errorMsg.length > 140 && "…"} — or email{" "}
+                      <a href="mailto:rathodkunj2005@gmail.com" className="ref-link">
+                        rathodkunj2005@gmail.com
+                      </a>
+                    </p>
+                  </div>
+                </motion.div>
               )}
             </div>
           </div>
