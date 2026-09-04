@@ -4,14 +4,35 @@ import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { ShieldAlert, ExternalLink } from "lucide-react"
 
+export const CANONICAL_ORIGIN = "https://www.kunjrathod.com"
+
 const ALLOWED_HOSTS = [
   "localhost",
   "127.0.0.1",
-  "portfolio-updated-seven-beryl.vercel.app",
+  "0.0.0.0",
   "rathodkunj2005.github.io",
   "kunjrathod.com",
-  "www.kunjrathod.com"
+  "www.kunjrathod.com",
 ]
+
+// Vercel gives every deployment of this project its own hostname
+// (kunjrathod.vercel.app, portfolio-<hash>-rathodkunj2005s-projects.vercel.app,
+// preview branches, etc). These are our own infrastructure, so they must not
+// trip the mirror guard -- otherwise the Vercel dashboard thumbnail, preview
+// links, and any crawler that reaches a deployment URL all render the banner.
+const ALLOWED_HOST_PATTERNS = [
+  /^kunjrathod\.vercel\.app$/,
+  /(^|[.-])rathodkunj2005s-projects\.vercel\.app$/,
+  /(^|[.-])rathodkunj2005\.vercel\.app$/,
+]
+
+function isAllowedHost(hostname: string): boolean {
+  const host = hostname.toLowerCase()
+  if (ALLOWED_HOSTS.some((allowed) => host === allowed || host.endsWith(`.${allowed}`))) {
+    return true
+  }
+  return ALLOWED_HOST_PATTERNS.some((pattern) => pattern.test(host))
+}
 
 export function HostGuard() {
   const [isUnauthorized, setIsUnauthorized] = useState(false)
@@ -19,13 +40,7 @@ export function HostGuard() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const hostname = window.location.hostname
-      // Check if hostname is allowed or is a subdomain of an allowed host
-      const isAllowed = ALLOWED_HOSTS.some(
-        (allowed) => hostname === allowed || hostname.endsWith(`.${allowed}`)
-      )
-      
-      if (!isAllowed) {
+      if (!isAllowedHost(window.location.hostname)) {
         setIsUnauthorized(true)
         console.warn(
           "%c⚠️ UNAUTHORIZED MIRROR DETECTED ⚠️\nThis website is an unauthorized clone/mirror of Kunj Rathod's portfolio. All rights reserved by the original author.",
@@ -50,7 +65,7 @@ export function HostGuard() {
     if (!isUnauthorized) return
 
     if (countdown <= 0) {
-      window.location.replace("https://portfolio-updated-seven-beryl.vercel.app/")
+      window.location.replace(`${CANONICAL_ORIGIN}/`)
       return
     }
 
@@ -103,7 +118,7 @@ export function HostGuard() {
                 Redirecting in <span className="text-accent font-bold tabular-nums text-sm normal-case">{countdown}s</span>
               </span>
               <a
-                href="https://portfolio-updated-seven-beryl.vercel.app/"
+                href={`${CANONICAL_ORIGIN}/`}
                 className="ref-link inline-flex items-center gap-1.5 font-bold"
               >
                 Go to original site <ExternalLink className="h-3 w-3" />
