@@ -12,22 +12,50 @@ const ALLOWED_HOSTS = [
   "0.0.0.0",
   "rathodkunj2005.github.io",
   "kunjrathod.com",
-  "www.kunjrathod.com",
 ]
 
-// Vercel gives every deployment of this project its own hostname
-// (kunjrathod.vercel.app, portfolio-<hash>-rathodkunj2005s-projects.vercel.app,
-// preview branches, etc). These are our own infrastructure, so they must not
-// trip the mirror guard -- otherwise the Vercel dashboard thumbnail, preview
-// links, and any crawler that reaches a deployment URL all render the banner.
+// Vercel gives every deployment of this project its own hostname, and the
+// generated names are not predictable (kunjrathod.vercel.app,
+// portfolio-<hash>-rathodkunj2005s-projects.vercel.app,
+// portfolio-updated-seven-beryl.vercel.app, per-branch previews, ...).
+// Hardcoding them is how this guard ended up firing on our own deployments:
+// the Vercel dashboard thumbnail executes JS before screenshotting, so the
+// project card rendered the mirror banner, and real visitors on a preview URL
+// were redirected away after the countdown.
+//
+// NEXT_PUBLIC_SITE_HOSTS lets a deployment declare extra hosts (comma
+// separated) without a code change.
 const ALLOWED_HOST_PATTERNS = [
-  /^kunjrathod\.vercel\.app$/,
+  // Deployments under our own Vercel account scope.
   /(^|[.-])rathodkunj2005s-projects\.vercel\.app$/,
-  /(^|[.-])rathodkunj2005\.vercel\.app$/,
+  // Our own Vercel project names, plus any generated suffix Vercel appends.
+  /^(kunjrathod|portfolio|portfolio-updated)(-[a-z0-9-]+)?\.vercel\.app$/,
 ]
 
-function isAllowedHost(hostname: string): boolean {
-  const host = hostname.toLowerCase()
+const ENV_ALLOWED_HOSTS = (process.env.NEXT_PUBLIC_SITE_HOSTS ?? "")
+  .split(",")
+  .map((h) => h.trim().toLowerCase())
+  .filter(Boolean)
+
+/**
+ * Normalize a hostname before matching: lowercase, drop any port, drop the
+ * FQDN trailing dot, and drop a leading "www." so that www.<host> is treated
+ * as the same host as <host>.
+ */
+function normalizeHost(hostname: string): string {
+  return hostname
+    .toLowerCase()
+    .split(":")[0]
+    .replace(/\.$/, "")
+    .replace(/^www\./, "")
+}
+
+export function isAllowedHost(hostname: string): boolean {
+  const host = normalizeHost(hostname)
+
+  if (ENV_ALLOWED_HOSTS.some((allowed) => host === normalizeHost(allowed))) {
+    return true
+  }
   if (ALLOWED_HOSTS.some((allowed) => host === allowed || host.endsWith(`.${allowed}`))) {
     return true
   }
