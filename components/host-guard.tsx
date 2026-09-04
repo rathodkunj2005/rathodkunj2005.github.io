@@ -4,14 +4,63 @@ import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { ShieldAlert, ExternalLink } from "lucide-react"
 
+export const CANONICAL_ORIGIN = "https://www.kunjrathod.com"
+
 const ALLOWED_HOSTS = [
   "localhost",
   "127.0.0.1",
-  "portfolio-updated-seven-beryl.vercel.app",
+  "0.0.0.0",
   "rathodkunj2005.github.io",
   "kunjrathod.com",
-  "www.kunjrathod.com"
 ]
+
+// Vercel gives every deployment of this project its own hostname, and the
+// generated names are not predictable (kunjrathod.vercel.app,
+// portfolio-<hash>-rathodkunj2005s-projects.vercel.app,
+// portfolio-updated-seven-beryl.vercel.app, per-branch previews, ...).
+// Hardcoding them is how this guard ended up firing on our own deployments:
+// the Vercel dashboard thumbnail executes JS before screenshotting, so the
+// project card rendered the mirror banner, and real visitors on a preview URL
+// were redirected away after the countdown.
+//
+// NEXT_PUBLIC_SITE_HOSTS lets a deployment declare extra hosts (comma
+// separated) without a code change.
+const ALLOWED_HOST_PATTERNS = [
+  // Deployments under our own Vercel account scope.
+  /(^|[.-])rathodkunj2005s-projects\.vercel\.app$/,
+  // Our own Vercel project names, plus any generated suffix Vercel appends.
+  /^(kunjrathod|portfolio|portfolio-updated)(-[a-z0-9-]+)?\.vercel\.app$/,
+]
+
+const ENV_ALLOWED_HOSTS = (process.env.NEXT_PUBLIC_SITE_HOSTS ?? "")
+  .split(",")
+  .map((h) => h.trim().toLowerCase())
+  .filter(Boolean)
+
+/**
+ * Normalize a hostname before matching: lowercase, drop any port, drop the
+ * FQDN trailing dot, and drop a leading "www." so that www.<host> is treated
+ * as the same host as <host>.
+ */
+function normalizeHost(hostname: string): string {
+  return hostname
+    .toLowerCase()
+    .split(":")[0]
+    .replace(/\.$/, "")
+    .replace(/^www\./, "")
+}
+
+export function isAllowedHost(hostname: string): boolean {
+  const host = normalizeHost(hostname)
+
+  if (ENV_ALLOWED_HOSTS.some((allowed) => host === normalizeHost(allowed))) {
+    return true
+  }
+  if (ALLOWED_HOSTS.some((allowed) => host === allowed || host.endsWith(`.${allowed}`))) {
+    return true
+  }
+  return ALLOWED_HOST_PATTERNS.some((pattern) => pattern.test(host))
+}
 
 export function HostGuard() {
   const [isUnauthorized, setIsUnauthorized] = useState(false)
@@ -19,13 +68,7 @@ export function HostGuard() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const hostname = window.location.hostname
-      // Check if hostname is allowed or is a subdomain of an allowed host
-      const isAllowed = ALLOWED_HOSTS.some(
-        (allowed) => hostname === allowed || hostname.endsWith(`.${allowed}`)
-      )
-      
-      if (!isAllowed) {
+      if (!isAllowedHost(window.location.hostname)) {
         setIsUnauthorized(true)
         console.warn(
           "%c⚠️ UNAUTHORIZED MIRROR DETECTED ⚠️\nThis website is an unauthorized clone/mirror of Kunj Rathod's portfolio. All rights reserved by the original author.",
@@ -50,7 +93,7 @@ export function HostGuard() {
     if (!isUnauthorized) return
 
     if (countdown <= 0) {
-      window.location.replace("https://portfolio-updated-seven-beryl.vercel.app/")
+      window.location.replace(`${CANONICAL_ORIGIN}/`)
       return
     }
 
@@ -103,7 +146,7 @@ export function HostGuard() {
                 Redirecting in <span className="text-accent font-bold tabular-nums text-sm normal-case">{countdown}s</span>
               </span>
               <a
-                href="https://portfolio-updated-seven-beryl.vercel.app/"
+                href={`${CANONICAL_ORIGIN}/`}
                 className="ref-link inline-flex items-center gap-1.5 font-bold"
               >
                 Go to original site <ExternalLink className="h-3 w-3" />
