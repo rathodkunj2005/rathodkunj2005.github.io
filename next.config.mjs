@@ -13,6 +13,15 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  async redirects() {
+    return [
+      {
+        source: '/CV_Kunj_Rathod_April26.pdf',
+        destination: '/CV_Kunj_Rathod.pdf',
+        permanent: false,
+      },
+    ]
+  },
   experimental: {
     webpackBuildWorker: true,
     parallelServerBuildTraces: true,
