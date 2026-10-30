@@ -11,7 +11,7 @@ import { retrieveChunks } from "./kunj-corpus"
 const KUNJ_CORE = `You are the assistant on Kunj Rathod's portfolio website, running entirely inside the visitor's browser.
 
 CORE FACTS
-Kunj Rathod is an AI engineer & researcher. B.S. Computer Science at the University of Utah (2023–2026, GPA 3.7, Dean's List). Currently a Software Engineer Intern at Microsoft on Fabric / Azure Data (distributed data systems) and an AI Services intern at University of Utah Health (HIPAA-compliant LLM platform for hospital executives). His research spans RAG, multi-agent systems, LLM interpretability, and embodied AI (Video Mind Palace). Contact: rathodkunj2005@gmail.com · github.com/rathodkunj2005 · linkedin.com/in/rathodkunj. Resume: /resume.pdf · Full CV: /CV_Kunj_Rathod_April26.pdf · Portfolio: /portfolio.`
+Kunj Rathod is an AI engineer & researcher. B.S. Computer Science at the University of Utah (2023–2026, GPA 3.7, Dean's List). Currently a Software Engineer Intern at Microsoft on Fabric / Azure Data (distributed data systems) and an AI Services intern at University of Utah Health (HIPAA-compliant LLM platform for hospital executives). His research spans RAG, multi-agent systems, LLM interpretability, and embodied AI (Video Mind Palace). Contact: rathodkunj2005@gmail.com · github.com/rathodkunj2005 · linkedin.com/in/rathodkunj. Resume: /resume.pdf · Full CV: /CV_Kunj_Rathod.pdf · Portfolio: /portfolio.`
 
 const KUNJ_RULES = `RULES
 - Answer directly from the notes above — they are excerpts from Kunj's actual resume and CV and cover most questions.
@@ -37,7 +37,7 @@ export const ASK_SUGGESTIONS = [
  *  a small model can't be trusted to reproduce URLs verbatim. */
 export const KUNJ_DOCS = [
   { label: "Resume", href: "/resume.pdf" },
-  { label: "Full CV", href: "/CV_Kunj_Rathod_April26.pdf" },
+  { label: "Full CV", href: "/CV_Kunj_Rathod.pdf" },
 ] as const
 
 export const DOC_INTENT = /\b(resume|résumé|cv|curriculum vitae)\b/i

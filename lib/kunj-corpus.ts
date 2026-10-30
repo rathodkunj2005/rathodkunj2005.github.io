@@ -1,6 +1,6 @@
 /**
  * Retrieval corpus for the in-browser "Ask" model, extracted from the public
- * documents in /public (resume.pdf, CV_Kunj_Rathod_April26.pdf) plus site content.
+ * documents in /public (resume.pdf, CV_Kunj_Rathod.pdf) plus site content.
  * Chunked by section so per-question retrieval can hand a small model only
  * what it needs. Regenerate by re-extracting the PDFs when they change.
  */
@@ -90,7 +90,7 @@ export const KUNJ_CORPUS: CorpusChunk[] = [
   },
   {
     source: "Contact & documents",
-    text: "Contact Kunj: email rathodkunj2005@gmail.com (also kunj.rathod@utah.edu) · GitHub github.com/rathodkunj2005 · LinkedIn linkedin.com/in/rathodkunj · X @KunjRathod17 · Substack kunjrathod.substack.com. His resume is at /resume.pdf and his full CV at /CV_Kunj_Rathod_April26.pdf on this site; the full portfolio is at /portfolio. He is open to research collaborations and engineering roles.",
+    text: "Contact Kunj: email rathodkunj2005@gmail.com (also kunj.rathod@utah.edu) · GitHub github.com/rathodkunj2005 · LinkedIn linkedin.com/in/rathodkunj · X @KunjRathod17 · Substack kunjrathod.substack.com. His resume is at /resume.pdf and his full CV at /CV_Kunj_Rathod.pdf on this site; the full portfolio is at /portfolio. He is open to research collaborations and engineering roles.",
   },
 ]
 

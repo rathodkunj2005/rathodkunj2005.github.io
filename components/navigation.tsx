@@ -79,7 +79,7 @@ export function Navigation() {
               p. {page}/{TOTAL_PAGES}
             </span>
             <a
-              href="/CV_Kunj_Rathod_April26.pdf"
+              href="/CV_Kunj_Rathod.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="font-mono text-[11px] tracking-wide px-3 py-1.5 border border-foreground/80 text-foreground hover:bg-foreground hover:text-background transition-colors"
@@ -128,7 +128,7 @@ export function Navigation() {
             ))}
             <div className="flex gap-4 pt-4">
               <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="ref-link font-mono text-sm">Resume ↗</a>
-              <a href="/CV_Kunj_Rathod_April26.pdf" target="_blank" rel="noopener noreferrer" className="ref-link font-mono text-sm">CV ↗</a>
+              <a href="/CV_Kunj_Rathod.pdf" target="_blank" rel="noopener noreferrer" className="ref-link font-mono text-sm">CV ↗</a>
             </div>
           </div>
         </motion.nav>

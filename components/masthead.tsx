@@ -30,7 +30,7 @@ const stats = [
 
 const links = [
   { label: "Resume", href: "/resume.pdf" },
-  { label: "CV", href: "/CV_Kunj_Rathod_April26.pdf" },
+  { label: "CV", href: "/CV_Kunj_Rathod.pdf" },
   { label: "GitHub", href: "https://github.com/rathodkunj2005" },
   { label: "LinkedIn", href: "https://linkedin.com/in/rathodkunj" },
   { label: "Substack", href: "https://kunjrathod.substack.com" },
