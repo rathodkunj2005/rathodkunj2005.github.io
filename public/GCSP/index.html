@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kunj Rathod · GCSP Portfolio</title>
+<meta name="description" content="Grand Challenges Scholars Program portfolio: Health and Security.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
+<meta name="robots" content="noindex">
+<style>
+:root {
+  --char: #26221d;
+  --gold: #c4a574;
+  --gold-d: #8f7650;
+  --paper: rgba(243, 239, 230, 0.96);
+  --ink: #26221d;
+  --muted: #6d6556;
+  --rule: #d8cfbc;
+  --display: "Syncopate", "Arial Black", sans-serif;
+  --serif: "Newsreader", Georgia, serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: #00000a; color: var(--ink);
+  font: 19px/1.7 var(--serif);
+}
+body.lock { overflow: hidden; }
+
+#loader {
+  position: fixed; inset: 0; z-index: 100; background: var(--char); color: var(--gold);
+  display: flex; flex-direction: column; justify-content: space-between; padding: 28px 20px 20px;
+  transition: transform 1s cubic-bezier(.77, 0, .18, 1);
+}
+#loader.done { transform: translateY(-100%); }
+#loader .row { display: flex; justify-content: space-between; align-items: flex-end; font: 400 12px/1.5 var(--mono); letter-spacing: .14em; text-transform: uppercase; }
+#loader .pct { text-align: center; }
+#loader .big { font: 700 clamp(34px, 11.5vw, 150px)/.95 var(--display); text-transform: uppercase; }
+.scan {
+  background: repeating-linear-gradient(90deg, currentColor 0 3px, transparent 3px 4px);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+#sky, #stars, #clouds { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+#sky { background: #00000a; }
+#clouds { overflow: hidden; opacity: 0; will-change: opacity; }
+#clouds i {
+  position: absolute; left: var(--x); top: 0; width: var(--w); height: calc(var(--w) * .32);
+  background: radial-gradient(ellipse at center, rgba(255,255,255,.85), rgba(255,255,255,0) 70%);
+  filter: blur(6px); border-radius: 50%; will-change: transform;
+}
+nav, main, footer { position: relative; z-index: 2; }
+
+.hud {
+  position: fixed; right: 16px; bottom: 16px; z-index: 6; text-align: right;
+  font: 400 11px/1.4 var(--mono); letter-spacing: .14em; text-transform: uppercase;
+  color: var(--gold); background: rgba(38,34,29,.88); padding: 8px 12px; border: 1px solid var(--gold-d);
+}
+.hud b { display: block; font: 700 15px var(--display); color: #fff; letter-spacing: .04em; }
+
+.wrap { max-width: 840px; margin: 0 auto; padding: 0 16px; }
+nav { position: sticky; top: 0; background: rgba(38,34,29,.82); backdrop-filter: blur(10px); z-index: 7; }
+nav .wrap { max-width: none; display: flex; gap: 22px; overflow-x: auto; padding: 14px 20px; white-space: nowrap; }
+nav a { color: var(--gold); text-decoration: none; font: 400 11px var(--mono); letter-spacing: .14em; text-transform: uppercase; }
+nav a:hover { color: #fff; }
+
+h1, h2 { font-family: var(--display); font-weight: 700; text-transform: uppercase; line-height: 1.05; }
+h1 { font-size: clamp(40px, 10.5vw, 128px); color: var(--gold); margin: 0; letter-spacing: -.01em; }
+h2 { font-size: clamp(22px, 4.4vw, 36px); color: var(--ink); margin: 0 0 6px; letter-spacing: .01em; }
+h3 { font: 600 22px/1.25 var(--serif); color: var(--ink); margin: 32px 0 6px; }
+.num { display: block; font: 400 12px var(--mono); letter-spacing: .18em; color: var(--gold-d); margin-bottom: 12px; text-transform: uppercase; }
+.sub { color: var(--muted); font-style: italic; margin: 0 0 26px; }
+
+header.hero {
+  position: relative; min-height: calc(100vh - 46px); display: flex; flex-direction: column; justify-content: center; align-items: center;
+  text-align: center; color: var(--gold); padding: 80px 16px; width: 100vw; margin-left: calc(50% - 50vw);
+}
+.eyebrow { font: 400 12px var(--mono); letter-spacing: .22em; text-transform: uppercase; margin: 0 0 18px; }
+.hero .lede { font: 400 clamp(20px, 2.6vw, 28px)/1.3 var(--serif); color: #fff; max-width: 560px; margin: 22px 0 28px; }
+.pill {
+  display: inline-flex; gap: 10px; align-items: center; background: rgba(243,239,230,.92); color: var(--ink);
+  font: 400 12px var(--mono); letter-spacing: .12em; text-transform: uppercase; padding: 12px 22px; border-radius: 99px; text-decoration: none;
+}
+.hero > *:not(.floaters) { position: relative; z-index: 2; }
+.floaters { position: absolute; inset: 0; pointer-events: none; overflow: visible; }
+.tile {
+  position: absolute; left: var(--x); top: var(--y); width: var(--w, 150px); aspect-ratio: 4 / 5;
+  background: var(--paper); border: 1px solid var(--rule); color: var(--ink); padding: 10px;
+  display: flex; flex-direction: column; justify-content: space-between; text-align: left;
+  transform: rotate(var(--r, 0deg)); box-shadow: 0 14px 40px rgba(0,0,0,.35); will-change: transform; opacity: .94;
+}
+.tile small { font: 400 9px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--gold-d); }
+.tile b { font: 700 13px/1.15 var(--display); text-transform: uppercase; }
+.tile i { display: block; flex: 1; margin: 8px 0; background: repeating-linear-gradient(90deg, var(--gold) 0 2px, transparent 2px 4px); opacity: .5; }
+
+.card, section.card {
+  background: var(--paper); padding: 44px 40px; margin: 64px 0; border-top: 3px solid var(--gold);
+  box-shadow: 0 18px 60px rgba(0,0,0,.3);
+}
+.tag { display: inline-block; border: 1px solid var(--gold-d); color: var(--gold-d); font: 400 11px var(--mono); letter-spacing: .1em; text-transform: uppercase; padding: 3px 10px; margin: 0 8px 8px 0; }
+.theme { border-left: 3px solid var(--gold); padding: 2px 0 2px 16px; margin: 18px 0; color: var(--ink); }
+.theme b { font: 700 12px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--gold-d); }
+.evidence { border: 1px solid var(--rule); background: rgba(196,165,116,.12); padding: 14px 18px; margin: 18px 0; }
+.evidence > b { font: 700 12px var(--mono); letter-spacing: .14em; text-transform: uppercase; }
+.evidence ul { margin: 6px 0 0; padding-left: 20px; }
+a { color: var(--gold-d); }
+.todo { background: #fff3a8; color: #3d3300; padding: 0 4px; font: 600 .92em var(--serif); }
+
+.finale { position: relative; height: 260vh; }
+.stage { position: sticky; top: 0; height: 100vh; display: grid; place-items: center; overflow: hidden; color: #fff; text-align: center; }
+.earth {
+  --s: 2.6;
+  position: relative; width: min(62vmin, 520px); aspect-ratio: 1; border-radius: 50%;
+  transform: scale(var(--s)); will-change: transform; overflow: hidden;
+  background: radial-gradient(circle at 35% 30%, #4fa3ff 0%, #1459b8 45%, #072a66 100%);
+  box-shadow: 0 0 0 2px rgba(140,200,255,.25), 0 0 80px 20px rgba(80,160,255,.45), inset -50px -40px 90px rgba(0,0,10,.85);
+}
+.earth .land, .earth .clouds-layer { position: absolute; inset: 0; width: 200%; height: 100%; }
+.earth .land {
+  background:
+    radial-gradient(ellipse 14% 22% at 12% 38%, #3f8f4a 60%, transparent 62%),
+    radial-gradient(ellipse 10% 16% at 22% 66%, #4a9a52 60%, transparent 62%),
+    radial-gradient(ellipse 16% 14% at 40% 30%, #6e9e4a 60%, transparent 62%),
+    radial-gradient(ellipse 9% 26% at 47% 58%, #b49a56 60%, transparent 62%),
+    radial-gradient(ellipse 18% 18% at 66% 34%, #4f9a4e 60%, transparent 62%),
+    radial-gradient(ellipse 8% 10% at 82% 66%, #d9d3b0 60%, transparent 62%),
+    radial-gradient(ellipse 12% 20% at 92% 40%, #3f8f4a 60%, transparent 62%);
+  animation: spin 90s linear infinite;
+}
+.earth .clouds-layer {
+  background:
+    radial-gradient(ellipse 12% 5% at 18% 25%, rgba(255,255,255,.8), transparent 70%),
+    radial-gradient(ellipse 16% 6% at 36% 52%, rgba(255,255,255,.75), transparent 70%),
+    radial-gradient(ellipse 14% 5% at 58% 22%, rgba(255,255,255,.8), transparent 70%),
+    radial-gradient(ellipse 18% 6% at 74% 62%, rgba(255,255,255,.7), transparent 70%),
+    radial-gradient(ellipse 12% 5% at 90% 34%, rgba(255,255,255,.8), transparent 70%);
+  animation: spin 60s linear infinite;
+}
+@keyframes spin { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.earth::after {
+  content: ""; position: absolute; inset: 0; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.25), transparent 45%), radial-gradient(circle at 50% 50%, transparent 62%, rgba(120,190,255,.35) 100%);
+}
+.msg { position: absolute; left: 0; right: 0; bottom: 8vh; padding: 0 16px; opacity: 0; transform: translateY(16px); transition: opacity .6s, transform .6s; }
+.msg.on { opacity: 1; transform: none; }
+.msg p { margin: 0 auto; max-width: 900px; font: 700 clamp(18px, 3.6vw, 38px)/1.2 var(--display); text-transform: uppercase; text-shadow: 0 2px 24px #000; }
+.msg p em { font-style: normal; color: var(--gold); }
+.msg small { display: block; margin-top: 14px; font: 400 11px var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
+footer { padding: 24px 0 64px; color: var(--gold); font: 400 12px var(--mono); letter-spacing: .06em; }
+footer a { color: #fff; }
+
+@media (prefers-reduced-motion: reduce) {
+  .earth .land, .earth .clouds-layer { animation: none; }
+  html { scroll-behavior: auto; }
+  #loader { transition: none; }
+}
+@media (max-width: 700px) {
+  .card, section.card { padding: 30px 20px; }
+  .tile { --w: 96px !important; padding: 6px; }
+  .tile b { font-size: 9px; }
+  .tile i { display: none; }
+}
+</style>
+<noscript><style>#loader{display:none}body.lock{overflow:auto}</style></noscript>
+</head>
+<body class="lock">
+<div id="loader" aria-hidden="true">
+  <div class="row"><span>Re-entry sequence</span><span>Grand Challenges Scholars Program</span></div>
+  <div class="row"><span>Descending from orbit<br>Health &amp; Security</span><span class="pct"><b id="pct">0%</b><br>loaded</span><span style="text-align:right">Please wait<br>Class of 2026</span></div>
+  <div class="big scan">Kunj Rathod</div>
+</div>
+<div id="sky"></div>
+<canvas id="stars"></canvas>
+<div id="clouds" aria-hidden="true"></div>
+<div class="hud" aria-hidden="true">Altitude<b id="alt">600 km</b><span id="layer">Thermosphere</span></div>
+<nav><div class="wrap">
+  <a href="#about">Introduction</a><a href="#research">Research</a><a href="#business">Business</a>
+  <a href="#multidisciplinary">Multidisciplinary</a><a href="#multicultural">Multicultural</a>
+  <a href="#social">Social Consciousness</a><a href="#closing">Closing</a>
+</div></nav>
+
+<main class="wrap">
+
+<header class="hero" id="intro">
+  <div class="floaters" aria-hidden="true">
+    <div class="tile" data-speed="0.25" style="--x:4%;--y:10%;--r:-5deg;--w:150px"><small>Research</small><i></i><b>BioGraphRAG</b></div>
+    <div class="tile" data-speed="0.5" style="--x:76%;--y:6%;--r:4deg;--w:130px"><small>Health</small><i></i><b>U Health HIPAA chat</b></div>
+    <div class="tile" data-speed="0.15" style="--x:84%;--y:46%;--r:-3deg;--w:170px"><small>Security</small><i></i><b>FNDR, local-only</b></div>
+    <div class="tile" data-speed="0.4" style="--x:2%;--y:56%;--r:6deg;--w:140px"><small>Hackathon 1st</small><i></i><b>AccessLens</b></div>
+    <div class="tile" data-speed="0.7" style="--x:66%;--y:78%;--r:-6deg;--w:120px"><small>Prize</small><i></i><b>Kahlert Impact</b></div>
+    <div class="tile" data-speed="0.3" style="--x:18%;--y:80%;--r:3deg;--w:130px"><small>Research</small><i></i><b>Video Mind Palace</b></div>
+  </div>
+  <p class="eyebrow">Grand Challenges Scholars Program · University of Utah · 2026</p>
+  <h1 class="scan">Kunj<br>Rathod</h1>
+  <p class="lede">Health and Security: from orbit, back down to the people on the ground.</p>
+  <a class="pill" href="#about">&#8595; Scroll to descend</a>
+</header>
+
+<section class="card" id="about">
+  <span class="num">00 / Introduction</span>
+  <h2>Introduction</h2>
+  <p>I am a computer science senior at the University of Utah (B.S., December 2026, GPA 3.7, Dean's List). I build AI systems that handle sensitive data, and I do research on how language models retrieve, remember, and reason over it. Over four years that work kept landing in the same two places: hospitals and privacy.</p>
+  <p>My theme is <b>Health and Security</b>, anchored in two NAE Grand Challenges: <i>Advance Health Informatics</i> and <i>Secure Cyberspace</i>. At University of Utah Health I built a HIPAA-compliant AI chat platform for 90+ hospital executives on AWS Bedrock. Clinical data is only useful if people trust the system holding it, so health informatics and security are one problem for me, not two. <span class="todo">TODO (Kunj): 2-3 sentences on the personal reason this matters to you: family, a moment, a value. The rubric's 5-point tier asks for "strong explanation of theme significance", and I cannot write this part for you.</span></p>
+
+  <div class="theme"><b>How the portfolio is organized.</b> Each mindset section names the experience, the evidence, the tie to Health and Security, and a reflection.</div>
+  <span class="tag">Advance Health Informatics</span><span class="tag">Secure Cyberspace</span>
+
+</section>
+
+<section class="card" id="research">
+  <span class="num">01 / 05</span><h2>Talent / Research</h2>
+  <p class="sub">Mentored research and long-running technical projects</p>
+
+  <h3>BioGraphRAG: biomedical question answering (GMG Summer of Code, May–Aug 2024)</h3>
+  <p><b>Objective.</b> Let a model answer biomedical questions with grounded facts instead of plausible guesses. <b>Method.</b> I led a GraphRAG platform over 1M+ biomedical entities from UniProt, AlphaFold, RXNav, and BioKG, stored in NebulaGraph and distributed for traversal speed. <b>Outcome.</b> 40% higher factual accuracy than the baseline retriever, about 3× faster graph traversal, and sub-500ms p95 queries. I wrote it up as an article that NebulaGraph's team later republished.</p>
+  <div class="theme"><b>Theme tie.</b> Health informatics: drug and protein knowledge is only usable at the bedside if retrieval is correct and traceable.</div>
+
+  <h3>Video Mind Palace: long-term embodied QA (Jan–May 2026)</h3>
+  <p>Embodied agents answer questions about spaces they explored earlier. Scene-graph memory is expensive to build. I developed a method that queries video directly with a vision-language model, cutting inference time 31–57% while staying within 13–17% of the scene-graph baseline's accuracy. A paper with Advanced AI is in preparation.</p>
+
+  <h3>STARS Lab, undergraduate researcher (Aug 2025–Feb 2026)</h3>
+  <p>I built a graph-augmented pipeline that extracted structured data from 1,000+ materials-science papers, plus a constraint-based feasibility engine and Ref-RAG, a chatbot over PDF corpora. The lab works with NASA, Microsoft, and the U.S. DoD.</p>
+
+  <div class="evidence"><b>Evidence</b>
+    <ul>
+      <li><a href="https://www.kunjrathod.com/portfolio">Project write-ups on my research portfolio</a></li>
+      <li><a href="https://www.kunjrathod.com/CV_Kunj_Rathod.pdf">CV (PDF)</a></li>
+      <li><span class="todo">TODO: confirm you presented at UCUR (Utah Conference on Undergraduate Research, per your LinkedIn) and add the poster. Link the BioGraphRAG Substack article,</span></li>
+      <li><span class="todo">TODO: link the BioGraphRAG Substack article, the NebulaGraph republish, and the Video Mind Palace paper/poster. Add one screenshot or poster image as a figure.</span></li>
+    </ul></div>
+
+  <h3>Reflection</h3>
+  <p>The technical skill I gained is evaluation discipline: BioGraphRAG's 40% number only exists because I built the benchmark before the system. <span class="todo">TODO (Kunj): 3-4 sentences on what changed in how you do research, and where Video Mind Palace's work connects to health or security. Do not force the tie if it is weak; the rubric only needs the theme in all five, and BioGraphRAG carries this one.</span></p>
+</section>
+
+<section class="card" id="business">
+  <span class="num">02 / 05</span><h2>Viable Business / Entrepreneurship</h2>
+  <p class="sub">Turning working software into something people would pay for</p>
+
+  <h3>Capstone startup: FNDR</h3>
+  <p>FNDR is a local-only memory assistant for macOS built in Rust and Tauri. It runs Llama 3.2 and Whisper on-device, exposes an MCP server, and sends nothing to the cloud: no telemetry, no accounts. The business bet is that people will not hand a cloud vendor a searchable record of everything they do on a computer. <span class="todo">TODO (Kunj): customer segment, what you learned from users, pricing or go-to-market decisions, and team roles. Notes say "capstone startup project"; confirm FNDR is the one.</span></p>
+  <div class="theme"><b>Theme tie.</b> Secure Cyberspace: privacy as an architecture decision rather than a policy promise.</div>
+
+  <h3>Impact prize</h3>
+  <p>I won an impact prize recognizing societal impact across healthcare, legal tech, and embodied AI. The Kahlert Impact Prize ($1,000, March 2026) comes from the Kahlert School of Computing. <span class="todo">TODO: your meeting notes say "Calor Impact Prize"; your site and public sources say Kahlert. Confirm they are the same prize, then add the pitch deck.</span></p>
+
+  <h3>Industry internships</h3>
+  <p>At CourtEasy.ai I helped scale hybrid legal retrieval to 10M+ documents and 5,000+ daily queries, and benchmarked 8 LLM families (28% better retrieval accuracy, 35% fewer hallucinations). At University of Utah Health the HIPAA chat platform met a budget as well as a compliance bar: 40% lower inference latency and 60% faster queries, with p95 time-to-first-token under 200ms across 1,000+ conversations.</p>
+
+  <div class="evidence"><b>Evidence</b>
+    <ul>
+      <li><span class="todo">TODO: FNDR pitch deck or capstone poster; prize announcement; capstone wiki page screenshot.</span></li>
+      <li><a href="https://www.kunjrathod.com/portfolio">FNDR and CourtEasy write-ups</a></li>
+    </ul></div>
+
+  <h3>Reflection</h3>
+  <p><span class="todo">TODO (Kunj): the rubric prompt is "how did you learn to translate invention into innovation?" Answer from the FNDR experience: one decision that changed because of a user or a cost constraint.</span></p>
+</section>
+
+<section class="card" id="multidisciplinary">
+  <span class="num">03 / 05</span><h2>Multidisciplinary</h2>
+  <p class="sub">Knowledge from outside engineering</p>
+
+  <h3>Music: World Music and History of Rock and Roll</h3>
+  <p>Both courses sit outside engineering. <span class="todo">TODO (Kunj): course numbers and terms; one paper, project, or listening journal as evidence; and the connection you actually saw to the theme (for example, how music shapes wellbeing, or how a cultural history of a technology maps onto privacy and trust). If there is no honest tie, say so and lean on the housing role instead.</span></p>
+
+  <h3>AccessLens: AI in education and accessibility (Sept 2026, first place)</h3>
+  <p>With four teammates on Team Mindstone, I built AccessLens in 48 hours at the University of Utah's Minds and Machines: AI in Education Hackathon. It turns one instructor-approved lesson feed into synchronized visuals, structured text, captions, audio, dyslexia-friendly formatting, and spatial AR, so students with accommodations can learn the way that works for them, privately. We won first place ($1,500 and $1,000 in AWS credit). Education and disability access are fields I had no training in, and the design constraint came from them: the student controls the format and the instructor controls the content. <span class="todo">TODO: your specific role on the team and one thing you learned from the accessibility side.</span> Source: <a href="https://rai.utah.edu/minds-machines-hackathon-recap/">Responsible AI Initiative recap</a>.</p>
+  <div class="theme"><b>Theme tie.</b> Health: accessibility and learning differences sit inside the wellbeing side of health, and privacy of a student's accommodations is a security requirement.</div>
+
+  <h3>Community Advisor, U of U Housing (Aug–Dec 2024)</h3>
+  <p>I led a 200+ resident community, handled conflict mediation, and responded to crises. That is applied psychology and policy, not engineering, and it shaped how I design systems for people in bad moments: a hospital executive checking a number mid-emergency is the same user as a resident calling at 2 a.m. <span class="todo">Confirm this framing is true for you, or replace it.</span></p>
+
+  <div class="evidence"><b>Evidence</b>
+    <ul><li><span class="todo">TODO: transcript lines or syllabi for the two music courses; a CA training certificate or recognition if you have one.</span></li></ul></div>
+
+  <h3>Reflection</h3>
+  <p><span class="todo">TODO (Kunj): how did this broaden your perspective and change your engineering approach?</span></p>
+</section>
+
+<section class="card" id="multicultural">
+  <span class="num">04 / 05</span><h2>Multiculturalism</h2>
+  <p class="sub">Building for people whose context differs from mine</p>
+
+  <h3>Indian legal AI at CourtEasy.ai (Nov 2024–Apr 2025)</h3>
+  <p>The corpus was 10M+ Indian legal documents, written in a legal tradition, vocabulary, and mix of languages I did not grow up inside. Retrieval that worked on English-language benchmarks failed on this data, which is why I benchmarked 8 model families instead of trusting defaults. <span class="todo">Confirm and add specifics: languages, the failure you hit, how you worked with the India-based team.</span></p>
+
+  <h3>Health and AI at University of Utah Health</h3>
+  <p>Hospital executives are a different culture from engineers: they ask what a number means for a patient and what a vendor can see. Designing the Bedrock guardrails and HIPAA boundaries meant learning to speak their language first. <span class="todo">Add one concrete example.</span></p>
+
+  <h3>Indian Student Association</h3>
+  <p><span class="todo">TODO (Kunj): your role, events you ran, and what you learned about community across cultures. Kept here and in Social Consciousness only if each uses different, specific examples.</span></p>
+
+  <div class="evidence"><b>Evidence</b>
+    <ul><li><span class="todo">TODO: ISA event photos, CourtEasy report excerpt (check NDA before posting), impact-prize materials.</span></li></ul></div>
+
+  <h3>Reflection</h3>
+  <p><span class="todo">TODO (Kunj): how did cultural understanding change a technical choice?</span></p>
+</section>
+
+<section class="card" id="social">
+  <span class="num">05 / 05</span><h2>Social Consciousness</h2>
+  <p class="sub">Service and what it taught me about responsibility</p>
+  <p>The handbook requires 60 hours of service, tracked on the GCSP Canvas form. My service is through the Indian Student Association. <span class="todo">TODO (Kunj): total hours (need 60; check your Canvas log), roles, dates, and who the community was. This is the one mindset with a hard numeric requirement, so check it first.</span></p>
+  <div class="theme"><b>Theme tie.</b> <span class="todo">TODO: connect to Health and Security, or explain it as the human grounding for them. If ISA service has no health or security angle, add one hour-bearing activity that does, such as STEM outreach on online safety.</span></div>
+  <div class="evidence"><b>Evidence</b>
+    <ul><li><span class="todo">TODO: hours log export, photos, event flyer, letter or message from an ISA officer.</span></li></ul></div>
+  <h3>Reflection</h3>
+  <p><span class="todo">TODO (Kunj): how did this shape your sense of responsibility as an engineer?</span></p>
+</section>
+
+<section class="card" id="closing">
+  <span class="num">Closing</span><h2>Closing Reflection</h2>
+  <p>The through-line across these five areas is that systems touching health and privacy fail at the edges, where a person's context does not match the designer's assumptions. <span class="todo">TODO (Kunj): the rubric's top tier needs (a) a thoughtful summary of what you learned and (b) multiple concrete ways you will apply it. Starting points from your own record: full-time work after Microsoft Fabric (Jan 2026 internship), continued interpretability and agent-memory research, and privacy-first products like FNDR. Choose the real ones.</span></p>
+</section>
+
+<div class="finale" id="finale">
+  <div class="stage">
+    <div class="earth" id="earth"><div class="land"></div><div class="clouds-layer"></div></div>
+    <div class="msg" id="msg"><p>One planet. Eight billion people.<br><em>Build like you answer to all of them.</em></p><small>Kunj Rathod · Health &amp; Security</small></div>
+  </div>
+</div>
+
+</main>
+<footer><div class="wrap">Kunj Rathod · <a href="mailto:rathodkunj2005@gmail.com">rathodkunj2005@gmail.com</a> · Submitted to Jordyn Butcherite, GCSP Director, December 2026</div></footer>
+<script>
+(function () {
+  var sky = document.getElementById('sky'), stars = document.getElementById('stars'), clouds = document.getElementById('clouds');
+  var alt = document.getElementById('alt'), layer = document.getElementById('layer');
+  var earth = document.getElementById('earth'), msg = document.getElementById('msg'), finale = document.getElementById('finale');
+  var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var stops = [[0,[0,0,10]],[.12,[7,11,42]],[.28,[26,42,116]],[.46,[43,93,179]],[.64,[90,164,230]],[.8,[169,216,245]],[.88,[127,184,234]],[.94,[11,16,48]],[1,[0,0,10]]];
+  var alts = [[0,600],[.18,85],[.36,50],[.52,12],[.72,2],[.86,0],[1,420]];
+  var names = [[85,'Thermosphere'],[50,'Mesosphere'],[12,'Stratosphere'],[0.05,'Troposphere'],[-1,'Ground level']];
+  var loader = document.getElementById('loader'), pct = document.getElementById('pct');
+  (function () {
+    var t0 = performance.now(), dur = still ? 200 : 1800;
+    (function tick(now) {
+      var u = Math.min(1, (now - t0) / dur);
+      pct.textContent = Math.round(u * 100) + '%';
+      if (u < 1) return requestAnimationFrame(tick);
+      setTimeout(function () { loader.classList.add('done'); document.body.classList.remove('lock'); }, 250);
+    })(t0);
+  })();
+  var tiles = Array.prototype.slice.call(document.querySelectorAll('.tile'));
+  var clamp = function (x) { return Math.max(0, Math.min(1, x)); };
+  function lerp(t, table, f) {
+    for (var i = 1; i < table.length; i++) if (t <= table[i][0]) {
+      var a = table[i-1], b = table[i], u = (t - a[0]) / (b[0] - a[0]);
+      return f(a[1], b[1], u);
+    }
+    return table[table.length-1][1];
+  }
+  var colorMix = function (a, b, u) { return a.map(function (v, k) { return Math.round(v + (b[k]-v)*u); }); };
+  var altMix = function (a, b, u) { return Math.exp(Math.log(a+1) + (Math.log(b+1)-Math.log(a+1))*u) - 1; };
+
+  var ctx = stars.getContext('2d'), pts = [];
+  function sizeStars() {
+    stars.width = innerWidth; stars.height = innerHeight; pts = [];
+    for (var i = 0; i < 220; i++) pts.push([Math.random()*stars.width, Math.random()*stars.height, Math.random()*1.4+.3, Math.random()*6.28]);
+    drawStars(0);
+  }
+  function drawStars(t) {
+    ctx.clearRect(0, 0, stars.width, stars.height);
+    pts.forEach(function (p) {
+      ctx.globalAlpha = .55 + .45*Math.sin(p[3] + t/900);
+      ctx.fillStyle = '#fff';
+      ctx.beginPath(); ctx.arc(p[0], p[1], p[2], 0, 6.28); ctx.fill();
+    });
+  }
+  if (!still) (function loop(t) { drawStars(t); requestAnimationFrame(loop); })(0);
+
+  var blobs = [];
+  for (var i = 0; i < 9; i++) {
+    var c = document.createElement('i');
+    c.style.setProperty('--x', (Math.random()*90 - 10) + '%');
+    c.style.setProperty('--w', (240 + Math.random()*320) + 'px');
+    c.dataset.speed = (0.4 + Math.random()*1.1).toFixed(2);
+    c.dataset.base = Math.round(innerHeight * (0.1 + Math.random()*1.1));
+    clouds.appendChild(c); blobs.push(c);
+  }
+
+  function update() {
+    var y = scrollY, h = innerHeight;
+    var end = Math.max(1, finale.offsetTop - h*0.5);
+    if (!still) tiles.forEach(function (t) { t.style.translate = '0 ' + (-y * +t.dataset.speed).toFixed(1) + 'px'; });
+    var d = clamp(y / end);
+    var f = clamp((y - finale.offsetTop) / Math.max(1, finale.offsetHeight - h));
+
+    var col = lerp(d, stops, colorMix);
+    sky.style.background = 'rgb(' + col.join(',') + ')';
+    stars.style.opacity = clamp(1 - Math.max(0, d - .1) / .3) + (d > .9 ? clamp((d - .9) / .1) : 0);
+    stars.style.opacity = Math.min(1, stars.style.opacity);
+    var cl = clamp((d - .45) / .15) * (1 - clamp((d - .86) / .08));
+    clouds.style.opacity = cl;
+    if (!still) blobs.forEach(function (b) {
+      b.style.transform = 'translateY(' + (+b.dataset.base + y * +b.dataset.speed * -0.6) + 'px)';
+    });
+
+    var a = d < 1 ? lerp(d, alts, altMix) : 420 * Math.pow(35786/420, f);
+    var asc = d >= .86;
+    alt.textContent = (a >= 100 ? Math.round(a).toLocaleString() : a >= 1 ? a.toFixed(1) : a.toFixed(2)) + ' km';
+    layer.textContent = asc ? (a > 2000 ? 'Full view' : a > 100 ? 'Low Earth orbit' : 'Ascending') : names.filter(function (n) { return a >= n[0]; })[0][1];
+
+    earth.style.setProperty('--s', (2.6 - 1.6 * f).toFixed(3));
+    msg.classList.toggle('on', f > .65);
+  }
+  addEventListener('scroll', update, { passive: true });
+  addEventListener('resize', function () { sizeStars(); update(); });
+  sizeStars(); update();
+})();
+</script>
+</body>
+</html>

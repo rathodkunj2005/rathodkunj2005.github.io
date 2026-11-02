@@ -22,6 +22,12 @@ const nextConfig = {
       },
     ]
   },
+  async rewrites() {
+    return [
+      { source: '/GCSP', destination: '/GCSP/index.html' },
+      { source: '/gcsp', destination: '/GCSP/index.html' },
+    ]
+  },
   experimental: {
     webpackBuildWorker: true,
     parallelServerBuildTraces: true,
