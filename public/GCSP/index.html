@@ -6,7 +6,7 @@
 <title>Kunj Rathod · GCSP Portfolio</title>
 <meta name="description" content="Grand Challenges Scholars Program portfolio: Health and Security.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
 <meta name="robots" content="noindex">
 <style>
 :root {
@@ -20,6 +20,9 @@
   --display: "Syncopate", "Arial Black", sans-serif;
   --serif: "Newsreader", Georgia, serif;
   --mono: "IBM Plex Mono", ui-monospace, monospace;
+  --heading: "Fraunces", "Newsreader", Georgia, serif;
+  --cream: #f3efe6;
+  --gold-l: #e3c88f;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -66,12 +69,13 @@ nav .wrap { max-width: none; display: flex; gap: 22px; overflow-x: auto; padding
 nav a { color: var(--gold); text-decoration: none; font: 400 11px var(--mono); letter-spacing: .14em; text-transform: uppercase; }
 nav a:hover { color: #fff; }
 
-h1, h2 { font-family: var(--display); font-weight: 700; text-transform: uppercase; line-height: 1.05; }
+h1 { font-family: var(--display); font-weight: 700; text-transform: uppercase; line-height: 1.05; }
+h2, h3 { font-family: var(--heading); }
 h1 { font-size: clamp(40px, 10.5vw, 128px); color: var(--gold); margin: 0; letter-spacing: -.01em; }
-h2 { font-size: clamp(22px, 4.4vw, 36px); color: var(--ink); margin: 0 0 6px; letter-spacing: .01em; }
-h3 { font: 600 22px/1.25 var(--serif); color: var(--ink); margin: 32px 0 6px; }
-.num { display: block; font: 400 12px var(--mono); letter-spacing: .18em; color: var(--gold-d); margin-bottom: 12px; text-transform: uppercase; }
-.sub { color: var(--muted); font-style: italic; margin: 0 0 26px; }
+h2 { font-size: clamp(32px, 5.4vw, 50px); font-weight: 500; line-height: 1.08; color: var(--cream); margin: 0 0 8px; letter-spacing: -.015em; font-variation-settings: "opsz" 144; }
+h3 { font-weight: 500; font-size: 24px; line-height: 1.25; color: var(--gold-l); margin: 34px 0 6px; font-variation-settings: "opsz" 72; }
+.num { display: block; font: 400 12px var(--mono); letter-spacing: .18em; color: var(--gold); margin-bottom: 12px; text-transform: uppercase; }
+.sub { color: #d8cfbb; font-style: italic; margin: 0 0 26px; }
 
 header.hero {
   position: relative; min-height: calc(100vh - 46px); display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -96,63 +100,31 @@ header.hero {
 .tile i { display: block; flex: 1; margin: 8px 0; background: repeating-linear-gradient(90deg, var(--gold) 0 2px, transparent 2px 4px); opacity: .5; }
 
 .card, section.card {
-  background: var(--paper); padding: 44px 40px; margin: 64px 0; border-top: 3px solid var(--gold);
-  box-shadow: 0 18px 60px rgba(0,0,0,.3);
+  background: rgba(24, 20, 17, .46); color: var(--cream);
+  -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+  padding: 44px 40px; margin: 64px 0; border-top: 2px solid var(--gold);
 }
-.tag { display: inline-block; border: 1px solid var(--gold-d); color: var(--gold-d); font: 400 11px var(--mono); letter-spacing: .1em; text-transform: uppercase; padding: 3px 10px; margin: 0 8px 8px 0; }
-.theme { border-left: 3px solid var(--gold); padding: 2px 0 2px 16px; margin: 18px 0; color: var(--ink); }
-.theme b { font: 700 12px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--gold-d); }
-.evidence { border: 1px solid var(--rule); background: rgba(196,165,116,.12); padding: 14px 18px; margin: 18px 0; }
+.tag { display: inline-block; border: 1px solid var(--gold); color: var(--gold-l); font: 400 11px var(--mono); letter-spacing: .1em; text-transform: uppercase; padding: 3px 10px; margin: 0 8px 8px 0; }
+.theme { border-left: 3px solid var(--gold); padding: 2px 0 2px 16px; margin: 18px 0; color: var(--cream); }
+.theme b { font: 700 12px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--gold-l); }
+.evidence { border: 1px solid rgba(196,165,116,.45); background: rgba(196,165,116,.14); padding: 14px 18px; margin: 18px 0; }
 .evidence > b { font: 700 12px var(--mono); letter-spacing: .14em; text-transform: uppercase; }
 .evidence ul { margin: 6px 0 0; padding-left: 20px; }
-a { color: var(--gold-d); }
+a { color: var(--gold-l); }
 .todo { background: #fff3a8; color: #3d3300; padding: 0 4px; font: 600 .92em var(--serif); }
 
 .finale { position: relative; height: 260vh; }
 .stage { position: sticky; top: 0; height: 100vh; display: grid; place-items: center; overflow: hidden; color: #fff; text-align: center; }
-.earth {
-  --s: 2.6;
-  position: relative; width: min(62vmin, 520px); aspect-ratio: 1; border-radius: 50%;
-  transform: scale(var(--s)); will-change: transform; overflow: hidden;
-  background: radial-gradient(circle at 35% 30%, #4fa3ff 0%, #1459b8 45%, #072a66 100%);
-  box-shadow: 0 0 0 2px rgba(140,200,255,.25), 0 0 80px 20px rgba(80,160,255,.45), inset -50px -40px 90px rgba(0,0,10,.85);
-}
-.earth .land, .earth .clouds-layer { position: absolute; inset: 0; width: 200%; height: 100%; }
-.earth .land {
-  background:
-    radial-gradient(ellipse 14% 22% at 12% 38%, #3f8f4a 60%, transparent 62%),
-    radial-gradient(ellipse 10% 16% at 22% 66%, #4a9a52 60%, transparent 62%),
-    radial-gradient(ellipse 16% 14% at 40% 30%, #6e9e4a 60%, transparent 62%),
-    radial-gradient(ellipse 9% 26% at 47% 58%, #b49a56 60%, transparent 62%),
-    radial-gradient(ellipse 18% 18% at 66% 34%, #4f9a4e 60%, transparent 62%),
-    radial-gradient(ellipse 8% 10% at 82% 66%, #d9d3b0 60%, transparent 62%),
-    radial-gradient(ellipse 12% 20% at 92% 40%, #3f8f4a 60%, transparent 62%);
-  animation: spin 90s linear infinite;
-}
-.earth .clouds-layer {
-  background:
-    radial-gradient(ellipse 12% 5% at 18% 25%, rgba(255,255,255,.8), transparent 70%),
-    radial-gradient(ellipse 16% 6% at 36% 52%, rgba(255,255,255,.75), transparent 70%),
-    radial-gradient(ellipse 14% 5% at 58% 22%, rgba(255,255,255,.8), transparent 70%),
-    radial-gradient(ellipse 18% 6% at 74% 62%, rgba(255,255,255,.7), transparent 70%),
-    radial-gradient(ellipse 12% 5% at 90% 34%, rgba(255,255,255,.8), transparent 70%);
-  animation: spin 60s linear infinite;
-}
-@keyframes spin { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-.earth::after {
-  content: ""; position: absolute; inset: 0; border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.25), transparent 45%), radial-gradient(circle at 50% 50%, transparent 62%, rgba(120,190,255,.35) 100%);
-}
+#earth3d { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; opacity: 0; }
 .msg { position: absolute; left: 0; right: 0; bottom: 8vh; padding: 0 16px; opacity: 0; transform: translateY(16px); transition: opacity .6s, transform .6s; }
 .msg.on { opacity: 1; transform: none; }
-.msg p { margin: 0 auto; max-width: 900px; font: 700 clamp(18px, 3.6vw, 38px)/1.2 var(--display); text-transform: uppercase; text-shadow: 0 2px 24px #000; }
+.msg p { margin: 0 auto; max-width: 900px; font: 700 clamp(15px, 2.6vw, 28px)/1.3 var(--display); text-transform: uppercase; text-shadow: 0 2px 24px #000; }
 .msg p em { font-style: normal; color: var(--gold); }
 .msg small { display: block; margin-top: 14px; font: 400 11px var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
 footer { padding: 24px 0 64px; color: var(--gold); font: 400 12px var(--mono); letter-spacing: .06em; }
 footer a { color: #fff; }
 
 @media (prefers-reduced-motion: reduce) {
-  .earth .land, .earth .clouds-layer { animation: none; }
   html { scroll-behavior: auto; }
   #loader { transition: none; }
 }
@@ -174,6 +146,7 @@ footer a { color: #fff; }
 <div id="sky"></div>
 <canvas id="stars"></canvas>
 <div id="clouds" aria-hidden="true"></div>
+<canvas id="earth3d" aria-hidden="true"></canvas>
 <div class="hud" aria-hidden="true">Altitude<b id="alt">600 km</b><span id="layer">Thermosphere</span></div>
 <nav><div class="wrap">
   <a href="#about">Introduction</a><a href="#research">Research</a><a href="#business">Business</a>
@@ -318,20 +291,21 @@ footer a { color: #fff; }
 
 <div class="finale" id="finale">
   <div class="stage">
-    <div class="earth" id="earth"><div class="land"></div><div class="clouds-layer"></div></div>
     <div class="msg" id="msg"><p>One planet. Eight billion people.<br><em>Build like you answer to all of them.</em></p><small>Kunj Rathod · Health &amp; Security</small></div>
   </div>
 </div>
 
 </main>
 <footer><div class="wrap">Kunj Rathod · <a href="mailto:rathodkunj2005@gmail.com">rathodkunj2005@gmail.com</a> · Submitted to Jordyn Butcherite, GCSP Director, December 2026</div></footer>
+<script src="/GCSP/vendor/three.min.js"></script>
 <script>
 (function () {
+  var ASSETS = '/GCSP/planets/';
   var sky = document.getElementById('sky'), stars = document.getElementById('stars'), clouds = document.getElementById('clouds');
   var alt = document.getElementById('alt'), layer = document.getElementById('layer');
-  var earth = document.getElementById('earth'), msg = document.getElementById('msg'), finale = document.getElementById('finale');
+  var msg = document.getElementById('msg'), finale = document.getElementById('finale');
   var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var stops = [[0,[0,0,10]],[.12,[7,11,42]],[.28,[26,42,116]],[.46,[43,93,179]],[.64,[90,164,230]],[.8,[169,216,245]],[.88,[127,184,234]],[.94,[11,16,48]],[1,[0,0,10]]];
+  var stops = [[0,[0,0,10]],[.12,[7,11,42]],[.28,[26,42,116]],[.46,[43,93,179]],[.64,[90,164,230]],[.8,[108,176,232]],[.88,[88,150,215]],[.94,[11,16,48]],[1,[0,0,10]]];
   var alts = [[0,600],[.18,85],[.36,50],[.52,12],[.72,2],[.86,0],[1,420]];
   var names = [[85,'Thermosphere'],[50,'Mesosphere'],[12,'Stratosphere'],[0.05,'Troposphere'],[-1,'Ground level']];
   var loader = document.getElementById('loader'), pct = document.getElementById('pct');
@@ -373,7 +347,7 @@ footer a { color: #fff; }
   if (!still) (function loop(t) { drawStars(t); requestAnimationFrame(loop); })(0);
 
   var blobs = [];
-  for (var i = 0; i < 9; i++) {
+  for (var i = 0; i < 14; i++) {
     var c = document.createElement('i');
     c.style.setProperty('--x', (Math.random()*90 - 10) + '%');
     c.style.setProperty('--w', (240 + Math.random()*320) + 'px');
@@ -381,6 +355,54 @@ footer a { color: #fff; }
     c.dataset.base = Math.round(innerHeight * (0.1 + Math.random()*1.1));
     clouds.appendChild(c); blobs.push(c);
   }
+
+
+  var ER = { ready: false, e: 0, f: 0 }, E3 = {};
+  (function initEarth() {
+    var canvas = document.getElementById('earth3d');
+    if (!window.THREE) return;
+    var T = THREE, r;
+    try { r = new T.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true }); } catch (err) { return; }
+    r.setClearColor(0x000000, 0);
+    r.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+    var scene = new T.Scene(), cam = new T.PerspectiveCamera(35, 1, 0.1, 50);
+    var L = new T.TextureLoader(), loaded = 0;
+    var done = function () { if (++loaded === 3) ER.ready = true; };
+    var day = L.load(ASSETS + 'earth_atmos_2048.jpg', done), night = L.load(ASSETS + 'earth_lights_2048.png', done), cl = L.load(ASSETS + 'earth_clouds_1024.png', done);
+    day.anisotropy = night.anisotropy = r.capabilities.getMaxAnisotropy();
+    var sun = new T.Vector3(1, 0.25, 0.9).normalize();
+    var earth = new T.Mesh(new T.SphereGeometry(1, 96, 96), new T.ShaderMaterial({
+      uniforms: { dayT: { value: day }, nightT: { value: night }, sun: { value: sun } },
+      vertexShader: 'varying vec2 vUv; varying vec3 vN; varying vec3 vNv; void main(){ vUv=uv; vN=normalize(mat3(modelMatrix)*normal); vNv=normalize(normalMatrix*normal); gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }',
+      fragmentShader: 'uniform sampler2D dayT; uniform sampler2D nightT; uniform vec3 sun; varying vec2 vUv; varying vec3 vN; varying vec3 vNv; void main(){ float i=dot(normalize(vN),sun); float k=smoothstep(-0.12,0.25,i); vec3 d=texture2D(dayT,vUv).rgb*(0.16+1.0*max(i,0.0)); vec3 n=texture2D(nightT,vUv).rgb*vec3(1.0,0.82,0.5)*2.0+vec3(0.006,0.01,0.03); vec3 c=mix(n,d,k); float rim=pow(1.0-max(dot(normalize(vNv),vec3(0.0,0.0,1.0)),0.0),3.0); c+=vec3(0.22,0.5,1.0)*rim*0.4*(0.25+0.75*k); gl_FragColor=vec4(c,1.0); }'
+    }));
+    var clouds = new T.Mesh(new T.SphereGeometry(1.012, 64, 64), new T.MeshLambertMaterial({ map: cl, transparent: true, opacity: 0.85, depthWrite: false }));
+    var glow = new T.Mesh(new T.SphereGeometry(1.12, 64, 64), new T.ShaderMaterial({
+      vertexShader: 'varying vec3 vN; void main(){ vN=normalize(normalMatrix*normal); gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }',
+      fragmentShader: 'varying vec3 vN; void main(){ float a=pow(0.72-dot(normalize(vN),vec3(0.0,0.0,1.0)),3.0); gl_FragColor=vec4(0.3,0.6,1.0,1.0)*clamp(a,0.0,1.0)*0.55; }',
+      side: T.BackSide, blending: T.AdditiveBlending, transparent: true, depthWrite: false
+    }));
+    var g = new T.Group(); g.add(earth); g.add(clouds); g.rotation.set(0.28, 0, 0.22);
+    scene.add(g); scene.add(glow);
+    scene.add(new T.DirectionalLight(0xffffff, 1.5).translateX(sun.x * 5).translateY(sun.y * 5).translateZ(sun.z * 5));
+    scene.add(new T.AmbientLight(0x2a3a66, 0.6));
+    E3 = { r: r, scene: scene, cam: cam, g: g, earth: earth, clouds: clouds, glow: glow, canvas: canvas };
+    E3.resize = function () { r.setSize(innerWidth, innerHeight, false); cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); };
+    E3.resize();
+  })();
+  function drawEarth(t) {
+    if (!E3.r || !ER.ready || ER.e < 0.01) return;
+    var aspect = innerWidth / innerHeight, full = Math.max(5.3, 4.6 / aspect);
+    var k = 1 - Math.pow(1 - ER.f, 2);
+    E3.cam.position.set(0, 0, full * (0.5 + 0.5 * k));
+    E3.g.position.y = 0.42 * k;
+    E3.glow.position.y = E3.g.position.y;
+    var spin = (still ? 0 : t * 0.00004) + scrollY * 0.00035;
+    E3.earth.rotation.y = 2.2 + spin;
+    E3.clouds.rotation.y = 2.2 + spin * 1.25;
+    E3.r.render(E3.scene, E3.cam);
+  }
+  if (!still) (function eloop(t) { drawEarth(t); requestAnimationFrame(eloop); })(0);
 
   function update() {
     var y = scrollY, h = innerHeight;
@@ -396,7 +418,8 @@ footer a { color: #fff; }
     var cl = clamp((d - .45) / .15) * (1 - clamp((d - .86) / .08));
     clouds.style.opacity = cl;
     if (!still) blobs.forEach(function (b) {
-      b.style.transform = 'translateY(' + (+b.dataset.base + y * +b.dataset.speed * -0.6) + 'px)';
+      var span = h + 700, p = (((+b.dataset.base - y * +b.dataset.speed * 0.6) % span) + span) % span;
+      b.style.transform = 'translateY(' + (p - 350) + 'px)';
     });
 
     var a = d < 1 ? lerp(d, alts, altMix) : 420 * Math.pow(35786/420, f);
@@ -404,11 +427,13 @@ footer a { color: #fff; }
     alt.textContent = (a >= 100 ? Math.round(a).toLocaleString() : a >= 1 ? a.toFixed(1) : a.toFixed(2)) + ' km';
     layer.textContent = asc ? (a > 2000 ? 'Full view' : a > 100 ? 'Low Earth orbit' : 'Ascending') : names.filter(function (n) { return a >= n[0]; })[0][1];
 
-    earth.style.setProperty('--s', (2.6 - 1.6 * f).toFixed(3));
+    ER.f = f; ER.e = clamp((y - (finale.offsetTop - 1.3 * h)) / h);
+    E3.canvas && (E3.canvas.style.opacity = ER.e);
+    if (still) drawEarth(0);
     msg.classList.toggle('on', f > .65);
   }
   addEventListener('scroll', update, { passive: true });
-  addEventListener('resize', function () { sizeStars(); update(); });
+  addEventListener('resize', function () { sizeStars(); E3.resize && E3.resize(); update(); });
   sizeStars(); update();
 })();
 </script>
