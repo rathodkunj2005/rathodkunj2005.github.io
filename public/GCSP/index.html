@@ -134,6 +134,16 @@ footer a { color: #fff; }
   .tile b { font-size: 9px; }
   .tile i { display: none; }
 }
+
+.portrait { float: right; width: 150px; height: 150px; object-fit: cover; border-radius: 50%; border: 2px solid var(--gold); margin: 0 0 12px 20px; cursor: zoom-in; }
+.gallery { display: flex; flex-wrap: wrap; gap: 14px; margin: 20px 0; align-items: flex-start; }
+.gallery figure { margin: 0; flex: 1 1 220px; max-width: 360px; }
+.gallery img { width: 100%; height: auto; display: block; border: 1px solid rgba(196,165,116,.5); cursor: zoom-in; }
+.gallery figcaption { font: 400 11px/1.4 var(--mono); letter-spacing: .06em; color: #d8cfbb; margin-top: 6px; }
+#lb { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,10,.9); display: none; place-items: center; cursor: zoom-out; padding: 20px; }
+#lb.on { display: grid; }
+#lb img { max-width: 100%; max-height: 100%; object-fit: contain; }
+@media (max-width: 700px) { .portrait { width: 110px; height: 110px; } }
 </style>
 <noscript><style>#loader{display:none}body.lock{overflow:auto}</style></noscript>
 </head>
@@ -174,7 +184,8 @@ footer a { color: #fff; }
 <section class="card" id="about">
   <span class="num">00 / Introduction</span>
   <h2>Introduction</h2>
-  <p>I am a computer science senior at the University of Utah (B.S., December 2026, GPA 3.7, Dean's List). I build AI systems that handle sensitive data, and I do research on how language models retrieve, remember, and reason over it. Over four years that work kept landing in the same two places: hospitals and privacy.</p>
+  <img class="portrait" src="/GCSP/img/headshot.jpg" alt="Portrait of Kunj Rathod">
+  <p>I am a computer science senior at the University of Utah (B.S., December 2026, GPA 3.7, Dean's List), and I start as a software engineer at Microsoft after graduating. I build AI systems that handle sensitive data, and I do research on how language models retrieve, remember, and reason over it. Over four years that work kept landing in the same two places: hospitals and privacy.</p>
   <p>My theme is <b>Health and Security</b>, anchored in two NAE Grand Challenges: <i>Advance Health Informatics</i> and <i>Secure Cyberspace</i>. At University of Utah Health I built a HIPAA-compliant AI chat platform for 90+ hospital executives on AWS Bedrock. Clinical data is only useful if people trust the system holding it, so health informatics and security are one problem for me, not two. <span class="todo">TODO (Kunj): 2-3 sentences on the personal reason this matters to you: family, a moment, a value. The rubric's 5-point tier asks for "strong explanation of theme significance", and I cannot write this part for you.</span></p>
 
   <div class="theme"><b>How the portfolio is organized.</b> Each mindset section names the experience, the evidence, the tie to Health and Security, and a reflection.</div>
@@ -190,6 +201,17 @@ footer a { color: #fff; }
   <p><b>Objective.</b> Let a model answer biomedical questions with grounded facts instead of plausible guesses. <b>Method.</b> I led a GraphRAG platform over 1M+ biomedical entities from UniProt, AlphaFold, RXNav, and BioKG, stored in NebulaGraph and distributed for traversal speed. <b>Outcome.</b> 40% higher factual accuracy than the baseline retriever, about 3× faster graph traversal, and sub-500ms p95 queries. I wrote it up as an article that NebulaGraph's team later republished.</p>
   <div class="theme"><b>Theme tie.</b> Health informatics: drug and protein knowledge is only usable at the bedside if retrieval is correct and traceable.</div>
 
+  <div class="gallery"><figure><img src="/GCSP/img/biographrag.jpg" alt="BioGraphRAG answering a Kabuki syndrome question from its biomedical knowledge graph" loading="lazy"><figcaption>BioGraphRAG answering a Kabuki syndrome question from the knowledge graph.</figcaption></figure></div>
+
+  <h3>Predicting generalization from circuits (CS 6966, Interpretability of LLMs, Spring 2026)</h3>
+  <p>With Christina Dong and Emma Brown, in Prof. Ana Marasović's course, I asked whether sparse feature circuits extracted from a test LLM (Gemma-2-2B) can predict if its behavior on a default task will carry over to a counterfactual one, with ChatGPT as the analysis model that reads the circuits. On two tasks, a currency analogy and two-hop reasoning, the analysis model predicted no generalization and was right. The two-hop task showed almost none: 7 of 100 counterfactual instances correct. The circuits added little signal beyond the task description alone. We presented the work as a poster in April 2026.</p>
+  <div class="theme"><b>Theme tie.</b> Security and health both depend on knowing when a model's behavior will hold outside the cases you tested; this project measured exactly that. <span class="todo">Confirm this framing matches how you see it.</span></div>
+  <div class="gallery"><figure><img src="/GCSP/img/poster-2.jpg" alt="Research poster: Predicting Generalization From Circuits, by Christina Dong, Emma Brown, and Kunj Rathod" loading="lazy"><figcaption>Poster, CS 6966, April 2026.</figcaption></figure><figure><img src="/GCSP/img/poster-1.jpg" alt="Kunj Rathod standing beside the Predicting Generalization From Circuits poster" loading="lazy"><figcaption>Presenting the poster.</figcaption></figure></div>
+
+  <h3>RePurposeRx: rare-disease drug repurposing prototype (Feb 2025)</h3>
+  <p>A prototype that pairs a SwiftUI iOS app with a Flask backend running DeepSeek 7B through Ollama, and draws on public biomedical sources (DrugBank, PubChem, ChEMBL, RxNorm, UniProt, KEGG, Reactome, ClinicalTrials.gov, PubMed) to help researchers and clinicians generate drug-repurposing hypotheses for rare diseases. Its outputs are hypotheses to check, not medical advice.</p>
+  <div class="gallery"><figure><img src="/GCSP/img/drug-repurposing.jpg" alt="RePurposeRx iOS app answering a question about drugs for fibrodysplasia ossificans progressiva" loading="lazy"><figcaption>RePurposeRx prototype, February 2025.</figcaption></figure></div>
+
   <h3>Video Mind Palace: long-term embodied QA (Jan–May 2026)</h3>
   <p>Embodied agents answer questions about spaces they explored earlier. Scene-graph memory is expensive to build. I developed a method that queries video directly with a vision-language model, cutting inference time 31–57% while staying within 13–17% of the scene-graph baseline's accuracy. A paper with Advanced AI is in preparation.</p>
 
@@ -200,12 +222,12 @@ footer a { color: #fff; }
     <ul>
       <li><a href="https://www.kunjrathod.com/portfolio">Project write-ups on my research portfolio</a></li>
       <li><a href="https://www.kunjrathod.com/CV_Kunj_Rathod.pdf">CV (PDF)</a></li>
-      <li><span class="todo">TODO: confirm you presented at UCUR (Utah Conference on Undergraduate Research, per your LinkedIn) and add the poster. Link the BioGraphRAG Substack article,</span></li>
-      <li><span class="todo">TODO: link the BioGraphRAG Substack article, the NebulaGraph republish, and the Video Mind Palace paper/poster. Add one screenshot or poster image as a figure.</span></li>
+      <li><a href="https://rai.utah.edu/minds-machines-hackathon-recap/">Responsible AI Initiative recap of the AccessLens win</a> (see Multidisciplinary)</li>
+      <li><span class="todo">TODO: confirm you presented at UCUR (Utah Conference on Undergraduate Research, per your LinkedIn) and add that poster. Link the BioGraphRAG Substack article, the NebulaGraph republish, and the Video Mind Palace paper.</span></li>
     </ul></div>
 
   <h3>Reflection</h3>
-  <p>The technical skill I gained is evaluation discipline: BioGraphRAG's 40% number only exists because I built the benchmark before the system. <span class="todo">TODO (Kunj): 3-4 sentences on what changed in how you do research, and where Video Mind Palace's work connects to health or security. Do not force the tie if it is weak; the rubric only needs the theme in all five, and BioGraphRAG carries this one.</span></p>
+  <p><span class="todo">TODO (Kunj): 3-4 sentences on the technical skills you gained (graph retrieval, evaluation, interpretability methods) and how your approach to research changed. Do not force a health or security tie onto Video Mind Palace; BioGraphRAG and RePurposeRx carry it.</span></p>
 </section>
 
 <section class="card" id="business">
@@ -217,14 +239,15 @@ footer a { color: #fff; }
   <div class="theme"><b>Theme tie.</b> Secure Cyberspace: privacy as an architecture decision rather than a policy promise.</div>
 
   <h3>Impact prize</h3>
-  <p>I won an impact prize recognizing societal impact across healthcare, legal tech, and embodied AI. The Kahlert Impact Prize ($1,000, March 2026) comes from the Kahlert School of Computing. <span class="todo">TODO: your meeting notes say "Calor Impact Prize"; your site and public sources say Kahlert. Confirm they are the same prize, then add the pitch deck.</span></p>
+  <p>On March 31, 2026 the Kahlert School of Computing awarded me the Kahlert Impact Prize, a Kahlert Undergraduate Impact Fund Scholarship worth $1,000 for Fall 2026. In my announcement I pointed to a HIPAA-compliant platform running in hospitals and spatial-memory research for robots as the work behind it. <span class="todo">TODO: your meeting notes also list a "Calor Impact Prize" under Multicultural. That is not this prize; if it is a separate award, add it with its own evidence there.</span></p>
+  <div class="gallery"><figure><img src="/GCSP/img/kahlert-prize.jpg" alt="Kahlert Impact Prize certificate awarded to Kunj Rathod, dated 31 March 2026" loading="lazy"><figcaption>Certificate, signed by Mary Hall, 31 March 2026.</figcaption></figure></div>
 
   <h3>Industry internships</h3>
-  <p>At CourtEasy.ai I helped scale hybrid legal retrieval to 10M+ documents and 5,000+ daily queries, and benchmarked 8 LLM families (28% better retrieval accuracy, 35% fewer hallucinations). At University of Utah Health the HIPAA chat platform met a budget as well as a compliance bar: 40% lower inference latency and 60% faster queries, with p95 time-to-first-token under 200ms across 1,000+ conversations.</p>
+  <p>At CourtEasy.ai I helped scale hybrid legal retrieval to 10M+ documents and 5,000+ daily queries, and benchmarked 8 LLM families (28% better retrieval accuracy, 35% fewer hallucinations). At University of Utah Health the HIPAA chat platform met a budget as well as a compliance bar: 40% lower inference latency and 60% faster queries, with p95 time-to-first-token under 200ms across 1,000+ conversations. In summer 2026 I interned for 12 weeks on the Microsoft Fabric Platform team in Redmond, shipped features on capacity experiences, and built tooling that made capacity behavior observable. I return to Microsoft as a software engineer after graduating.</p>
 
   <div class="evidence"><b>Evidence</b>
     <ul>
-      <li><span class="todo">TODO: FNDR pitch deck or capstone poster; prize announcement; capstone wiki page screenshot.</span></li>
+      <li><span class="todo">TODO: FNDR pitch deck or capstone poster, and a capstone wiki page screenshot.</span></li>
       <li><a href="https://www.kunjrathod.com/portfolio">FNDR and CourtEasy write-ups</a></li>
     </ul></div>
 
@@ -240,7 +263,8 @@ footer a { color: #fff; }
   <p>Both courses sit outside engineering. <span class="todo">TODO (Kunj): course numbers and terms; one paper, project, or listening journal as evidence; and the connection you actually saw to the theme (for example, how music shapes wellbeing, or how a cultural history of a technology maps onto privacy and trust). If there is no honest tie, say so and lean on the housing role instead.</span></p>
 
   <h3>AccessLens: AI in education and accessibility (Sept 2026, first place)</h3>
-  <p>With four teammates on Team Mindstone, I built AccessLens in 48 hours at the University of Utah's Minds and Machines: AI in Education Hackathon. It turns one instructor-approved lesson feed into synchronized visuals, structured text, captions, audio, dyslexia-friendly formatting, and spatial AR, so students with accommodations can learn the way that works for them, privately. We won first place ($1,500 and $1,000 in AWS credit). Education and disability access are fields I had no training in, and the design constraint came from them: the student controls the format and the instructor controls the content. <span class="todo">TODO: your specific role on the team and one thing you learned from the accessibility side.</span> Source: <a href="https://rai.utah.edu/minds-machines-hackathon-recap/">Responsible AI Initiative recap</a>.</p>
+  <p>With four teammates on Team Mindstone, I built AccessLens in 48 hours at the University of Utah's Minds and Machines: AI in Education Hackathon. It turns one instructor-approved lesson feed into synchronized visuals, structured text, captions, audio, dyslexia-friendly formatting, and spatial AR, so students with accommodations can learn the way that works for them, privately. Under the hood it is a real-time AWS system: WebSocket sync through API Gateway, Lambda, and DynamoDB; captions from Amazon Transcribe; Claude on Amazon Bedrock for contextual catch-up; Polly and Translate for spoken and multilingual access. The design principle was that the student controls the format and the instructor controls the content. We won first place ($1,500 and $1,000 in AWS credit). <span class="todo">TODO: your specific role on the team and one thing you learned from the accessibility side.</span> Source: <a href="https://rai.utah.edu/minds-machines-hackathon-recap/">Responsible AI Initiative recap</a>.</p>
+  <div class="gallery"><figure><img src="/GCSP/img/accesslens-1.jpg" alt="Team Mindstone holding first place certificates at the Minds and Machines AI in Education Hackathon" loading="lazy"><figcaption>Team Mindstone with the first-place certificates.</figcaption></figure></div>
   <div class="theme"><b>Theme tie.</b> Health: accessibility and learning differences sit inside the wellbeing side of health, and privacy of a student's accommodations is a security requirement.</div>
 
   <h3>Community Advisor, U of U Housing (Aug–Dec 2024)</h3>
@@ -258,16 +282,16 @@ footer a { color: #fff; }
   <p class="sub">Building for people whose context differs from mine</p>
 
   <h3>Indian legal AI at CourtEasy.ai (Nov 2024–Apr 2025)</h3>
-  <p>The corpus was 10M+ Indian legal documents, written in a legal tradition, vocabulary, and mix of languages I did not grow up inside. Retrieval that worked on English-language benchmarks failed on this data, which is why I benchmarked 8 model families instead of trusting defaults. <span class="todo">Confirm and add specifics: languages, the failure you hit, how you worked with the India-based team.</span></p>
+  <p>The corpus was 10M+ Indian legal documents, and I benchmarked 8 LLM families against it. <span class="todo">TODO: in your own words, what was unfamiliar about Indian legal text (languages, structure, terminology), what failed, and how you worked with the team there.</span></p>
 
   <h3>Health and AI at University of Utah Health</h3>
-  <p>Hospital executives are a different culture from engineers: they ask what a number means for a patient and what a vendor can see. Designing the Bedrock guardrails and HIPAA boundaries meant learning to speak their language first. <span class="todo">Add one concrete example.</span></p>
+  <p>I built a HIPAA-compliant AI chat platform for 90+ hospital executives on AWS Bedrock, with guardrails. <span class="todo">TODO: one concrete moment where the clinical or executive viewpoint changed a technical decision.</span></p>
 
   <h3>Indian Student Association</h3>
   <p><span class="todo">TODO (Kunj): your role, events you ran, and what you learned about community across cultures. Kept here and in Social Consciousness only if each uses different, specific examples.</span></p>
 
   <div class="evidence"><b>Evidence</b>
-    <ul><li><span class="todo">TODO: ISA event photos, CourtEasy report excerpt (check NDA before posting), impact-prize materials.</span></li></ul></div>
+    <ul><li><span class="todo">TODO: ISA event photos and a CourtEasy report excerpt (check your NDA before posting).</span></li></ul></div>
 
   <h3>Reflection</h3>
   <p><span class="todo">TODO (Kunj): how did cultural understanding change a technical choice?</span></p>
@@ -286,7 +310,7 @@ footer a { color: #fff; }
 
 <section class="card" id="closing">
   <span class="num">Closing</span><h2>Closing Reflection</h2>
-  <p>The through-line across these five areas is that systems touching health and privacy fail at the edges, where a person's context does not match the designer's assumptions. <span class="todo">TODO (Kunj): the rubric's top tier needs (a) a thoughtful summary of what you learned and (b) multiple concrete ways you will apply it. Starting points from your own record: full-time work after Microsoft Fabric (Jan 2026 internship), continued interpretability and agent-memory research, and privacy-first products like FNDR. Choose the real ones.</span></p>
+  <p>The through-line across these five areas is that systems touching health and privacy fail at the edges, where a person's context does not match the designer's assumptions. <span class="todo">TODO (Kunj): the rubric's top tier needs (a) a thoughtful summary of what you learned and (b) multiple concrete ways you will apply it. Starting points from your own record: your return to Microsoft as a software engineer, continued interpretability and agent-memory research, and privacy-first products like FNDR. Choose the real ones.</span></p>
 </section>
 
 <div class="finale" id="finale">
@@ -318,6 +342,12 @@ footer a { color: #fff; }
       setTimeout(function () { loader.classList.add('done'); document.body.classList.remove('lock'); }, 250);
     })(t0);
   })();
+  var lb = document.createElement('div'); lb.id = 'lb'; lb.innerHTML = '<img alt="">'; document.body.appendChild(lb);
+  lb.addEventListener('click', function () { lb.classList.remove('on'); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') lb.classList.remove('on'); });
+  document.addEventListener('click', function (e) {
+    var t = e.target; if (t.tagName === 'IMG' && (t.closest('.gallery') || t.classList.contains('portrait'))) { lb.firstChild.src = t.src; lb.firstChild.alt = t.alt; lb.classList.add('on'); }
+  });
   var tiles = Array.prototype.slice.call(document.querySelectorAll('.tile'));
   var clamp = function (x) { return Math.max(0, Math.min(1, x)); };
   function lerp(t, table, f) {
