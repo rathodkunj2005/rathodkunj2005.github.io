@@ -90,14 +90,13 @@ header.hero {
 .hero > *:not(.floaters) { position: relative; z-index: 2; }
 .floaters { position: absolute; inset: 0; pointer-events: none; overflow: visible; }
 .tile {
-  position: absolute; left: var(--x); top: var(--y); width: var(--w, 150px); aspect-ratio: 4 / 5;
-  background: var(--paper); border: 1px solid var(--rule); color: var(--ink); padding: 10px;
-  display: flex; flex-direction: column; justify-content: space-between; text-align: left;
-  transform: rotate(var(--r, 0deg)); box-shadow: 0 14px 40px rgba(0,0,0,.35); will-change: transform; opacity: .94;
+  position: absolute; left: var(--x); top: var(--y); width: var(--w, 150px); aspect-ratio: var(--ar, 4 / 5);
+  background: var(--char); border: 1px solid var(--gold-d); overflow: hidden;
+  transform: rotate(var(--r, 0deg)); box-shadow: 0 14px 40px rgba(0,0,0,.45); will-change: transform;
 }
-.tile small { font: 400 9px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--gold-d); }
-.tile b { font: 700 13px/1.15 var(--display); text-transform: uppercase; }
-.tile i { display: block; flex: 1; margin: 8px 0; background: repeating-linear-gradient(90deg, var(--gold) 0 2px, transparent 2px 4px); opacity: .5; }
+.tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+.tile small { position: absolute; top: 6px; left: 6px; font: 400 9px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--cream); background: rgba(24,20,17,.78); padding: 2px 6px; }
+.tile b { position: absolute; left: 0; right: 0; bottom: 0; font: 700 9px/1.2 var(--display); white-space: nowrap; text-transform: uppercase; color: var(--cream); background: linear-gradient(transparent, rgba(24,20,17,.9)); padding: 18px 8px 7px; }
 
 .card, section.card {
   background: rgba(24, 20, 17, .46); color: var(--cream);
@@ -130,9 +129,9 @@ footer a { color: #fff; }
 }
 @media (max-width: 700px) {
   .card, section.card { padding: 30px 20px; }
-  .tile { --w: 96px !important; padding: 6px; }
-  .tile b { font-size: 9px; }
-  .tile i { display: none; }
+  .tile { --w: 92px !important; }
+  .tile b { font-size: 8px; padding: 12px 5px 5px; }
+  .tile small { display: none; }
 }
 
 .portrait { float: right; width: 150px; height: 150px; object-fit: cover; border-radius: 50%; border: 2px solid var(--gold); margin: 0 0 12px 20px; cursor: zoom-in; }
@@ -168,12 +167,12 @@ footer a { color: #fff; }
 
 <header class="hero" id="intro">
   <div class="floaters" aria-hidden="true">
-    <div class="tile" data-speed="0.25" style="--x:4%;--y:10%;--r:-5deg;--w:150px"><small>Research</small><i></i><b>BioGraphRAG</b></div>
-    <div class="tile" data-speed="0.5" style="--x:76%;--y:6%;--r:4deg;--w:130px"><small>Health</small><i></i><b>U Health HIPAA chat</b></div>
-    <div class="tile" data-speed="0.15" style="--x:84%;--y:46%;--r:-3deg;--w:170px"><small>Security</small><i></i><b>FNDR, local-only</b></div>
-    <div class="tile" data-speed="0.4" style="--x:2%;--y:56%;--r:6deg;--w:140px"><small>Hackathon 1st</small><i></i><b>AccessLens</b></div>
-    <div class="tile" data-speed="0.7" style="--x:66%;--y:78%;--r:-6deg;--w:120px"><small>Prize</small><i></i><b>Kahlert Impact</b></div>
-    <div class="tile" data-speed="0.3" style="--x:18%;--y:80%;--r:3deg;--w:130px"><small>Research</small><i></i><b>Video Mind Palace</b></div>
+    <div class="tile" data-speed="0.25" style="--x:3%;--y:8%;--r:-5deg;--w:150px;--ar:4/5"><img src="/GCSP/img/biographrag.jpg" alt=""><small>Research</small><b>BioGraphRAG</b></div>
+    <div class="tile" data-speed="0.5" style="--x:82%;--y:5%;--r:4deg;--w:112px;--ar:9/19"><img src="/GCSP/img/drug-repurposing.jpg" alt=""><small>Health</small><b>RePurposeRx</b></div>
+    <div class="tile" data-speed="0.15" style="--x:66%;--y:73%;--r:-4deg;--w:170px;--ar:5/4"><img src="/GCSP/img/fndr-home.jpg" alt=""><small>Security</small><b>FNDR</b></div>
+    <div class="tile" data-speed="0.4" style="--x:4%;--y:73%;--r:5deg;--w:190px;--ar:16/9"><img src="/GCSP/img/accesslens-arch.jpg" alt=""><small>Hackathon 1st</small><b>AccessLens</b></div>
+    <div class="tile" data-speed="0.7" style="--x:84%;--y:40%;--r:-3deg;--w:104px;--ar:3/4"><img src="/GCSP/img/kahlert-prize.jpg" alt=""><small>Prize</small><b>Kahlert Impact</b></div>
+    <div class="tile" data-speed="0.3" style="--x:2%;--y:38%;--r:3deg;--w:108px;--ar:3/4"><img src="/GCSP/img/poster-2.jpg" alt=""><small>Research</small><b>Circuits</b></div>
   </div>
   <p class="eyebrow">Grand Challenges Scholars Program · University of Utah · 2026</p>
   <h1 class="scan">Kunj<br>Rathod</h1>
@@ -237,6 +236,7 @@ footer a { color: #fff; }
   <h3>Capstone startup: FNDR</h3>
   <p>FNDR is a local-only memory assistant for macOS built in Rust and Tauri. It runs Llama 3.2 and Whisper on-device, exposes an MCP server, and sends nothing to the cloud: no telemetry, no accounts. The business bet is that people will not hand a cloud vendor a searchable record of everything they do on a computer. <span class="todo">TODO (Kunj): customer segment, what you learned from users, pricing or go-to-market decisions, and team roles. Notes say "capstone startup project"; confirm FNDR is the one.</span></p>
   <div class="theme"><b>Theme tie.</b> Secure Cyberspace: privacy as an architecture decision rather than a policy promise.</div>
+  <div class="gallery"><figure><img src="/GCSP/img/fndr-home.jpg" alt="FNDR macOS app showing locally indexed work sessions with suggested next steps" loading="lazy"><figcaption>FNDR home screen, running entirely on the Mac (seeded demo data). From the <a href="https://github.com/rathodkunj2005/continuum">Continuum repo</a>.</figcaption></figure></div>
 
   <h3>Impact prize</h3>
   <p>On March 31, 2026 the Kahlert School of Computing awarded me the Kahlert Impact Prize, a Kahlert Undergraduate Impact Fund Scholarship worth $1,000 for Fall 2026. In my announcement I pointed to a HIPAA-compliant platform running in hospitals and spatial-memory research for robots as the work behind it. <span class="todo">TODO: your meeting notes also list a "Calor Impact Prize" under Multicultural. That is not this prize; if it is a separate award, add it with its own evidence there.</span></p>
@@ -264,7 +264,7 @@ footer a { color: #fff; }
 
   <h3>AccessLens: AI in education and accessibility (Sept 2026, first place)</h3>
   <p>With four teammates on Team Mindstone, I built AccessLens in 48 hours at the University of Utah's Minds and Machines: AI in Education Hackathon. It turns one instructor-approved lesson feed into synchronized visuals, structured text, captions, audio, dyslexia-friendly formatting, and spatial AR, so students with accommodations can learn the way that works for them, privately. Under the hood it is a real-time AWS system: WebSocket sync through API Gateway, Lambda, and DynamoDB; captions from Amazon Transcribe; Claude on Amazon Bedrock for contextual catch-up; Polly and Translate for spoken and multilingual access. The design principle was that the student controls the format and the instructor controls the content. We won first place ($1,500 and $1,000 in AWS credit). <span class="todo">TODO: your specific role on the team and one thing you learned from the accessibility side.</span> Source: <a href="https://rai.utah.edu/minds-machines-hackathon-recap/">Responsible AI Initiative recap</a>.</p>
-  <div class="gallery"><figure><img src="/GCSP/img/accesslens-1.jpg" alt="Team Mindstone holding first place certificates at the Minds and Machines AI in Education Hackathon" loading="lazy"><figcaption>Team Mindstone with the first-place certificates.</figcaption></figure></div>
+  <div class="gallery"><figure><img src="/GCSP/img/accesslens-1.jpg" alt="Team Mindstone holding first place certificates at the Minds and Machines AI in Education Hackathon" loading="lazy"><figcaption>Team Mindstone with the first-place certificates.</figcaption></figure><figure style="max-width:520px;flex-basis:320px"><img src="/GCSP/img/accesslens-arch.jpg" alt="AccessLens on AWS architecture diagram: live lesson, accessibility, authoring, delivery, and course media stacks" loading="lazy"><figcaption>AccessLens AWS architecture. From the <a href="https://github.com/rathodkunj2005/AccessLens">AccessLens repo</a>.</figcaption></figure></div>
   <div class="theme"><b>Theme tie.</b> Health: accessibility and learning differences sit inside the wellbeing side of health, and privacy of a student's accommodations is a security requirement.</div>
 
   <h3>Community Advisor, U of U Housing (Aug–Dec 2024)</h3>
@@ -335,12 +335,14 @@ footer a { color: #fff; }
   var loader = document.getElementById('loader'), pct = document.getElementById('pct');
   (function () {
     var t0 = performance.now(), dur = still ? 200 : 1800;
+    function finish() { pct.textContent = '100%'; loader.classList.add('done'); document.body.classList.remove('lock'); }
     (function tick(now) {
       var u = Math.min(1, (now - t0) / dur);
       pct.textContent = Math.round(u * 100) + '%';
       if (u < 1) return requestAnimationFrame(tick);
-      setTimeout(function () { loader.classList.add('done'); document.body.classList.remove('lock'); }, 250);
+      setTimeout(finish, 250);
     })(t0);
+    setTimeout(finish, 3500);
   })();
   var lb = document.createElement('div'); lb.id = 'lb'; lb.innerHTML = '<img alt="">'; document.body.appendChild(lb);
   lb.addEventListener('click', function () { lb.classList.remove('on'); });
